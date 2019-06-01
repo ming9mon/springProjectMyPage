@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+/* 사이드바 배경 */
+.bg-gradient-primary{
+	background-image: linear-gradient(180deg,rgba(28,200,138,.5) 10%,#224abe 100%);
+}
+
+/* 사이드바 글씨 크기 */
+.sidebar .sidebar-heading {
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+}
