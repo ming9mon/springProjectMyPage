@@ -17,12 +17,19 @@ public class memberController {
 	@Autowired
 	MemberService service;
 	
+	//로그인 페이지 이동
 	@RequestMapping(value = "/member/login")
 	public String login(){
-		
 		return "/member/login";
 	}
 	
+	//회원가입 페이지 이동
+	@RequestMapping(value="/member/signUpPage")
+	public String signUpPage(){
+		return "/member/signUp";
+	}
+	
+	//로그인 기능
 	@RequestMapping(value="/member/loginCheck", method=RequestMethod.POST)
 	@ResponseBody
 	public boolean loginCheck(MemberDTO dto,HttpSession session) {
@@ -30,6 +37,13 @@ public class memberController {
 		boolean result = service.login(dto,session);
 		
 		return result;
+	}
+	
+	//로그아웃
+	@RequestMapping(value="/member/logout", method=RequestMethod.POST)
+	public String logout() {
+		
+		return "index";
 	}
 	
 	
