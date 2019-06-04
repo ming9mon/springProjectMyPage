@@ -1,5 +1,6 @@
 package com.ming9.myPage.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,27 @@ public class memberController {
 	@RequestMapping(value="/member/signUpPage")
 	public String signUpPage(){
 		return "/member/signUp";
+	}
+	
+	//아이디 중복 체크
+	@RequestMapping(value="/member/idCheck")
+	@ResponseBody
+	public int idCheck(HttpServletRequest request) {
+		String userId=request.getParameter("userId");
+		int result = service.idCheck(userId);
+		
+		return result;
+	}
+	
+	//회원가입 기능
+	@RequestMapping(value="/member/signUp", method=RequestMethod.POST)
+	public String signUp(MemberDTO dto){
+		
+		/*
+		 * 
+		 * 여기 만들장
+		 */
+		return "/member/login";
 	}
 	
 	//로그인 기능

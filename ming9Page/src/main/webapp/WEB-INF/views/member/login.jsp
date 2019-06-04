@@ -85,6 +85,24 @@
 	
 		</div>
 	</div>
+	
+	<!-- 회원가입 확인 Modal-->
+	<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">회원가입</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<button class="btn" type="button" data-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="/resources/vendor/jquery/jquery.min.js"></script>
@@ -144,7 +162,24 @@
 					});
 				}
 			});
+			
+			//회원가입 결과 모달창 보여주기
+			var result = '<c:out value="${result}"/>';
+			
+			modalCheck(result);
+			
+			function modalCheck(result){
+				if(result == ''){
+					return;
+				}else{
+					$(".modal-body").html("회원가입을 "+result+"하였습니다.");
+					$('#resultModal').modal("show");
+				}
+			}
+			
 		});
+		
+		
 	</script>
 
 </body>

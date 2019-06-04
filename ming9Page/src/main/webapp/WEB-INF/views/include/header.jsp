@@ -196,5 +196,8 @@ $(document).ready(function(){
 	$('#login').click(function(e){
 		location.href="member/login"
 	});
+	$('#signUp').click(function(e){
+		location.href="member/signUpPage"
+	});
 });
 </script>

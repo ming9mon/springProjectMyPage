@@ -70,7 +70,7 @@ select::-ms-expand {
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">회원가입</h1>
               </div>
-              <form id="signUpFrm" class="user" style="margin-left: auto">
+              <form id="signUpFrm" action="signUp" method="post" class="user" style="margin-left: auto">
                 <div class="form-group row">
                   <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px;">
                     <b>아이디 * </b>
@@ -96,10 +96,10 @@ select::-ms-expand {
                     <b>패스워드 확인 * </b>
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="passwdCheck" name="passwdCheck" placeholder="패스워드 확인">
+                    <input type="password" class="form-control form-control-user" id="passwd2" name="passwd2" placeholder="패스워드 확인">
                   </div>
                 </div>
-                <div class="form-group msgMargin" style="display:none"  id="passwdCheck_msg">
+                <div class="form-group msgMargin" style="display:none"  id="passwd2_msg">
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px">
@@ -147,7 +147,7 @@ select::-ms-expand {
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px">
-                    <b>전화번호 * </b>
+                    <b>휴대폰 번호 * </b>
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" id="phonNumber" name="phonNumber" placeholder="핸드폰 번호 ex) 01012345678">
@@ -163,7 +163,7 @@ select::-ms-expand {
                     <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="이메일 (비밀번호 분실시 사용)">
                   </div>
                 </div>
-                <div class="form-group msgMargin" style="display:none"  id="email_msg">
+                <div class="form-group msgMargin" style="display:none"  id="email_msg" >
                 </div>
                 <div class="form-group row" align="right">
                 <div class="col-sm-2 marginAuto" >
@@ -201,6 +201,25 @@ select::-ms-expand {
     </div>
 
   </div>
+  
+  <!-- 회원가입 확인 Modal-->
+	<div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">회원가입</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				<div class="modal-body">회원가입 하시겠습니까?</div>
+				<div class="modal-footer">
+					<a class="btn" id="modalY" href="#">예</a>
+					<button class="btn" type="button" data-dismiss="modal">아니요</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
   <!-- Bootstrap core JavaScript-->
   <script src="/resources/vendor/jquery/jquery.min.js"></script>
@@ -212,42 +231,165 @@ select::-ms-expand {
   <!-- Custom scripts for all pages-->
   <script src="/resources/js/sb-admin-2.min.js"></script>
   <script type="text/javascript">
-  
-    //var idCheck="";
-    //var emailCheck="RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);";
-    
+
+	//제대로 입력했는지 확인하기 위한 flag
+	var check = true;
+
+	//유효성 검사하기 위한 정규표현식
+  	var userIdCheck = RegExp(/^[A-Za-z0-9_\-]{5,20}$/);
+  	var passwdCheck = RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,16}$/);
+    var nameCheck = RegExp(/^[가-힣]{2,6}$/);
+    var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9]{2,10}$/);
+  	var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+  	var birthdayCheck = RegExp(/^(19|20)[0-9]{2}(0[1-9]|1[1-2])(0[1-9]|[1-2][0-9]|3[0-1])$/);
+  	var phonNumberCheck = RegExp(/^01[0179][0-9]{7,8}/);
+
   
   	//널 체크
-    function nullCheck(data){
-		if(data.value == ""){
+    function nullCheck(data,flag){
+		if($.trim(data.value) == ""){
 			$('#'+data.name).addClass('borderRed');
 			$('#'+data.name+'_msg').attr('style','display: block');
 			$('#'+data.name+'_msg').html('<span style="color: red">필수 입력 정보입니다.</span>');
+			check=false;
 		}else{
+			$('#'+data.name+'_msg').attr('style','display: none');
 			$('#'+data.name).removeClass('borderRed');
 		}
 	}
+  	
+  	//유효성 검사
+  	function validityCheck(data,msg,flag){
+   		if(!eval(data+"Check").test($('#'+data).val())){
+			$('#'+data+'_msg').html('<span style="color: red">'+msg+'</span>');
+   			$('#'+data+'_msg').attr('style','display: block');
+   			$('#'+data).removeClass('borderGreen');
+   			$('#'+data).addClass('borderRed');
+   			check=false;
+   		}else{
+   			$('#'+data+'_msg').attr('style','display: none');
+   			$('#'+data).removeClass('borerRed');
+   			$('#'+data).addClass('borderGreen');
+   		}
+  	}
   
     $(document).ready(function(){
 
-        var emailCheck="RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);";
-    	//회원가입 버튼 눌렀을 때
+    	//회원가입 버튼 눌렀을 때   	
     	$('#signUp').click(function(e){
+    		//이벤트 취소
     		e.preventDefault();
+			
+    		check=true;
     		
-    		var size=$('#signUpFrm')[0].length;
+    	  	//널체크
+    		var frmData = $('#signUpFrm').serializeArray();
+    		var size=frmData.length;
         	for(var i=0;i<size;i++){
-        		nullCheck($('#signUpFrm').serializeArray()[i]);
+        		nullCheck(frmData[i]);
+        	}
+        	if(check==false){
+        		alert("필수 항목을 모두 입력해 주세요.");
+        		return;
+        	}
+        	
+        	//다시 유효성 검사
+        	var dataArr = ["userId","passwd","name","nickName","birthday","phonNumber","email"];
+        	for(var i=0;i<dataArr.length;i++){
+        		validityCheck(dataArr[i],"올바르게 입력해 주세요.");
+        		if(check==false){
+        			$('#'+dataArr[i]).focus();
+        			return;
+        		}
+        	}
+        	
+        	//check 결과값이 true면 modal창 띄우기
+        	if(check){
+        		$('#signUpModal').modal("show");
         	}
     	});
     	
-    	//포커스 아웃
-    	$('#email').blur(function(){
-    		if(emailCheck.test('aa')){
-    			console.log("aa");
-    		}else{
-    			console.log('bb');
+    	//모달창 예를 눌렀을 때
+    	$('#modalY').click(function(e){
+			e.preventDefault();
+			$('#signUpFrm').submit();
+		});
+    	
+    	//키보드 눌렀을 때
+    	$('#phonNumber').keyup(function(e){
+    		//숫자가 아니면 지우기
+    		if (!(e.keyCode >=37 && e.keyCode<=40)) {
+    			$('#phonNumber').val($('#phonNumber').val().replace(/[^0-9]/gi,''));
     		}
+    	});
+    	
+    	//포커스 아웃
+    	$('#userId').blur(function(){
+    		//id 중복 체크
+    		$.ajax({
+    			url: "${pageContext.request.contextPath}/member/idCheck",
+    			method: "GET",
+    			dataType: "json",
+    			data:{
+    				"userId": $('#userId').val()
+    			},
+    			success:function(result){
+    				// 0보다 크면 중복된 아이디가 있는 것
+    				if(result){
+    					check=false;
+    					$('#userId_msg').attr('style','display: block');
+    					$('#userId_msg').html('<span style="color: red">이미 사용중인 아이디 입니다.</span>');
+    					$('#userId').addClass('borderRed');
+    					$('#userId').removeClass('borderGreen');
+    					return;
+    				}
+    			},
+    			error:function(){
+    				alert('serverError');
+    			}
+    		});	
+    		
+    		//아이디 유효성 검사
+    		var msg="5~20글자의 숫자 또는 영문, 특수문자는( _ , - )만 사용 가능합니다.";
+    		validityCheck("userId",msg);
+    	});
+    	
+    	$('#passwd').blur(function(){
+    		//패스워드 유효성 검사
+    		var msg="8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.";
+    		validityCheck("passwd",msg);
+    	});
+    	$('#passwd2').blur(function(){
+    		if($('#passwd').val() != $('#passwd2').val() ){
+    			$('#passwd2_msg').html('<span style="color: red">패스워드가 다릅니다.</span>');
+    			$('#passwd2_msg').attr('style','display: block');
+    			$('#passwd2').val('');
+    			$('#passwd2').addClass('borderRed');
+    			check=false;
+    		}else{
+    			$('#passwd2_msg').attr('style','display: none');
+    			$('#passwd2').addClass('borderGreen');
+    		}
+    	});
+    	$('#name').blur(function(){
+    		var msg="2~6자 한글만 가능합니다.";
+    		validityCheck("name",msg);
+    	});
+    	$('#nickName').blur(function(){
+    		var msg="2~6자 한글, 영어, 숫자만 입력 가능합니다.";
+    		validityCheck("nickName",msg);
+    	});
+    	$('#birthday').blur(function(){
+    		var msg="생년 월 일을 입력해 주세요. ex)19990102";
+    		validityCheck("birthday",msg);
+    	});
+    	$('#phonNumber').blur(function(){
+    		var msg="핸드폰 번호를 확인해 주세요.";
+    		validityCheck("phonNumber",msg);
+    	});
+    	$('#email').blur(function(){
+    		var msg="이메일 주소를 올바르게 입력해 주세요.";
+    		validityCheck("email",msg);
     	});
     	
     	
