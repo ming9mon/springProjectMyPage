@@ -68,9 +68,9 @@ public class memberController {
 	}
 	
 	//로그아웃
-	@RequestMapping(value="/member/logout", method=RequestMethod.POST)
-	public String logout() {
-		
+	@RequestMapping(value="/member/logout")
+	public String logout(HttpSession session) {
+		service.logout(session);
 		return "index";
 	}
 	

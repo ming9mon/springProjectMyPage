@@ -29,9 +29,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	//로그아웃 기능
-	public void logout() {
-		// TODO Auto-generated method stub
-		
+	public void logout(HttpSession session) {
+		System.out.println(session.getAttribute("userId")+" 로그아웃");
+		session.invalidate();
 	}
 
 	@Override

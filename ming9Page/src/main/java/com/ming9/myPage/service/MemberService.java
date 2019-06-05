@@ -10,7 +10,7 @@ public interface MemberService {
 	public boolean login(MemberDTO dto,HttpSession session);
 	
 	//로그아웃 기능
-	public void logout();
+	public void logout(HttpSession session);
 	
 	//아이디 체크
 	public int idCheck(String userId);

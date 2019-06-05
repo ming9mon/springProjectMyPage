@@ -181,7 +181,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
+                  	로그아웃
                 </a>
               </div>
             </li>
@@ -190,6 +190,25 @@
           </ul>
 
         </nav>
+        
+        <!-- Logout Modal-->
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">로그아웃</h5>
+						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">X</span>
+						</button>
+					</div>
+					<div class="modal-body">정말 로그아웃 하시겠습니까?</div>
+					<div class="modal-footer">
+						<a class="btn" href="/member/logout">Yes</a>
+						<button class="btn" type="button" data-dismiss="modal">No</button>
+					</div>
+				</div>
+			</div>
+		</div>
         
 <script type="text/javascript">
 $(document).ready(function(){
