@@ -18,3 +18,13 @@
 .borderGreen{
 	border: 2px solid #a5e2b1;
 }
+
+/* 배경색상 */
+.bg-gradient-primary {
+    background-image: linear-gradient(180deg,#3a3b45 10%,rgba(231,74,59,.25) 100%);
+}
+
+/* 회원가입 div 투명 */
+.transparency{
+	background-color: #ffffff00;
+}

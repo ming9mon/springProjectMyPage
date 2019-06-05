@@ -71,7 +71,7 @@ public class memberController {
 	@RequestMapping(value="/member/logout")
 	public String logout(HttpSession session) {
 		service.logout(session);
-		return "index";
+		return "redirect:/";
 	}
 	
 	
