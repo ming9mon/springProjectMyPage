@@ -5,9 +5,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ming9.myPage.domain.MemberDTO;
 import com.ming9.myPage.service.MemberService;
@@ -20,7 +22,7 @@ public class memberController {
 	
 	//로그인 페이지 이동
 	@RequestMapping(value = "/member/login")
-	public String login(){
+	public String login(Model model){
 		return "/member/login";
 	}
 	
@@ -42,13 +44,17 @@ public class memberController {
 	
 	//회원가입 기능
 	@RequestMapping(value="/member/signUp", method=RequestMethod.POST)
-	public String signUp(MemberDTO dto){
+	public String signUp(MemberDTO dto,RedirectAttributes rttr){
 		
-		/*
-		 * 
-		 * 여기 만들장
-		 */
-		return "/member/login";
+		int result = service.signUp(dto);
+		
+		if(result > 0) {
+			rttr.addFlashAttribute("result","성공");
+		}else {
+			rttr.addFlashAttribute("result","실패");
+		}
+		
+		return "redirect:login";
 	}
 	
 	//로그인 기능

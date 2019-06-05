@@ -18,5 +18,12 @@
 		WHERE user_id = #{userId}
 		]]>
 	</select>
+	
+	<insert id="signUp">
+		<![CDATA[
+		INSERT INTO tbl_member(user_id,passwd,name,nick_name,sex,birthday,phon_number,email)
+		VALUES (#{userId},#{passwd},#{name},#{nickName},#{sex},#{birthday},#{phonNumber},#{email});
+		]]>
+	</insert>
 
 </mapper>

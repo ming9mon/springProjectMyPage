@@ -39,4 +39,9 @@ public class MemberServiceImpl implements MemberService {
 		return dao.idCheck(userId);
 	}
 
+	@Override
+	public int signUp(MemberDTO dto) {
+		return dao.signUp(dto);
+	}
+
 }

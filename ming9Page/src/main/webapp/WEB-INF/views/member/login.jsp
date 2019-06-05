@@ -18,7 +18,21 @@
 
 	<!-- Custom styles for this template-->
 	<link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
+	
+	<!-- jQuery -->
+	<script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
+	
+	<!-- Bootstrap core JavaScript-->
+	<script src="/resources/vendor/jquery/jquery.min.js"></script>
+	<script src="/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+	<!-- Core plugin JavaScript-->
+	<script src="/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="/resources/js/sb-admin-2.min.js"></script>
+	
+	
 </head>
 <!-- <body background="/resources/img/security.png" style="background-size: 100% 100%;"> -->
 <body>
@@ -104,21 +118,7 @@
 		</div>
 	</div>
 
-	<!-- Bootstrap core JavaScript-->
-	<script src="/resources/vendor/jquery/jquery.min.js"></script>
-	<script src="/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-	<!-- Core plugin JavaScript-->
-	<script src="/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for all pages-->
-	<script src="/resources/js/sb-admin-2.min.js"></script>
-	
-	<!-- jQuery -->
-	<script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
-	<!-- 
-										
-	 -->
 	<script>
 		$(document).ready(function(){
 			
@@ -164,18 +164,21 @@
 			});
 			
 			//회원가입 결과 모달창 보여주기
-			var result = '<c:out value="${result}"/>';
+			var result = '${result}';
 			
 			modalCheck(result);
 			
 			function modalCheck(result){
-				if(result == ''){
+				console.log(result);
+				if(result == ""){
 					return;
 				}else{
-					$(".modal-body").html("회원가입을 "+result+"하였습니다.");
+					$('.modal-body').html("회원가입을 "+result+"하였습니다.");
 					$('#resultModal').modal("show");
 				}
 			}
+			
+			
 			
 		});
 		

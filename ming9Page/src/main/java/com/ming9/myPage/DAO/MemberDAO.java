@@ -28,4 +28,10 @@ public class MemberDAO {
 		return session.selectOne("memberMapper.idCheck",userId);
 	}
 	
+	//회원가입
+	public int signUp(MemberDTO dto) {
+		System.out.println("====> 다오 회원가입");
+		return session.insert("memberMapper.signUp",dto);
+	}
+	
 }

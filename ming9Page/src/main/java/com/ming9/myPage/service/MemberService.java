@@ -14,6 +14,8 @@ public interface MemberService {
 	
 	//아이디 체크
 	public int idCheck(String userId);
+	
 	//회원가입
+	public int signUp(MemberDTO dto);
 	
 }
