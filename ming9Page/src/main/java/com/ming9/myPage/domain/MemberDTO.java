@@ -13,5 +13,6 @@ public class MemberDTO {
 	private String birthday;
 	private int phonNumber;
 	private String email;
+	private int rating;
 	
 }

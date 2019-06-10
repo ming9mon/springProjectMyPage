@@ -43,7 +43,7 @@
   <script src="/resources/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="/resources/js/demo/datatables-demo.js"></script>
+  <!-- <script src="/resources/js/demo/datatables-demo.js"></script> -->
   
   
 
@@ -80,37 +80,82 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>아이디ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</th>
-                      <th>이름</th>
-                      <th>닉네임</th>
-                      <th>등급</th>
-                      <th>Salary</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Salary</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>Tiger Nixon</td>
-                      <td>System Architect</td>
-                      <td>Edinburgh</td>
-                      <td>61</td>
-                      <td>$320,800</td>
-                    </tr>
-                    
-                  </tbody>
-                </table>
+                <div class="dataTables_wrapper dt-bootstrap4" id="dataTable_wrapper">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="dataTables_length" id="dataTable_length">
+                        <label>Show 
+                        	<select name="dataTable_length" class="custom-select custom-select-sm form-control form-control-sm" aria-controls="dataTable">
+                            <option value="10">10</option><option value="25">25</option>
+                            <option value="50">50</option><option value="100">100</option>
+                          </select> entries
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="dataTables_filter" id="dataTable_filter">
+                        <label>Search:<input class="form-control form-control-sm" aria-controls="dataTable" type="search" placeholder="">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row"><div class="col-sm-12">
+                    <table width="100%" class="table table-bordered dataTable" id="dataTable" role="grid" aria-describedby="dataTable_info" style="width: 100%;" cellspacing="0">
+                      <thead>
+                      <tr role="row">
+                        <th tabindex="0" aria-controls="dataTable" style="width: 110px;" aria-label="아이디: activate to sort column descending" rowspan="1" colspan="1">아이디</th>
+                        <th tabindex="0" aria-controls="dataTable" style="width: 110px;" aria-label="이름: activate to sort column ascending" rowspan="1" colspan="1">이름</th>
+                        <th tabindex="0" aria-controls="dataTable" style="width: 110px;" aria-label="닉네임: activate to sort column ascending" rowspan="1" colspan="1">닉네임</th>
+                        <th tabindex="0" aria-controls="dataTable" style="width: 36px;" aria-label="등급: activate to sort column ascending" rowspan="1" colspan="1">등급</th>
+                        <th tabindex="0" aria-controls="dataTable" style="width: 57px;" aria-label="회원 삭제 activate to sort column ascending" rowspan="1" colspan="1">회원 삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <c:choose>
+                    	<c:when test="${empty memberList}">
+                    		<tr>
+								<td colspan=5 align="center"><h1>멤버 없음</h1></td>
+							</tr>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<c:forEach items="${memberList }" var="member">
+								<tr>
+									<td>${member.userId }</td>
+									<td>${member.name }</td>
+									<td>${member.nickName }</td>
+									<td>${member.rating }</td>
+									<td><a href="#" class="" id="삭제">삭제</a></td>
+								</tr>
+							</c:forEach>
+		               </c:otherwise>
+                    </c:choose>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+              <div class="row">
+                <div class="col-sm-12 col-md-5">
+                  <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                    <ul class="pagination">
+                      <li class="paginate_button page-item previous disabled" id="dataTable_previous">
+                        <a tabindex="0" class="page-link" aria-controls="dataTable" href="#" data-dt-idx="0">Previous</a>
+                      </li>
+                      <li class="paginate_button page-item active">
+                        <a tabindex="0" class="page-link" aria-controls="dataTable" href="#" data-dt-idx="1">1</a>
+                      </li>
+                      <li class="paginate_button page-item next disabled" id="dataTable_next">
+                        <a tabindex="0" class="page-link" aria-controls="dataTable" href="#" data-dt-idx="2">Next</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
             </div>
           </div>
 

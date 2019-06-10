@@ -15,7 +15,7 @@ import com.ming9.myPage.domain.MemberDTO;
 import com.ming9.myPage.service.MemberService;
 
 @Controller
-public class memberController {
+public class MemberController {
 	
 	@Autowired
 	MemberService service;
