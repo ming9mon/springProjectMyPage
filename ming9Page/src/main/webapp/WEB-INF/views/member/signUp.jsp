@@ -32,6 +32,8 @@
   <link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
   <!-- 회원가입 페이지 css -->
   <link href="/resources/css/signUp.css" rel="stylesheet">
+  <!-- selectBox CSS -->
+  <link href="/resources/css/selectbox.css" rel="stylesheet">
   
    <!-- Bootstrap core JavaScript-->
   <script src="/resources/vendor/jquery/jquery.min.js"></script>
@@ -46,25 +48,7 @@
   
 
 </head>
-<style>
-select {
-width: 200px;
-padding: .8em .5em;
-border: 1px solid #999;
-font-family: inherit;
-background: url('/resources/img/arrow.jpg') no-repeat 95% 50%;
-border-radius: 0px;
--webkit-appearance: none;
--moz-appearance: none;
-appearance: none;
-}
 
-select::-ms-expand {
-    display: none;
-}
-
-
-</style>
 
 
 <body class="bg-gradient-primary">

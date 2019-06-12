@@ -8,4 +8,12 @@
 		select user_id, name, nick_name, rating
 		from tbl_member
 	</select>
+	
+	<delete id="memdel">
+		<![CDATA[
+		DELETE FROM tbl_member
+		WHERE user_id=#{userId}
+		]]>
+	</delete>
+	
 </mapper>

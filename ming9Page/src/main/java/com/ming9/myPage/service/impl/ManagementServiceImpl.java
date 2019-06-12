@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ming9.myPage.DAO.ManagementDAO;
+import com.ming9.myPage.dao.ManagementDAO;
 import com.ming9.myPage.domain.MemberDTO;
 import com.ming9.myPage.service.ManagementService;
 
@@ -21,4 +21,9 @@ public class ManagementServiceImpl implements ManagementService {
 		return dao.getMemberList();
 	}
 
+	//회원 삭제
+	@Override
+	public int memdel(String userId) {
+		return dao.memdel(userId);
+	}
 }

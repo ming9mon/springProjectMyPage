@@ -17,6 +17,7 @@
   
   <!-- jQuery -->
   <script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
+  
 
   <!-- Custom fonts for this template -->
   <link href="/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -99,7 +100,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row"><div class="col-sm-12">
+                  <div class="row">
+                    <div class="col-sm-12">
                     <table width="100%" class="table table-bordered dataTable" id="dataTable" role="grid" aria-describedby="dataTable_info" style="width: 100%;" cellspacing="0">
                       <thead>
                       <tr role="row">
@@ -124,7 +126,7 @@
 									<td>${member.name }</td>
 									<td>${member.nickName }</td>
 									<td>${member.rating }</td>
-									<td><a href="#" class="" id="삭제">삭제</a></td>
+									<td><a class="btn" style="padding: .0rem .0rem;" href="${member.userId }">삭제</a></td>
 								</tr>
 							</c:forEach>
 		               </c:otherwise>
@@ -180,7 +182,32 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
- 
+ <script>
+ 	$(document).ready(function(){
+ 		$('table a').click(function(e){
+ 			e.preventDefault();
+ 			console.log();
+ 			console.log(e.target.getAttribute('id'));
+ 			$.ajax({
+ 				url: "${pageContext.request.contextPath}/memdel",
+ 				type: "POST",
+ 				dataType: "json",
+ 				data: {
+ 					//이벤트의 href이름을 userId로 지정해 가져오기
+ 					"userId": e.target.getAttribute('href')
+ 				},
+ 				success: function(data){
+ 					if(data==1){
+ 						location.reload();
+ 					}
+ 				},
+ 				error: function(){
+ 					alert("서버 에러");
+ 				}
+ 			});
+ 		});
+ 	});
+ </script>
 
 
 

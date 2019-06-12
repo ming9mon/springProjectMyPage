@@ -4,6 +4,10 @@
 <%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +18,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>SB Admin 2 - Dashboard</title>
+	<title>밍구 페이지</title>
 
 	<!-- Custom fonts for this template-->
 	<link href="/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -22,6 +26,8 @@
 
 	<!-- Custom styles for this template-->
 	<link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- selectBox CSS -->
+    <link href="/resources/css/selectbox.css" rel="stylesheet">
 	
 	
 	<!-- jQuery -->
@@ -53,12 +59,22 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-						<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+					<!-- 날씨 -->
+					<div>
+						<h1 class="h4 mb-0 text-gray-800">날씨</h1>
+						<div style="margin-top: 40px">
+					      <select class="selectpicker" id="city">
+                            <option value="서울특별시" selected>서울 특별시</option>
+                          </select>
+					      <select class="selectpicker" id="gu">
+                            <option value="구로구" selected>남성</option>
+                          </select>
+                          <select class="selectpicker" id="dong">
+                            <option value="구로4동" selected>동</option> 
+                          </select>
+                        </div>
 					</div>
-
+					<br><br><br><br><br>
 					<!-- Content Row -->
 					<div class="row">
 
@@ -369,6 +385,52 @@
 	<script src="/resources/js/demo/chart-area-demo.js"></script>
 	<script src="/resources/js/demo/chart-pie-demo.js"></script>
 
+	<script>
+		$(document).ready(function(){
+			
+			var city;
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getCity",
+				type: "GET",
+				success: function(data){
+					city = jQuery.parseJSON(data);
+					var html="";
+					for(var i=0;i<city.length;i++){
+						console.log(city[i].value);
+						html+="<option value='"+i+"'>"+city[i].value+"</option>";
+					}
+					console.log(html);
+					$('#city').val('3').attr("selected","selected");
+					$('#city').html(html);
+					console.log($('#city').val("3"));
+					console.log($('#city option:selected').val());
+				}
+			});
+			
+			
+			$('#city').click(function(){
+
+				console.log($('#city option:selected').text());
+			});
+			 
+			$('#gu').click(function(){
+				console.log(city);
+			})			
+			/* $.ajax({ //호출할 원격URL
+				url : "http://www.kma.go.kr/DFSROOT/POINT/DATA/top.json.txt", //jsonp방식으로 값을 받겠다.
+				dataType : "jsonp", //서버측에서 request.getparameter를 하여 받기위한 jsonp의 name 
+				//빼주게되면 default request.getParameter("callback") 으로 받게된다. 
+				//jsonp : "callback", 
+				//async는 왜있는지 모르겠지만 jquery 1.8버전부터 jsonp에 같이 적용하라고 적혀있는듯한 //영어가.... 영어울렁증임 ㅠㅠ 
+				async: false, //success는 일반 json 방식과 같음
+				success : function(data){ 
+					console.log(data);
+				} 
+			});	 */
+
+		});
+	</script>
 </body>
 
 </html>

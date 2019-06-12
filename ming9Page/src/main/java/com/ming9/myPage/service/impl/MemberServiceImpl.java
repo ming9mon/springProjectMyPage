@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ming9.myPage.DAO.MemberDAO;
+import com.ming9.myPage.dao.MemberDAO;
 import com.ming9.myPage.domain.MemberDTO;
 import com.ming9.myPage.service.MemberService;
 

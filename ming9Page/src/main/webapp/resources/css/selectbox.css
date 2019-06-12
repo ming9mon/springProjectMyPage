@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+select {
+	width: 200px;
+	padding: .6em .4em;
+	border: 1px solid #999;
+	font-family: inherit;
+	background: url('/resources/img/arrow.jpg') no-repeat 95% 50%;
+	border-radius: 0px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+select::-ms-expand {
+    display: none;
+}
