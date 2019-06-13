@@ -14,7 +14,7 @@
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -29,13 +29,14 @@
     <!-- selectBox CSS -->
     <link href="/resources/css/selectbox.css" rel="stylesheet">
 	
+	<!-- 구글 차트 -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	
 	<!-- jQuery -->
 	<script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
 
-</head>
-	
 
+</head>
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -64,17 +65,54 @@
 						<h1 class="h4 mb-0 text-gray-800">날씨</h1>
 						<div style="margin-top: 40px">
 					      <select class="selectpicker" id="city">
-                            <option value="서울특별시" selected>서울 특별시</option>
                           </select>
 					      <select class="selectpicker" id="gu">
-                            <option value="구로구" selected>남성</option>
                           </select>
                           <select class="selectpicker" id="dong">
-                            <option value="구로4동" selected>동</option> 
                           </select>
+                          <button class="btn" id="weatherBtn">날씨 조회</button>
                         </div>
 					</div>
+					<!-- 날씨 -->
+					<!-- Area Chart -->
+						<div style="width: 1000px;">
+							<div class="card shadow mb-4">
+								<!-- Card Header - Dropdown -->
+								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+									<div class="dropdown no-arrow">
+										<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+										</a>
+										<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+											<div class="dropdown-header">Dropdown Header:</div>
+											<a class="dropdown-item" href="#">Action</a>
+											<a class="dropdown-item" href="#">Another action</a>
+											<div class="dropdown-divider"></div>
+											<a class="dropdown-item" href="#">Something else here</a>
+										</div>
+									</div>
+								</div>
+								<!-- Card Body -->
+								<div class="card-body">
+									<div class="chart-area">
+										<!-- 구글 차트 표시 -->
+										<div id="curve_chart" style="width: 900px; height: 200px;"></div>
+										fff
+									</div>
+								</div>
+							</div>
+						</div>
 					<br><br><br><br><br>
+					
+					
+					
+					
+					
+					
+					
+					
+					
 					<!-- Content Row -->
 					<div class="row">
 
@@ -160,33 +198,7 @@
 
 					<div class="row">
 
-						<!-- Area Chart -->
-						<div class="col-xl-8 col-lg-7">
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-									<div class="dropdown no-arrow">
-										<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-										</a>
-										<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-											<div class="dropdown-header">Dropdown Header:</div>
-											<a class="dropdown-item" href="#">Action</a>
-											<a class="dropdown-item" href="#">Another action</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">Something else here</a>
-										</div>
-									</div>
-								</div>
-								<!-- Card Body -->
-								<div class="card-body">
-									<div class="chart-area">
-										<canvas id="myAreaChart"></canvas>
-									</div>
-								</div>
-							</div>
-						</div>
+						
 
 						<!-- Pie Chart -->
 						<div class="col-xl-4 col-lg-5">
@@ -388,46 +400,140 @@
 	<script>
 		$(document).ready(function(){
 			
-			var city;
-			
-			$.ajax({
-				url : "${pageContext.request.contextPath}/getCity",
-				type: "GET",
-				success: function(data){
-					city = jQuery.parseJSON(data);
-					var html="";
-					for(var i=0;i<city.length;i++){
-						console.log(city[i].value);
-						html+="<option value='"+i+"'>"+city[i].value+"</option>";
+			//시의 selectBox옵션 세팅 함수
+			function setCity(){
+				$.ajax({
+					url : "${pageContext.request.contextPath}/getCity",
+					type: "GET",
+					success: function(data){
+						var city = jQuery.parseJSON(data);
+						var html="";
+						for(var i=0;i<city.length;i++){
+							html+="<option value='"+city[i].code+"'>"+city[i].value+"</option>";
+						}
+						$('#city').html(html);
 					}
-					console.log(html);
-					$('#city').val('3').attr("selected","selected");
-					$('#city').html(html);
-					console.log($('#city').val("3"));
-					console.log($('#city option:selected').val());
-				}
+				});
+			}
+			
+			//구의 selectBox옵션 세팅 함수		동기식
+			function setGu(cityCode,setSelected){
+				$.ajax({
+					url: "${pageContext.request.contextPath}/getGu",
+					type: "GET",
+					async: false,
+					data: {
+						"cityCode": cityCode
+					},
+					success: function(data){
+						var gu = jQuery.parseJSON(data);
+						var html="";
+						for(var i=0;i<gu.length;i++){
+							html+="<option value='"+gu[i].code+"'>"+gu[i].value+"</option>";
+						}
+						$('#gu').html(html);
+						if(setSelected != null){
+							$('#gu').val(setSelected).attr("selected","selected");
+						}
+					},
+					error: function(){
+						console.log("에러");
+					}
+				});
+			}
+			
+			//동의 selectBox옵션 세팅 함수
+			function setDong(guCode, setSelected){
+				$.ajax({
+					url: "${pageContext.request.contextPath}/getDong",
+					type: "GET",
+					data: {
+						"guCode": guCode
+					},
+					success: function(data){
+						var dong = jQuery.parseJSON(data);
+						var html="";
+						for(var i=0;i<dong.length;i++){
+							html+="<option value='"+dong[i].code+"'>"+dong[i].value+"</option>";
+						}
+						$('#dong').html(html);
+						if(setSelected != null){
+							$('#dong').val(setSelected).attr("selected","selected");
+						}
+					},
+					error: function(){
+						console.log("에러");
+					}
+				});
+			}
+			
+			//초기 시, 구, 동 세팅
+			setCity();
+			setGu(11,11530);
+			setDong(11530,1153055000);
+			
+			//시 선택시 구,동 selectBox 내용 병경
+			$('#city').change(function(){
+				setGu($('#city option:selected').val());
+				setDong($('#gu option:selected').val());
+			});
+			
+			//구 선택시 동 selectBox 내용 변경
+			$('#gu').change(function(){
+				setDong($('#gu option:selected').val());
 			});
 			
 			
-			$('#city').click(function(){
+			
+			
+			//구글 차트
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart);
+			
+			function drawChart() {
+			  var data = google.visualization.arrayToDataTable([
+			    ['time', '온도'],
+			    ['00'+"<a></a>",  26],
+			    ['03',  23],
+			    ['06',  25],
+			    ['09',  18],
+			    ['12',  18],
+			    ['15',  18],
+			    ['18',  18],
+			    ['21',  18],
+			    ['24',  18]
+			  ]);
+			
+			  var options = {
+			    title: '오늘 날씨',
+			    curveType: 'function',
+			    legend: { position: 'bottom' }
+			  };
+			
+			  var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+			
+			  chart.draw(data, options);
+			}
+			
 
-				console.log($('#city option:selected').text());
+			//날씨 조회버튼 클릭 시
+			$('#weatherBtn').click(function(e){
+				e.preventDefault();
+				
+				$.ajax({
+					url: "${pageContext.request.contextPath}/getWeather",
+					type: "GET",
+					data:{
+						"guCode": $('#gu option:selected').val(),
+						"dongCode": $('#dong option:selected').val()
+					},
+					success: function(data){
+						console.log(data+"뭐야 !!");
+					}
+				});
+				
 			});
-			 
-			$('#gu').click(function(){
-				console.log(city);
-			})			
-			/* $.ajax({ //호출할 원격URL
-				url : "http://www.kma.go.kr/DFSROOT/POINT/DATA/top.json.txt", //jsonp방식으로 값을 받겠다.
-				dataType : "jsonp", //서버측에서 request.getparameter를 하여 받기위한 jsonp의 name 
-				//빼주게되면 default request.getParameter("callback") 으로 받게된다. 
-				//jsonp : "callback", 
-				//async는 왜있는지 모르겠지만 jquery 1.8버전부터 jsonp에 같이 적용하라고 적혀있는듯한 //영어가.... 영어울렁증임 ㅠㅠ 
-				async: false, //success는 일반 json 방식과 같음
-				success : function(data){ 
-					console.log(data);
-				} 
-			});	 */
+			
 
 		});
 	</script>
