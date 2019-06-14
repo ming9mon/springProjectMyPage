@@ -528,7 +528,13 @@
 						"dongCode": $('#dong option:selected').val()
 					},
 					success: function(data){
-						console.log(data+"뭐야 !!");
+						//Json데이터 파싱
+						data=jQuery.parseJSON(data);
+						
+						for(var i=0;i<data.length;i++){
+							
+						}
+						console.log(data);
 					}
 				});
 				

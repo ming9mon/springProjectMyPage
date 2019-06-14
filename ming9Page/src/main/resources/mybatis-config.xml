@@ -9,8 +9,7 @@
 	
 	<typeAliases>
 		<package name="com.ming9.myPage.domain"/>
+		<package name="com.ming9.myPage.weather.domain"/>
 	</typeAliases>
-	
-
 	
 </configuration>

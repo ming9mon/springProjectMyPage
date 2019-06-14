@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weatherMapper">
+
+	<select id="lookup" resultType="boolean">
+		<![CDATA[
+			SELECT count(*)
+			FROM location_xy
+			WHERE x=#{x} and y=#{y}
+		]]>
+	</select>
+	
+	<select id="lookupSeq" resultType="int">
+		<![CDATA[
+			SELECT xy_seq
+			FROM location_xy
+			WHERE x=#{x} and y=#{y}
+		]]>
+	</select>
+	
+	<insert id="insertXY">
+		<![CDATA[
+			INSERT INTO location_xy(x,y)
+			VALUES(#{x}, #{y})
+		]]>
+	</insert>
+	
+	<select id="lookupBaseDate" resultType="boolean">
+		<![CDATA[
+			SELECT count(*)
+			FROM lookup_date
+			WHERE xy_seq = #{seq} and base_date = #{baseDate}
+		]]>
+	</select>
+	
+	<insert id="insertDate">
+		<![CDATA[
+			INSERT INTO lookup_date
+			VALUES(#{seq},#{baseDate})
+		]]>
+	</insert>
+
+</mapper>
