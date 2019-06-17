@@ -94,11 +94,11 @@
 									</div>
 								</div>
 								<!-- Card Body -->
-								<div class="card-body">
+								<div class="card-body" style="height: 500px;">
 									<div class="chart-area">
 										<!-- 구글 차트 표시 -->
-										<div id="curve_chart" style="width: 900px; height: 200px;"></div>
-										fff
+										<div id="today_weather_chart" ></div>
+										<div id="tomorrow_weather_chart" ></div>
 									</div>
 								</div>
 							</div>
@@ -400,6 +400,103 @@
 	<script>
 		$(document).ready(function(){
 			
+			//구글 차트 
+			google.charts.load('current', {'packages':['corechart']});
+			
+			
+			//초기 시, 구, 동 세팅
+			setCity();
+			setGu(11,11530);
+			setDong(11530,1153055000);
+			
+			//구글 차트 그리기
+			getWeather();
+			
+			//시 선택시 구,동 selectBox 내용 병경
+			$('#city').change(function(){
+				setGu($('#city option:selected').val());
+				setDong($('#gu option:selected').val());
+			});
+			
+			//구 선택시 동 selectBox 내용 변경
+			$('#gu').change(function(){
+				setDong($('#gu option:selected').val());
+			});
+			
+			
+
+			//날씨 조회버튼 클릭 시
+			$('#weatherBtn').click(function(e){
+				e.preventDefault();
+				getWeather();
+			});
+			
+			function getWeather(){
+				$.ajax({
+					url: "${pageContext.request.contextPath}/getWeather",
+					type: "GET",
+					data:{
+						"guCode": $('#gu option:selected').val(),
+						"dongCode": $('#dong option:selected').val()
+					},
+					success: function(result){
+						console.log(result);
+						google.charts.setOnLoadCallback(drawChart1);
+						google.charts.setOnLoadCallback(drawChart2);
+						function drawChart1() {
+							var data = google.visualization.arrayToDataTable([
+							 	['time', '온도'],
+							    ['03',  Number(result[0].temperature)],
+							    ['06',  Number(result[1].temperature)],
+							    ['09',  Number(result[2].temperature)],
+							    ['12',  Number(result[3].temperature)],
+							    ['15',  Number(result[4].temperature)],
+							    ['18',  Number(result[5].temperature)],
+							    ['21',  Number(result[6].temperature)],
+							    ['24',  Number(result[7].temperature)]
+							  ]);
+							
+							var options = {
+								title: '오늘 날씨',
+						  		curveType: 'function',
+						  		legend: { position: 'bottom' }
+							};
+							
+						
+							var chart = new google.visualization.LineChart(document.getElementById('today_weather_chart'));
+						
+							chart.draw(data, options);
+						}
+						
+						function drawChart2() {
+							var data = google.visualization.arrayToDataTable([
+							 	['time', '온도'],
+							    ['00',  Number(result[7].temperature)],
+							    ['03',  Number(result[8].temperature)],
+							    ['06',  Number(result[9].temperature)],
+							    ['09',  Number(result[10].temperature)],
+							    ['12',  Number(result[11].temperature)],
+							    ['15',  Number(result[12].temperature)],
+							    ['18',  Number(result[13].temperature)],
+							    ['21',  Number(result[14].temperature)]
+							  ]);
+							
+							
+							var options = {
+								title: '내일 날씨',
+						  		curveType: 'function',
+						  		legend: { position: 'bottom' }
+							};
+						
+							var chart = new google.visualization.LineChart(document.getElementById('tomorrow_weather_chart'));
+						
+							chart.draw(data, options);
+						}
+						
+					}
+				});
+			}
+			
 			//시의 selectBox옵션 세팅 함수
 			function setCity(){
 				$.ajax({
@@ -447,6 +544,7 @@
 				$.ajax({
 					url: "${pageContext.request.contextPath}/getDong",
 					type: "GET",
+					async: false,
 					data: {
 						"guCode": guCode
 					},
@@ -467,78 +565,6 @@
 				});
 			}
 			
-			//초기 시, 구, 동 세팅
-			setCity();
-			setGu(11,11530);
-			setDong(11530,1153055000);
-			
-			//시 선택시 구,동 selectBox 내용 병경
-			$('#city').change(function(){
-				setGu($('#city option:selected').val());
-				setDong($('#gu option:selected').val());
-			});
-			
-			//구 선택시 동 selectBox 내용 변경
-			$('#gu').change(function(){
-				setDong($('#gu option:selected').val());
-			});
-			
-			
-			
-			
-			//구글 차트
-			google.charts.load('current', {'packages':['corechart']});
-			google.charts.setOnLoadCallback(drawChart);
-			
-			function drawChart() {
-			  var data = google.visualization.arrayToDataTable([
-			    ['time', '온도'],
-			    ['00'+"<a></a>",  26],
-			    ['03',  23],
-			    ['06',  25],
-			    ['09',  18],
-			    ['12',  18],
-			    ['15',  18],
-			    ['18',  18],
-			    ['21',  18],
-			    ['24',  18]
-			  ]);
-			
-			  var options = {
-			    title: '오늘 날씨',
-			    curveType: 'function',
-			    legend: { position: 'bottom' }
-			  };
-			
-			  var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-			
-			  chart.draw(data, options);
-			}
-			
-
-			//날씨 조회버튼 클릭 시
-			$('#weatherBtn').click(function(e){
-				e.preventDefault();
-				
-				$.ajax({
-					url: "${pageContext.request.contextPath}/getWeather",
-					type: "GET",
-					data:{
-						"guCode": $('#gu option:selected').val(),
-						"dongCode": $('#dong option:selected').val()
-					},
-					success: function(data){
-						//Json데이터 파싱
-						data=jQuery.parseJSON(data);
-						
-						for(var i=0;i<data.length;i++){
-							
-						}
-						console.log(data);
-					}
-				});
-				
-			});
 			
 
 		});

@@ -6,15 +6,10 @@ import lombok.Data;
 public class WeatherDTO {
 	String x;
 	String y;
-	String baseDate;
-	int seq;
-	int our00;
-	int our03;
-	int our06;
-	int our09;
-	int our12;
-	int our15;
-	int our18;
-	int our21;
-	int our24;
+	int baseDate;
+	int xySeq;
+	int dateSeq;
+	String fcstDate;
+	String fcstTime;
+	String temperature;
 }

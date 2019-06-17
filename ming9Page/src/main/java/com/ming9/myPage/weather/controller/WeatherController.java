@@ -1,6 +1,7 @@
 package com.ming9.myPage.weather.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ming9.myPage.weather.domain.WeatherDTO;
 import com.ming9.myPage.weather.service.WeatherService;
 
 @RestController
@@ -46,7 +48,7 @@ public class WeatherController {
 	
 	//날씨 정보 얻기
 	@GetMapping(value="getWeather")
-	public String getWeather(HttpServletRequest request) throws IOException, ParseException {
+	public List<WeatherDTO> getWeather(HttpServletRequest request) throws IOException, ParseException {
 		
 		String guCode=request.getParameter("guCode");	//구 코드 받아오기
 		String dongCode=request.getParameter("dongCode");	//동 코드 받아오기
