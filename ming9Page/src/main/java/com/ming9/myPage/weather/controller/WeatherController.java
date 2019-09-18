@@ -1,16 +1,15 @@
 package com.ming9.myPage.weather.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ming9.myPage.weather.domain.WeatherDTO;
 import com.ming9.myPage.weather.service.WeatherService;
 
 @RestController
@@ -20,14 +19,14 @@ public class WeatherController {
 	WeatherService service;
 	
 	//시 좌표 get
-	@GetMapping(value="getCity",produces = "application/text; charset=utf8")
+	@GetMapping(value="getCity.do",produces = "application/text; charset=utf8")
 	public String getCity() throws IOException {
 		
 		return service.getCity();
 	}
 	
 	//구 좌표 get
-	@GetMapping(value="getGu",produces = "application/text; charset=utf8")
+	@GetMapping(value="getGu.do",produces = "application/text; charset=utf8")
 	public String getGu(HttpServletRequest request)  throws IOException  {
 		
 		String cityCode = request.getParameter("cityCode");
@@ -36,7 +35,7 @@ public class WeatherController {
 	}
 	
 	//동 좌표 get
-	@GetMapping(value="getDong",produces = "application/text; charset=utf8")
+	@GetMapping(value="getDong.do",produces = "application/text; charset=utf8")
 	public String getDong(HttpServletRequest request) throws IOException {
 		
 		String guCode = request.getParameter("guCode");
@@ -44,16 +43,43 @@ public class WeatherController {
 		return service.getDong(guCode);
 	}
 	
-	
-	
-	//날씨 정보 얻기
-	@GetMapping(value="getWeather")
-	public List<WeatherDTO> getWeather(HttpServletRequest request) throws IOException, ParseException {
+	//날씨 정보
+	@GetMapping(value="/weather/getWeather.do")
+	public String getWeathers(HttpServletRequest request) throws IOException, ParseException {
 		
-		String guCode=request.getParameter("guCode");	//구 코드 받아오기
-		String dongCode=request.getParameter("dongCode");	//동 코드 받아오기
+		String param = request.getParameter("param");
+		String x = request.getParameter("x");
+		String y = request.getParameter("y");
 		
-		return service.getWeather(guCode, dongCode);
+		
+		
+		if(param.equals("str"))	//초단기 예보
+			return getSTurmWeather(x, y).toJSONString();
+		else if(param.equals("stlw"))	//초단기 실황
+			return getSTurmLiveWeather(x, y).toJSONString();
+		else if(param.equals("tw"))	//동네 예보
+			return getTownWeather(x, y).toJSONString();
+		else
+			return null;
+		
+	}
+	
+	//초단기 예보
+	private JSONArray getSTurmWeather(String x, String y) throws IOException, ParseException{
+		JSONArray str = service.getSTurmWeather(x, y);
+		return str;
+	}
+	
+	//초단기 실황
+	private JSONArray getSTurmLiveWeather(String x, String y) throws IOException, ParseException{
+		JSONArray stlw = service.getSTurmLiveWeather(x, y);
+		return stlw;
+	}
+	
+	//동네에보
+	private JSONArray getTownWeather(String x, String y) throws IOException, ParseException {
+		JSONArray tw = service.getTownWeather(x, y);
+		return tw;
 	}
 	
 }

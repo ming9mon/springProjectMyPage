@@ -3,9 +3,14 @@
 <!-- jstl -->
 <%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-
+<%
+	response.setHeader("Cache-Control", "no-store");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+	
+%>
 
 
 <!DOCTYPE html>
@@ -44,7 +49,7 @@
 	<div id="wrapper">
 
 		<!-- Sidebar -->
-			<%@include file="include/sideBar.jsp" %>
+			<%@include file="/WEB-INF/views/include/sideBar.jsp" %>
 		<!-- End of Sidebar -->
 
 		<!-- Content Wrapper -->
@@ -54,7 +59,7 @@
 			<div id="content">
 				
 				<!-- Topbar -->
-				<%@include file="include/header.jsp" %>
+				<%@include file="/WEB-INF/views/include/header.jsp" %>
 				<!-- End of Topbar -->
 
 				<!-- Begin Page Content -->
@@ -75,34 +80,32 @@
 					</div>
 					<!-- 날씨 -->
 					<!-- Area Chart -->
-						<div style="width: 1000px;">
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-									<div class="dropdown no-arrow">
-										<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-										</a>
-										<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-											<div class="dropdown-header">Dropdown Header:</div>
-											<a class="dropdown-item" href="#">Action</a>
-											<a class="dropdown-item" href="#">Another action</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">Something else here</a>
-										</div>
-									</div>
-								</div>
-								<!-- Card Body -->
-								<div class="card-body" style="height: 500px;">
-									<div class="chart-area">
-										<!-- 구글 차트 표시 -->
-										<div id="today_weather_chart" ></div>
-										<div id="tomorrow_weather_chart" ></div>
-									</div>
+					<div class="card shadow mb-4">
+						<!-- Card Header - Dropdown -->
+						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+							<h6 class="m-0 font-weight-bold text-primary">날씨</h6>
+							<div class="dropdown no-arrow">
+								<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+									<div class="dropdown-header">Dropdown Header:</div>
+									<a class="dropdown-item" href="#">Action</a>
+									<a class="dropdown-item" href="#">Another action</a>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="#">Something else here</a>
 								</div>
 							</div>
 						</div>
+						<!-- Card Body -->
+						<div class="card-body" style="height: 500px;">
+							<div class="chart-area">
+								<!-- 구글 차트 표시 -->
+								<div id="today_weather_chart" ></div>
+								<div id="tomorrow_weather_chart" ></div>
+							</div>
+						</div>
+					</div>
 					<br><br><br><br><br>
 					
 					
@@ -366,7 +369,7 @@
 			<!-- End of Main Content -->
 
 		<!-- Footer -->
-		<%@include file="include/footer.jsp" %>
+		<%@include file="/WEB-INF/views/include/footer.jsp" %>
 		<!-- End of Footer -->
 
 		</div>

@@ -213,10 +213,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#login').click(function(e){
-		location.href="/member/login"
+		location.href="/member/login.do"
 	});
 	$('#signUp').click(function(e){
-		location.href="/member/signUpPage"
+		location.href="/member/signUpPage.do"
 	});
 });
 </script>

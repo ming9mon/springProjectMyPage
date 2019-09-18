@@ -20,7 +20,7 @@ public class ManagementController {
 	ManagementService service;
 	
 	//회원 리스트
-	@RequestMapping(value="managementPage")
+	@RequestMapping(value="managementPage.do")
 	public String managementPage(Model model) {
 		
 		List<MemberDTO> memberList = service.getMemberList();
@@ -31,7 +31,7 @@ public class ManagementController {
 	}
 	
 	//회원 삭제
-	@RequestMapping(value="memdel")
+	@RequestMapping(value="memdel.do")
 	@ResponseBody
 	public int memdel(HttpServletRequest request) {
 		String userId = request.getParameter("userId");

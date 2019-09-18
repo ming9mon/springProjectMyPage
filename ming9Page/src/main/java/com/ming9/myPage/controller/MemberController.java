@@ -21,19 +21,19 @@ public class MemberController {
 	MemberService service;
 	
 	//로그인 페이지 이동
-	@RequestMapping(value = "/member/login")
+	@RequestMapping(value = "/member/login.do")
 	public String login(Model model){
 		return "/member/login";
 	}
 	
 	//회원가입 페이지 이동
-	@RequestMapping(value="/member/signUpPage")
+	@RequestMapping(value="/member/signUpPage.do")
 	public String signUpPage(){
 		return "/member/signUp";
 	}
 	
 	//아이디 중복 체크
-	@RequestMapping(value="/member/idCheck")
+	@RequestMapping(value="/member/idCheck.do")
 	@ResponseBody
 	public int idCheck(HttpServletRequest request) {
 		String userId=request.getParameter("userId");
@@ -43,7 +43,7 @@ public class MemberController {
 	}
 	
 	//회원가입 기능
-	@RequestMapping(value="/member/signUp", method=RequestMethod.POST)
+	@RequestMapping(value="/member/signUp.do", method=RequestMethod.POST)
 	public String signUp(MemberDTO dto,RedirectAttributes rttr){
 		
 		int result = service.signUp(dto);
@@ -58,7 +58,7 @@ public class MemberController {
 	}
 	
 	//로그인 기능
-	@RequestMapping(value="/member/loginCheck", method=RequestMethod.POST)
+	@RequestMapping(value="/member/loginCheck.do", method=RequestMethod.POST)
 	@ResponseBody
 	public boolean loginCheck(MemberDTO dto,HttpSession session) {
 		
@@ -68,7 +68,7 @@ public class MemberController {
 	}
 	
 	//로그아웃
-	@RequestMapping(value="/member/logout")
+	@RequestMapping(value="/member/logout.do")
 	public String logout(HttpSession session) {
 		service.logout(session);
 		return "redirect:/";
