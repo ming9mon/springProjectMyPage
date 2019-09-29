@@ -9,7 +9,6 @@
 	response.setHeader("Cache-Control", "no-store");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
-	
 %>
 
 
@@ -40,6 +39,10 @@
 	<!-- Chart.js -->
 	<script src="/resources/chart.js2.8.0/Chart.min.js"></script>
 	<script src="/resources/chart.js2.8.0/Chart.bundle.min.js"></script>
+
+	<style>
+		
+	</style>
 
 </head>
 <body id="page-top">
@@ -111,54 +114,90 @@
 					<div class="card shadow mb-4" style="min-width: 850px;">
 						<!-- Card Header - Dropdown -->
 						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-							<h6 class="m-0 font-weight-bold text-primary">날씨</h6>
+							<h6 class="m-0 font-weight-bold text-primary">중기예보</h6>
 						</div>
 						<!-- Card Body -->
 						<div class="card-body">
 						<!-- <div class="card-body" style="height: 500px;"> -->
 							<div style="margin-top: 40px">
-							<select class="selectpicker" id="city"></select>
-							<select class="selectpicker" id="gu"></select>
+							<select class="selectpicker" id="midArea"></select>
+							<select class="selectpicker" id="midCity"></select>
 							<select class="selectpicker" id="dong"></select>
-							<button class="btn" id="weatherSearch">날씨 조회</button>
+							<button class="btn" id="MTWSearch">중기 날씨 조회</button>
 						</div>
-							
-							<div class="chart-area">
-								<canvas id="myChart"></canvas>
-							</div>
 							<table class="table table-bordered" id="tbl2">
 								<thead>
 									<tr>
-										<th scope="col" rowspan="2" style="min-width: 95px; height : 50px;">지역\날짜</th>
-										<th scope="col" colspan="2" style="height : 50px;"></th>
-										<th scope="col" colspan="2" style="height : 50px;"></th>
-										<th scope="col" colspan="2" style="height : 50px;"></th>
-										<th scope="col" colspan="2" style="height : 50px;"></th>
-										<th scope="col" colspan="2" style="height : 50px;"></th>
-										<th scope="col" rowspan="2" style="height : 50px;"></th>
-										<th scope="col" rowspan="2" style="height : 50px;"></th>
-										<th scope="col" rowspan="2" style="height : 50px;"></th>
+										<th scope="col" rowspan="2" style="min-width: 150px; height : 50px;">지역\날짜</th>
+										<th scope="col" colspan="2" style="height : 50px;">-</th>
+										<th scope="col" colspan="2" style="height : 50px;">-</th>
+										<th scope="col" colspan="2" style="height : 50px;">-</th>
+										<th scope="col" colspan="2" style="height : 50px;">-</th>
+										<th scope="col" colspan="2" style="height : 50px;">-</th>
+										<th scope="col" rowspan="2" style="height : 50px;">-</th>
+										<th scope="col" rowspan="2" style="height : 50px;">-</th>
+										<th scope="col" rowspan="2" style="height : 50px;">-</th>
 									</tr>
 									<tr>
-										<th scope="col" style="min-width: 95px; height : 50px;">지역\날짜</th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
-										<th scope="col" style="height : 50px;"></th>
+										<th scope="col" style="height : 50px;">오전</th>
+										<th scope="col" style="height : 50px;">오후</th>
+										<th scope="col" style="height : 50px;">오전</th>
+										<th scope="col" style="height : 50px;">오후</th>
+										<th scope="col" style="height : 50px;">오전</th>
+										<th scope="col" style="height : 50px;">오후</th>
+										<th scope="col" style="height : 50px;">오전</th>
+										<th scope="col" style="height : 50px;">오후</th>
+										<th scope="col" style="height : 50px;">오전</th>
+										<th scope="col" style="height : 50px;">오후</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<th scope="row" id="areaD"></th>
-										<td style="min-width:240px"></td>
-										<td style="min-width:240px"></td>
-										<td style="min-width:240px"></td>
+										<th scope="row">-</th>
+										<!-- <td style="min-width:50px"></td> -->
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+									</tr>
+								</tbody>
+							</table>
+							
+							
+							<table class="table table-bordered" id="tbl3">
+								<thead>
+									<tr>
+										<th scope="col" style="min-width: 150px; height : 50px;">지역\날짜</th>
+										<th scope="col" style="height : 50px;">-</th>
+										<th scope="col" style="height : 50px;">-</th>
+										<th scope="col" style="height : 50px;">-</th>
+										<th scope="col" style="height : 50px;">-</th>
+										<th scope="col" style="height : 50px;">-</th>
+										<th scope="col" style="height : 50px;">-</th>
+										<th scope="col" style="height : 50px;">-</th>
+										<th scope="col" style="height : 50px;">-</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th scope="row">-</th>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
 									</tr>
 								</tbody>
 							</table>
@@ -199,8 +238,9 @@ var wIdx=0;
 
 $(document).ready(function(){
 	fn_getDate();			//서버시간 받아오기
-	fn_setSelectBox();	//초기 시, 구, 동 세팅
+	fn_setSelectBox();	//동네예보와 중기에보 selectBox 세팅
 	fn_setWeather();	//날씨 세팅
+	fn_setMidWeather();	//중기 날씨 세팅
 	
 	//시 선택시 구,동 selectBox 내용 병경
 	$('#city').change(function(){
@@ -211,6 +251,11 @@ $(document).ready(function(){
 	//구 선택시 동 selectBox 내용 변경
 	$('#gu').change(function(){
 		setDong($('#gu option:selected').val());
+	});
+	
+	//중기 도시 선택시 시 selectBox 내용 변경
+	$('#midArea').change(function(){
+		setMidCity($('#midArea option:selected').val());
 	});
 	
 	//조회버튼 클릭
@@ -225,6 +270,9 @@ function fn_setSelectBox(){
 	setCity();
 	setGu($('#city option:selected').val());
 	setDong($('#gu option:selected').val());
+	
+	setMidArea();
+	setMidCity($('#midArea option:selected').val());
 }
 
 function fn_setWeather(){
@@ -232,6 +280,12 @@ function fn_setWeather(){
 	fn_getWeather("tw");	//동네 예보
 	fn_drawChart();			//날씨 차트 그리기
 	fn_setTbl1();			//오늘 / 내일 / 모레 날씨 테이블 세팅
+}
+
+function fn_setMidWeather(){
+	fn_getMidTermForecast();
+	fn_getMidTermTPT();
+	fn_setMidWeather();
 }
 
 //서버시간 받아오기
@@ -317,6 +371,49 @@ function setDong(guCode, setSelected){
 		}
 	});
 }
+
+//중기 지역
+function setMidArea(){
+	$.ajax({
+		url: "${pageContext.request.contextPath}/getMidArea.do",
+		type: "GET",
+		async: false,
+		success: function(result){
+			var html="";
+			for(var i=0;i<result.length;i++){
+				html+="<option>"+result[i]+"</option>";
+			}
+			$('#midArea').html(html);
+			/* if(setSelected != null){
+				$('#midArea').val(setSelected).attr("selected","selected");
+			} */
+		}
+	});
+}
+
+//중기 도시
+function setMidCity(area){
+	console.log(area);
+	$.ajax({
+		url: "${pageContext.request.contextPath}/getMidCity.do",
+		type: "GET",
+		async: false,
+		data:{
+			"area": area
+		},
+		success: function(result){
+			var html="";
+			for(var i=0;i<result.length;i++){
+				html+="<option>"+result[i]+"</option>";
+			}
+			$('#midCity').html(html);
+			/* if(setSelected != null){
+				$('#midCity').val(setSelected).attr("selected","selected");
+			} */
+		}
+	});
+}
+
 /* select box end*/
 /* weather start*/
 function fn_getWeather(param){
@@ -340,16 +437,52 @@ function fn_getWeather(param){
 	});
 }
 
+function fn_getMidTermForecast(){
+	$.ajax({
+		url: '${pageContext.request.contextPath}/weather/getMidTermForecast.do',
+		type: 'GET',
+		async: false,
+		cache: false,
+		data: {
+			"area":$('#midArea option:selected').text()
+		},
+		success:function(data){
+			weather.forecast = data;
+		},
+		error:function(){
+			console.log("getWeather Error");
+		}
+		
+	});
+}
+
+function fn_getMidTermTPT(){
+	$.ajax({
+		url: '${pageContext.request.contextPath}/weather/getMidTermTPT.do',
+		type: 'GET',
+		async: false,
+		cache: false,
+		data: {
+			"city":$('#midCity option:selected').text()
+		},
+		success:function(data){
+			weather.tpt = data;
+		},
+		error:function(){
+			console.log("getWeather Error");
+		}
+		
+	});
+}
+
 //차트 그리기
 function fn_drawChart(){
 	var str = weather.str;	//초단기 예보
 	var tw = weather.tw;	//동네 예보
 	
 	//초단기와 동네에보 합치기
-	if (str[str.length-1].time == tw[0].time){
+	if (str[str.length-1].time == tw[0].time)
 		var wData = str.concat(tw);
-		console.log(weather);
-	}
 	else
 		var wData = str.concat(tw);
 
@@ -385,7 +518,6 @@ function fn_drawChart(){
 					var label = function(){
 						return img.alt;
 					};
-					console.log(chart.config.data.datasets[0]);
 					chart.config.data.datasets[0]._meta[wIdx].data[i]._model.pointStyle = img;
 					chart.config.options.tooltips.callbacks.label = label;
 				}
@@ -503,7 +635,6 @@ function fn_setTbl1(){
 	var max=-50;
 	var tdNum = 1;
 
-	console.log("----------------");
 	for(var i=1;i<wData.length;i++){
 		
 		var weatherDate = wData[i].date;
@@ -584,6 +715,79 @@ function fn_setTbl1(){
 		if(max < tpt)
 			max = tpt;
 		
+	}
+}
+
+//중기예보
+function fn_setMidWeather(){
+	
+	//중기 예보 테이블
+	var midforecast = weather.forecast;
+	console.log(weather);
+	var html;
+	var tmpDate = new Date(date);
+	var key = Object.keys(midforecast);
+	
+	$("#tbl2 tbody th").text($('#midArea option:selected').text());
+	
+	tmpDate.setDate(tmpDate.getDate()+3);	//중기는 3일후 데이터부터 주기 때문에 +3
+	
+	for(var i=0;i<8;i++){
+		//일자 세팅
+		$("#tbl2 thead th").eq(i+1).text(tmpDate.format("dd일 (KS)"));
+		tmpDate.setDate(tmpDate.getDate()+1);
+		
+		if(i<5){
+			var amPop = eval("midforecast.rnSt"+(i+3)+"Am");
+			var pmPop = eval("midforecast.rnSt"+(i+3)+"Pm");
+			var amSky = eval("midforecast.wf"+(i+3)+"Am");
+			var pmSky = eval("midforecast.wf"+(i+3)+"Pm");
+			var amImg = fn_getWeatherImg(amSky);
+			var pmImg = fn_getWeatherImg(pmSky);
+			
+			amImg.width = 40;
+			amImg.height = 40;
+			pmImg.width = 40;
+			pmImg.height = 40;
+
+			$("#tbl2 tbody td").eq(i*2).html(amImg);
+			$("#tbl2 tbody td").eq(i*2).append(amPop+"%");
+			$("#tbl2 tbody td").eq(i*2+1).html(pmImg);
+			$("#tbl2 tbody td").eq(i*2+1).append(pmPop+"%");
+			
+		}else{
+			var pop = eval("midforecast.rnSt"+(i+3));
+			var sky = eval("midforecast.wf"+(i+3)); 
+			
+			var img = fn_getWeatherImg(sky);
+			
+			$("#tbl2 .icon").eq(i+5).html(img);
+			$("#tbl2 .tval").eq(i+5).html(pop+"%");
+		}
+	}
+	
+	//중기 기온 테이블
+	var midTpt = weather.tpt.rst;
+	midTpt = JSON.parse(data);
+	var area = Object.keys(midTpt);
+	var tmpDate = new Date(date);
+
+	$("#tbl3 tbody th").text($('#midCity option:selected').text());
+	
+	tmpDate.setDate(tmpDate.getDate()+3);
+	
+	//thead 세팅
+	for(var i=0;i<8;i++){
+		$('#tbl3 thead th').eq(i+1).text(tmpDate.format("dd일 (KS)"));
+		tmpDate.setDate(tmpDate.getDate()+1);
+	}
+	
+	//tbody 세팅
+	for(var j=3;j<11;j++){
+		max = eval("midTpt[area[i]].max"+j);
+		min = eval("midTpt[area[i]].min"+j);
+		$('#tbl3 td .min').eq(i-3).text(min);
+		$('#tbl3 td .max').eq(i-3).text(max);
 	}
 }
 

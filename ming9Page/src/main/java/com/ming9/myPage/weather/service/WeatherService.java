@@ -30,8 +30,17 @@ public interface WeatherService {
 
 	//동네 예보
 	public JSONArray getTownWeather(String x, String ys) throws IOException, ParseException;
+
+	//중기 도시
+	public List<String> getMidArea();
+
+	//중기 지역
+	public List<String> getMidCity(String area);
 	
+	//중기예보
+	public String getMidTermForecast(String area) throws ParseException, IOException;
 	
-	
+	//중기 기온
+	public String getMidTermTPT(String city) throws ParseException, IOException;
 	
 }

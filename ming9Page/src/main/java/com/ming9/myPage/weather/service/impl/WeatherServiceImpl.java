@@ -72,6 +72,16 @@ public class WeatherServiceImpl implements WeatherService {
 		return result;
 	}
 
+	//중기 지역
+	public List<String> getMidArea() {
+		return dao.getMidArea();
+	}
+
+	//중기 도시
+	public List<String> getMidCity(String area) {
+		return dao.getMidCity(area);
+	}
+
 	//초단기 예보
 	@Override
 	public JSONArray getSTurmWeather(String x, String y) throws IOException, ParseException {
@@ -200,7 +210,7 @@ public class WeatherServiceImpl implements WeatherService {
 	//동네 예보
 	@Override
 	public JSONArray getTownWeather(String x, String y) throws IOException, ParseException {
-JSONArray jDataArr = new JSONArray();
+		JSONArray jDataArr = new JSONArray();
 		
 		String apiUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData";
 
@@ -299,6 +309,177 @@ JSONArray jDataArr = new JSONArray();
 			}
 		}
 		return jDataArr;
+	}
+	
+	/**
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * 
+	 * 중기예보조회
+	 * 강수확률과 하늘 상태를 리턴
+	 */
+	public String getMidTermForecast(String area) throws ParseException, IOException{
+		
+		String code = dao.getMidForecastCode(area);
+		
+		String date = getBaseTime(2);
+		String apiUrl = "http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleLandWeather";
+		String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
+		String regId = code;	//예보 구역 코드
+		String tmFc = date;	//발표시간 입력
+		String numOfRows = "1";	//한 페이지 결과 수
+		String type = "json";	//타입 xml, json 등등 ..
+		HashMap<String, String> sky = new HashMap<String, String>();
+		HashMap<String, String> pop = new HashMap<String, String>();
+		
+		try{
+		
+			StringBuilder urlBuilder = new StringBuilder(apiUrl);
+			urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "="+serviceKey);
+			urlBuilder.append("&" + URLEncoder.encode("regId","UTF-8") + "=" + URLEncoder.encode(regId, "UTF-8"));
+			urlBuilder.append("&" + URLEncoder.encode("tmFc","UTF-8") + "=" + URLEncoder.encode(tmFc, "UTF-8")); /* 조회하고싶은 날짜*/
+			urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8")); /* 조회하고싶은 시간 AM 02시부터 3시간 단위 */
+			urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode(type, "UTF-8"));	/* 타입 */
+			
+			/*
+			 * GET방식으로 전송해서 파라미터 받아오기
+			 */
+			URL url = new URL(urlBuilder.toString());
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Content-type", "text/plain");
+			
+			BufferedReader rd;
+			if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+				rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf-8"));
+			} else {
+				rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(),"utf-8"));
+			}
+			
+			StringBuilder sb = new StringBuilder();
+			String line;
+			while ((line = rd.readLine()) != null) {
+				sb.append(line);
+	
+				byte[] bb = line.toString().getBytes();
+			}
+			rd.close();
+			conn.disconnect();
+			byte[] b = sb.toString().getBytes();
+			String result= new String(b);
+			
+		 	// Json parser를 만들어 만들어진 문자열 데이터를 객체화 
+	 		JSONParser parser = new JSONParser(); 
+	 		JSONObject obj = (JSONObject) parser.parse(result); 
+	 		// response 키를 가지고 데이터를 파싱 
+	 		JSONObject parse_response = (JSONObject) obj.get("response"); 
+	 		// response 로 부터 body 찾기
+	 		JSONObject parse_body = (JSONObject) parse_response.get("body"); 
+	 		// body 로 부터 items 찾기 
+	 		JSONObject parse_items = (JSONObject) parse_body.get("items");
+	 		// items로 부터 itemlist 를 받기 
+	 		JSONObject parse_item = (JSONObject) parse_items.get("item");
+	 		
+	 		return parse_item.toString();
+		}catch(Exception e){
+			return null;
+		}
+ 		
+	}
+	
+	/**
+	 * 중기 기온조회
+	 * @throws ParseException 
+	 * @throws IOException 
+	 */
+	public String getMidTermTPT(String city) throws ParseException, IOException{
+
+		/*
+		 * 광주:	gwangju
+		 * 목포:	mokpo
+		 * 순천:	suncheon
+		 * 여수:	yeosu
+		 * 해남:	haenam
+		 * 강진: gangjin
+		 * 부산: busan
+		 */
+		
+		String code = dao.getMidTPTCode(city);
+		
+		JSONObject jrst = new JSONObject();
+		String date = getBaseTime(2);
+		
+		try{
+			JSONObject data = new JSONObject();
+			
+			String apiUrl = "http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleTemperature";
+			// 홈페이지에서 받은 키
+			String serviceKey = "6MUIVBgd2vThGm4fD8UdlNSBYZMaxgajGkVLdTNEL5EEmdWVWa%2FgiZzc86PYhD1dR%2B%2B17Y4HoLMVlh4G%2F2BLpg%3D%3D";
+			String regId = code;	//예보 구역 코드
+			String tmFc = date;	//발표시간 입력
+			String numOfRows = "1";	//한 페이지 결과 수
+			String type = "json";	//타입 xml, json 등등 ..
+			HashMap<String, String> sky = new HashMap<String, String>();
+			HashMap<String, String> pop = new HashMap<String, String>();
+			
+			StringBuilder urlBuilder = new StringBuilder(apiUrl);
+			urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "="+serviceKey);
+			urlBuilder.append("&" + URLEncoder.encode("regId","UTF-8") + "=" + URLEncoder.encode(regId, "UTF-8"));
+			urlBuilder.append("&" + URLEncoder.encode("tmFc","UTF-8") + "=" + URLEncoder.encode(tmFc, "UTF-8")); /* 조회하고싶은 날짜*/
+			urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8")); /* 조회하고싶은 시간 AM 02시부터 3시간 단위 */
+			urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode(type, "UTF-8"));	/* 타입 */
+			
+			/*
+			 * GET방식으로 전송해서 파라미터 받아오기
+			 */
+			URL url = new URL(urlBuilder.toString());
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Content-type", "text/plain");
+			
+			BufferedReader rd;
+			if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+				rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf-8"));
+			} else {
+				rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(),"utf-8"));
+			}
+			
+			StringBuilder sb = new StringBuilder();
+			String line;
+			while ((line = rd.readLine()) != null) {
+				sb.append(line);
+	
+				byte[] bb = line.toString().getBytes();
+			}
+			rd.close();
+			conn.disconnect();
+			byte[] b = sb.toString().getBytes();
+			String result= new String(b);
+			
+		 	// Json parser를 만들어 만들어진 문자열 데이터를 객체화 
+	 		JSONParser parser = new JSONParser(); 
+	 		JSONObject obj = (JSONObject) parser.parse(result); 
+	 		// response 키를 가지고 데이터를 파싱 
+	 		JSONObject parse_response = (JSONObject) obj.get("response"); 
+	 		// response 로 부터 body 찾기
+	 		JSONObject parse_body = (JSONObject) parse_response.get("body"); 
+	 		// body 로 부터 items 찾기 
+	 		JSONObject parse_items = (JSONObject) parse_body.get("items");
+	 		// items로 부터 itemlist 를 받기 
+	 		JSONObject parse_item = (JSONObject) parse_items.get("item");
+	 		
+			//Object[] keyObj = parse_item.keySet().toArray();
+			for(int j=3;j<=10;j++) {
+				data.put("max"+j, parse_item.get("taMax"+j));
+				data.put("min"+j, parse_item.get("taMin"+j));
+			}
+			
+			jrst.put("rst",data);
+		}catch(Exception e){
+			System.out.println("error");
+		}
+		
+		return jrst.toString();
 	}
 	
 	private String getBaseTime(int idx){

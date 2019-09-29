@@ -3,70 +3,33 @@
 
 <mapper namespace="weatherMapper">
 
-	<!-- baseDate에 +1을 해주는 이유는 오늘 날짜의 -1 이기 때문 -->
-
-	<select id="lookup" resultType="boolean">
+	<select id="getMidArea" resultType="string">
+		SELECT DISTINCT AREA 
+		FROM MID_TURN_TPT;
+	</select>
+	
+	<select id="getMidCity" resultType="string">
 		<![CDATA[
-			SELECT count(*)
-			FROM location_xy
-			WHERE x=#{x} and y=#{y}
+			SELECT CITY
+			FROM MID_TURN_TPT
+			WHERE AREA = #{area};
 		]]>
 	</select>
 	
-	<select id="lookupSeq" resultType="int">
+	<select id="getMidForecastCode" resultType="string">
 		<![CDATA[
-			SELECT xy_seq
-			FROM location_xy
-			WHERE x=#{x} and y=#{y}
+			SELECT CODE
+			FROM MID_TURN_FORECAST
+			WHERE AREA = #{area};
 		]]>
 	</select>
 	
-	<insert id="insertXY">
+	<select id="getMidTPTCode" resultType="string">
 		<![CDATA[
-			INSERT INTO location_xy(x,y)
-			VALUES(#{x}, #{y})
-		]]>
-	</insert>
-	
-	<select id="lookupBaseDate" resultType="boolean">
-		<![CDATA[
-			SELECT count(*)
-			FROM lookup_date
-			WHERE xy_seq = #{xySeq} and date = ${baseDate}+1
+			SELECT CODE
+			FROM MID_TURN_TPT
+			WHERE CITY = #{city};
 		]]>
 	</select>
 	
-	<insert id="insertDate">
-		<![CDATA[
-			INSERT INTO lookup_date(xy_seq, date)
-			VALUES(#{xySeq},#{baseDate}+1)
-		]]>
-	</insert>
-	
-	<!-- date_seq 얻기 -->
-	<select id="selectDateSeq" resultType="int">
-		<![CDATA[
-			SELECT date_seq
-			FROM lookup_date
-			WHERE xy_seq = #{xySeq} and date = ${baseDate}+1
-		]]>
-	</select>
-	
-	<!-- 날씨 정보 입력 -->
-	<insert id="insertWeather" parameterType="java.util.List">
-			INSERT INTO weather_info
-			VALUES
-			<foreach item="item" index="index" collection="list" separator=" , ">
-			(#{item.dateSeq},#{item.fcstDate},#{item.fcstTime},#{item.temperature})
-			</foreach>
-	</insert>
-	
-	<!-- 날씨 정보 얻기 -->
-	<select id="getWeather" resultType="WeatherDTO">
-		<![CDATA[
-			SELECT *
-			FROM weather_info
-			WHERE date_seq = #{dataSeq}
-		]]>
-	</select>
 </mapper>
