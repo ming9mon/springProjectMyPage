@@ -3,7 +3,7 @@
 <!-- jstl -->
 <%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
 	response.setHeader("Cache-Control", "no-store");
@@ -30,8 +30,8 @@
 
 	<!-- Custom styles for this template-->
 	<link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
-		<!-- selectBox CSS -->
-		<link href="/resources/css/selectbox.css" rel="stylesheet">
+	<!-- selectBox CSS -->
+	<link href="/resources/css/selectbox.css" rel="stylesheet">
 	
 	<!-- jQuery -->
 	<script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
@@ -40,8 +40,13 @@
 	<script src="/resources/chart.js2.8.0/Chart.min.js"></script>
 	<script src="/resources/chart.js2.8.0/Chart.bundle.min.js"></script>
 
+	<!-- Common JS -->
+	<script src="/resources/js/common.js"></script>
+	<script src="/resources/js/transLocation.js"></script>
+	
 	<style>
-		
+		.blue{color:#0900ff;}
+		.red{color:red;}
 	</style>
 
 </head>
@@ -67,7 +72,7 @@
 				<!-- Begin Page Content 동네예보 -->
 				<div class="container-fluid">
 					<!-- Area Chart -->
-					<div class="card shadow mb-4" style="min-width: 850px;">
+					<div class="card shadow mb-4" style="min-width: 1100px;">
 						<!-- Card Header - Dropdown -->
 						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 							<h6 class="m-0 font-weight-bold text-primary">동네예보</h6>
@@ -111,7 +116,7 @@
 				<!-- Begin Page Content 중기에보-->
 				<div class="container-fluid">
 					<!-- Area Chart -->
-					<div class="card shadow mb-4" style="min-width: 850px;">
+					<div class="card shadow mb-4" style="min-width: 1100px;">
 						<!-- Card Header - Dropdown -->
 						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 							<h6 class="m-0 font-weight-bold text-primary">중기예보</h6>
@@ -122,7 +127,6 @@
 							<div style="margin-top: 40px">
 							<select class="selectpicker" id="midArea"></select>
 							<select class="selectpicker" id="midCity"></select>
-							<select class="selectpicker" id="dong"></select>
 							<button class="btn" id="MTWSearch">중기 날씨 조회</button>
 						</div>
 							<table class="table table-bordered" id="tbl2">
@@ -190,14 +194,14 @@
 								<tbody>
 									<tr>
 										<th scope="row">-</th>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
+										<td><span class="blue"></span> / <span class="red"></span></td>
+										<td><span class="blue"></span> / <span class="red"></span></td>
+										<td><span class="blue"></span> / <span class="red"></span></td>
+										<td><span class="blue"></span> / <span class="red"></span></td>
+										<td><span class="blue"></span> / <span class="red"></span></td>
+										<td><span class="blue"></span> / <span class="red"></span></td>
+										<td><span class="blue"></span> / <span class="red"></span></td>
+										<td><span class="blue"></span> / <span class="red"></span></td>
 									</tr>
 								</tbody>
 							</table>
@@ -229,42 +233,126 @@
 	</a>
 
 	
+<!-- Bootstrap core JavaScript-->
+<script src="/resources/vendor/jquery/jquery.min.js"></script>
+<script src="/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+<!-- Core plugin JavaScript-->
+<script src="/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/resources/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/resources/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="/resources/js/demo/chart-area-demo.js"></script>
+<script src="/resources/js/demo/chart-pie-demo.js"></script>
+
+<!-- Kakao API -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ed639b8f650bd5b8dc3dceb7c3c64e67&libraries=services"></script>
 <script>
 var weather = {};
 var date;
 var myChart;
 var wIdx=0;
 
+//시 선택시 구,동 selectBox 내용 병경
+$('#city').change(function(){
+	setGu($('#city option:selected').val());
+	setDong($('#gu option:selected').val());
+});
+
+//구 선택시 동 selectBox 내용 변경
+$('#gu').change(function(){
+	setDong($('#gu option:selected').val());
+});
+
+//중기 도시 선택시 시 selectBox 내용 변경
+$('#midArea').change(function(){
+	setMidCity($('#midArea option:selected').val());
+});
+
+//조회버튼 클릭
+$('#weatherSearch').click(function(){
+	myChart.destroy();	//차트 지우기
+	wIdx++;
+	fn_setWeather();
+});
+
+$('#MTWSearch').click(function(){
+	fn_setMidWeather();
+});
+
 $(document).ready(function(){
+
 	fn_getDate();			//서버시간 받아오기
+	
+	
 	fn_setSelectBox();	//동네예보와 중기에보 selectBox 세팅
 	fn_setWeather();	//날씨 세팅
 	fn_setMidWeather();	//중기 날씨 세팅
 	
-	//시 선택시 구,동 selectBox 내용 병경
-	$('#city').change(function(){
-		setGu($('#city option:selected').val());
-		setDong($('#gu option:selected').val());
-	});
 	
-	//구 선택시 동 selectBox 내용 변경
-	$('#gu').change(function(){
-		setDong($('#gu option:selected').val());
-	});
+	if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
+		navigator.geolocation.getCurrentPosition(function(data) {
+			
+			var latitude = data.coords.latitude;
+			var longitude = data.coords.longitude;
+			
+			console.log(data);
+			console.log(dfs_xy_conv("toXY",latitude,longitude));
+			
+			var geocoder = new kakao.maps.services.Geocoder();	// 주소-좌표 변환 객체를 생성
+			// 좌표로 행정동 주소 정보를 요청합니다
+		    geocoder.coord2RegionCode(longitude, latitude, displayCenterInfo);    
+			
+		}, function(error) {
+			alert(error);
+		}, {
+			enableHighAccuracy: true,
+			timeout: Infinity,
+			maximumAge: 0
+		});
+	}
 	
-	//중기 도시 선택시 시 selectBox 내용 변경
-	$('#midArea').change(function(){
-		setMidCity($('#midArea option:selected').val());
-	});
-	
-	//조회버튼 클릭
-	$('#weatherSearch').click(function(){
-		myChart.destroy();	//차트 지우기
-		wIdx++;
-		fn_setWeather();
-	});
 });
+
+//지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+function displayCenterInfo(result, status) {
+    if (status === kakao.maps.services.Status.OK) {
+
+        for(var i = 0; i < result.length; i++) {
+            // 행정동의 region_type 값은 'H' 이므로
+            if (result[i].region_type === 'H') {
+                
+                var addr = result[i].address_name.split(' ');	// 0:시, 1:구, 2:동
+                var cityCode = result[i].code.substr(0,2);
+                var guCode = result[i].code.substr(0,5);
+                
+                setCity();
+                setGu(cityCode);
+                setDong(guCode);
+               
+               $('#city').val(cityCode).prop("selected",true);
+               $('#gu').val(guCode).prop("selected",true);
+               console.log();
+               var dongData = $('#dong')[0];
+               for(var i=0;i<dongData.length;i++){
+            	   if(dongData[i].text == addr[2]){
+            		   $('#dong option:eq('+i+')').prop("selected",true);
+						break;
+					}
+				}
+               	wIdx++;
+				fn_setWeather();
+				fn_setMidWeather();	//중기 날씨 세팅
+                break;
+            }
+        }
+    }    
+}
 
 function fn_setSelectBox(){
 	setCity();
@@ -285,7 +373,7 @@ function fn_setWeather(){
 function fn_setMidWeather(){
 	fn_getMidTermForecast();
 	fn_getMidTermTPT();
-	fn_setMidWeather();
+	fn_setMidWeatherTbl();
 }
 
 //서버시간 받아오기
@@ -321,7 +409,7 @@ function setCity(){
 }
 
 //구의 selectBox옵션 세팅 함수		비동기
-function setGu(cityCode,setSelected){
+function setGu(cityCode){
 	$.ajax({
 		url: "${pageContext.request.contextPath}/getGu.do",
 		type: "GET",
@@ -336,9 +424,6 @@ function setGu(cityCode,setSelected){
 				html+="<option value='"+gu[i].code+"'>"+gu[i].value+"</option>";
 			}
 			$('#gu').html(html);
-			if(setSelected != null){
-				//$('#gu').val(setSelected).attr("selected","selected");
-			}
 		},
 		error: function(){
 			console.log("에러");
@@ -347,7 +432,7 @@ function setGu(cityCode,setSelected){
 }
 
 //동의 selectBox옵션 세팅 함수
-function setDong(guCode, setSelected){
+function setDong(guCode){
 	$.ajax({
 		url: "${pageContext.request.contextPath}/getDong.do",
 		type: "GET",
@@ -362,9 +447,6 @@ function setDong(guCode, setSelected){
 				html+="<option value='"+dong[i].x+","+dong[i].y+"'>"+dong[i].value+"</option>";
 			}
 			$('#dong').html(html);
-			if(setSelected != null){
-				$('#dong').val(setSelected).attr("selected","selected");
-			}
 		},
 		error: function(){
 			console.log("에러");
@@ -393,7 +475,7 @@ function setMidArea(){
 
 //중기 도시
 function setMidCity(area){
-	console.log(area);
+
 	$.ajax({
 		url: "${pageContext.request.contextPath}/getMidCity.do",
 		type: "GET",
@@ -437,6 +519,7 @@ function fn_getWeather(param){
 	});
 }
 
+//중기 예보
 function fn_getMidTermForecast(){
 	$.ajax({
 		url: '${pageContext.request.contextPath}/weather/getMidTermForecast.do',
@@ -456,6 +539,7 @@ function fn_getMidTermForecast(){
 	});
 }
 
+//중기 기온
 function fn_getMidTermTPT(){
 	$.ajax({
 		url: '${pageContext.request.contextPath}/weather/getMidTermTPT.do',
@@ -469,7 +553,7 @@ function fn_getMidTermTPT(){
 			weather.tpt = data;
 		},
 		error:function(){
-			console.log("getWeather Error");
+			console.log("getMidTermTPT Error");
 		}
 		
 	});
@@ -690,8 +774,8 @@ function fn_setTbl1(){
 
 			html ="<ul style='margin-left: 50px'>";
 			html += "<li>"+str+"</li>";
-			html += "<li>최저기온 : "+min+"</li>";
-			html += "<li>최고기온 : "+max+"℃</li>";
+			html += "<li>최저기온 : <span class='blue'>"+min+"℃</span></li>";
+			html += "<li>최고기온 : <span class='red'>"+max+"℃</span></li>";
 			html += "</ul>";
 			
 			img = fn_getWeatherImg(str);
@@ -719,11 +803,10 @@ function fn_setTbl1(){
 }
 
 //중기예보
-function fn_setMidWeather(){
+function fn_setMidWeatherTbl(){
 	
 	//중기 예보 테이블
 	var midforecast = weather.forecast;
-	console.log(weather);
 	var html;
 	var tmpDate = new Date(date);
 	var key = Object.keys(midforecast);
@@ -760,15 +843,16 @@ function fn_setMidWeather(){
 			var sky = eval("midforecast.wf"+(i+3)); 
 			
 			var img = fn_getWeatherImg(sky);
+			img.width = 40;
+			img.height = 40;
 			
-			$("#tbl2 .icon").eq(i+5).html(img);
-			$("#tbl2 .tval").eq(i+5).html(pop+"%");
+			$("#tbl2 tbody td").eq(i+5).html(img);
+			$("#tbl2 tbody td").eq(i+5).append(pop+"%");
 		}
 	}
 	
 	//중기 기온 테이블
 	var midTpt = weather.tpt.rst;
-	midTpt = JSON.parse(data);
 	var area = Object.keys(midTpt);
 	var tmpDate = new Date(date);
 
@@ -781,13 +865,13 @@ function fn_setMidWeather(){
 		$('#tbl3 thead th').eq(i+1).text(tmpDate.format("dd일 (KS)"));
 		tmpDate.setDate(tmpDate.getDate()+1);
 	}
-	
+
 	//tbody 세팅
 	for(var j=3;j<11;j++){
-		max = eval("midTpt[area[i]].max"+j);
-		min = eval("midTpt[area[i]].min"+j);
-		$('#tbl3 td .min').eq(i-3).text(min);
-		$('#tbl3 td .max').eq(i-3).text(max);
+		max = eval("midTpt.max"+j);
+		min = eval("midTpt.min"+j);
+		$('#tbl3 td .blue').eq(j-3).text(min+"℃");
+		$('#tbl3 td .red').eq(j-3).text(max+"℃");
 	}
 }
 
@@ -879,47 +963,13 @@ function fn_getWeatherImg(str,time){
 		
 	img.src = src+imgNM+".png";
 	img.alt = str;
+	img.title = str;
 	
 	return img;
 }
 
 
 /* weather end*/
-
-//날짜 formatter
-Date.prototype.format = function (f) {
-	if (!this.valueOf()) return " ";
-
-	var weekKorName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
-	var weekKorShortName = ["일", "월", "화", "수", "목", "금", "토"];
-	var weekEngName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-	var weekEngShortName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-	var d = this;
-
-	return f.replace(/(yyyy|yy|MM|dd|KS|KL|ES|EL|HH|hh|mm|ss|a\/p)/gi, function ($1) {
-		switch ($1) {
-			case "yyyy": return d.getFullYear(); // 년 (4자리)
-			case "yy": return (d.getFullYear() % 1000).zf(2); // 년 (2자리)
-			case "MM": return (d.getMonth() + 1).zf(2); // 월 (2자리)
-			case "dd": return d.getDate().zf(2); // 일 (2자리)
-			case "KS": return weekKorShortName[d.getDay()]; // 요일 (짧은 한글)
-			case "KL": return weekKorName[d.getDay()]; // 요일 (긴 한글)
-			case "ES": return weekEngShortName[d.getDay()]; // 요일 (짧은 영어)
-			case "EL": return weekEngName[d.getDay()]; // 요일 (긴 영어)
-			case "HH": return d.getHours().zf(2); // 시간 (24시간 기준, 2자리)
-			case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2); // 시간 (12시간 기준, 2자리)
-			case "mm": return d.getMinutes().zf(2); // 분 (2자리)
-			case "ss": return d.getSeconds().zf(2); // 초 (2자리)
-			case "a/p": return d.getHours() < 12 ? "오전" : "오후"; // 오전/오후 구분
-			default: return $1;
-		}
-	});
-};
-
-String.prototype.string = function (len) { var s = '', i = 0; while (i++ < len) { s += this; } return s; };
-String.prototype.zf = function (len) { return "0".string(len - this.length) + this; };
-Number.prototype.zf = function (len) { return this.toString().zf(len); };
  
 </script>
 </body>

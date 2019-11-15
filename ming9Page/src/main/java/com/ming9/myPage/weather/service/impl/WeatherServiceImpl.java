@@ -321,7 +321,7 @@ public class WeatherServiceImpl implements WeatherService {
 	public String getMidTermForecast(String area) throws ParseException, IOException{
 		
 		String code = dao.getMidForecastCode(area);
-		
+
 		String date = getBaseTime(2);
 		String apiUrl = "http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleLandWeather";
 		String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
@@ -394,15 +394,6 @@ public class WeatherServiceImpl implements WeatherService {
 	 */
 	public String getMidTermTPT(String city) throws ParseException, IOException{
 
-		/*
-		 * 광주:	gwangju
-		 * 목포:	mokpo
-		 * 순천:	suncheon
-		 * 여수:	yeosu
-		 * 해남:	haenam
-		 * 강진: gangjin
-		 * 부산: busan
-		 */
 		
 		String code = dao.getMidTPTCode(city);
 		
