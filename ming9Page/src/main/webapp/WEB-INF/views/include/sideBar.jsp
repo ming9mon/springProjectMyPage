@@ -19,16 +19,18 @@
         </div>
         <div class="sidebar-brand-text mx-3">밍구 페이지 <!-- <sup>2</sup> --></div>
       </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="managementPage">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>관리</span></a>
-      </li>
+		
+		<c:if test="${ sessionScope.userId eq 'koo50215' }">
+	      <!-- Divider -->
+	      <hr class="sidebar-divider my-0">
+	      
+	      <!-- Nav Item - Dashboard -->
+	      <li class="nav-item active">
+	        <a class="nav-link" href="${pageContext.request.contextPath }/management.do">
+	          <i class="fas fa-fw fa-tachometer-alt"></i>
+	          <span>관리</span></a>
+	      </li>
+		</c:if>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -37,7 +39,7 @@
       <div class="sidebar-heading">개발</div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
           <span>Components</span>
@@ -49,7 +51,7 @@
             <a class="collapse-item" href="cards.html">Cards</a>
           </div>
         </div>
-      </li>
+      </li> -->
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">

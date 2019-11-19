@@ -20,7 +20,7 @@ public class ManagementController {
 	ManagementService service;
 	
 	//회원 리스트
-	@RequestMapping(value="managementPage.do")
+	@RequestMapping(value="management.do")
 	public String managementPage(Model model) {
 		
 		List<MemberDTO> memberList = service.getMemberList();

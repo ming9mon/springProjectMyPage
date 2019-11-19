@@ -66,7 +66,7 @@
                 <div class="text-right"><a href="/">메인</a></div>
                 <hr>
               </div>
-              <form id="signUpFrm" action="signUp" method="post" class="user" style="margin-left: auto">
+              <form id="signUpFrm" action="${pageContext.request.contextPath }/member/signUp.do" method="post" class="user" style="margin-left: auto">
                 <div class="form-group row">
                   <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px;">
                     <b>아이디 * </b>
@@ -162,15 +162,15 @@
                 <div class="form-group msgMargin" style="display:none"  id="email_msg" >
                 </div>
                 <div class="form-group row" align="right">
-                <div class="col-sm-2 marginAuto" >
+                <div class="col-sm-6 marginAuto" >
                   <a href="" id="signUp" class="btn btn-primary btn-user btn-block">
-                               회원가입
+			      	회원가입
                   </a>
                 </div>
                 </div>
                 <hr>
                 <div class="form-group row" align="right">
-                <div class="col-sm-3 marginAuto">
+                <div class="col-sm-6 marginAuto">
                   <a href="index.html" class="btn btn-google btn-user btn-block">
                     <i class="fab fa-google fa-fw"></i> Register with Google
                   </a>
@@ -315,7 +315,7 @@
     	$('#userId').blur(function(){
     		//id 중복 체크
     		$.ajax({
-    			url: "${pageContext.request.contextPath}/member/idCheck",
+    			url: "${pageContext.request.contextPath}/member/idCheck.do",
     			method: "GET",
     			dataType: "json",
     			data:{

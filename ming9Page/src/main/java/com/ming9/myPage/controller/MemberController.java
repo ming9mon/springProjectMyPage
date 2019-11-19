@@ -54,7 +54,7 @@ public class MemberController {
 			rttr.addFlashAttribute("result","실패");
 		}
 		
-		return "redirect:login";
+		return "redirect:login.do";
 	}
 	
 	//로그인 기능

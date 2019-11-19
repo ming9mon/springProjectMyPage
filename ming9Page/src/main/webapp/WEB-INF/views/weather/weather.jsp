@@ -602,7 +602,12 @@ function fn_drawChart(){
 					var label = function(){
 						return img.alt;
 					};
-					chart.config.data.datasets[0]._meta[wIdx].data[i]._model.pointStyle = img;
+					try{
+						chart.config.data.datasets[0]._meta[wIdx].data[i]._model.pointStyle = img;
+					}catch(e){
+						wIdx=0;
+						chart.config.data.datasets[0]._meta[wIdx].data[i]._model.pointStyle = img;
+					}
 					chart.config.options.tooltips.callbacks.label = label;
 				}
 			}
@@ -666,7 +671,7 @@ function fn_drawChart(){
 				xAxes: [{
 					ticks:{
 						//fontColor : "#fff",
-						fontSize : 14
+						fontSize : 16
 					},
 					gridLines:{
 						lineWidth: 0

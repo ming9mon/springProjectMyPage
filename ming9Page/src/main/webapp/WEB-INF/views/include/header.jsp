@@ -203,7 +203,7 @@
 					</div>
 					<div class="modal-body">정말 로그아웃 하시겠습니까?</div>
 					<div class="modal-footer">
-						<a class="btn" href="/member/logout">Yes</a>
+						<a class="btn" href="/member/logout.do">Yes</a>
 						<button class="btn" type="button" data-dismiss="modal">No</button>
 					</div>
 				</div>

@@ -189,7 +189,7 @@
  			console.log();
  			console.log(e.target.getAttribute('id'));
  			$.ajax({
- 				url: "${pageContext.request.contextPath}/memdel",
+ 				url: "${pageContext.request.contextPath}/memdel.do",
  				type: "POST",
  				dataType: "json",
  				data: {
