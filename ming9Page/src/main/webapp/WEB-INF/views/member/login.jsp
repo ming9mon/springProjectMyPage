@@ -3,12 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
+	<meta name = "google-signin-client_id"content = "161980541304-kii6sqj3rsk46pei121ag4b20i2ro46p.apps.googleusercontent.com">
+	
 
 	<title>SB Admin 2 - Login</title>
 
@@ -35,7 +36,72 @@
 	<!-- Custom scripts for all pages-->
 	<script src="${pageContext.request.contextPath}/resources/js/sb-admin-2.min.js"></script>
 	
+	<!-- 구글 로그인 버튼 커스텀 -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+	<script src="https://apis.google.com/js/api:client.js"></script>
+	<script>
+	  var googleUser = {};
+	  var startApp = function() {
+	    gapi.load('auth2', function(){
+	      // Retrieve the singleton for the GoogleAuth library and set up the client.
+	      auth2 = gapi.auth2.init({
+	        client_id: '161980541304-kii6sqj3rsk46pei121ag4b20i2ro46p.apps.googleusercontent.com',
+	        cookiepolicy: 'single_host_origin',
+	        // Request scopes in addition to 'profile' and 'email'
+	        //scope: 'additional_scope'
+	      });
+	      attachSignin(document.getElementById('customBtn'));
+	    });
+	  };
 	
+	  function attachSignin(element) {
+	    console.log(element.id);
+	    auth2.attachClickHandler(element, {},
+	        function(googleUser) {
+	          document.getElementById('name').innerText = "Signed in: " +
+	              googleUser.getBasicProfile().getName();
+	        }, function(error) {
+	          alert(JSON.stringify(error, undefined, 2));
+	        });
+	  }
+  </script>
+  <style type="text/css">
+    #customBtn {
+      display: inline-block;
+      background: white;
+      color: #444;
+      width: 100%;
+      border-radius: 5px;
+      border: thin solid #888;
+      box-shadow: 1px 1px 1px grey;
+      white-space: nowrap;
+      border-radius: 10rem;
+    }
+    #customBtn:hover {
+      cursor: pointer;
+    }
+    span.label {
+      font-family: serif;
+      font-weight: normal;
+    }
+    span.icon {
+      background: url('/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
+      display: inline-block;
+      vertical-align: middle;
+      width: 42px;
+      height: 42px;
+    }
+    span.buttonText {
+      display: inline-block;
+      vertical-align: middle;
+      padding-left: 42px;
+      padding-right: 42px;
+      font-size: 14px;
+      font-weight: bold;
+      /* Use the Roboto font that is loaded in the <head> */
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
 </head>
 <!-- <body background="${pageContext.request.contextPath}/resources/img/security.png" style="background-size: 100% 100%;"> -->
 <body>
@@ -83,20 +149,30 @@
 											</a>
 										</div>
 										<hr>
-										<!-- <a href="#" class="btn btn-google btn-user btn-block">
+										<a href="#" id="#" class="btn btn-google btn-user btn-block">
 											<i class="fab fa-google fa-fw"></i> Login with Google
 										</a>
+										<!-- <div class="g-signin2" data-onsuccess="onSignIn"> -->
+										<div id="gSignInWrapper">
+										    <span class="label">Sign in with:</span>
+										    <div id="customBtn" class="customGPlusSignIn">
+										      <span class="icon"></span>
+										      <span class="buttonText">Google Login</span>
+										    </div>
+										</div>
+										<!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+	<h1>ddd</h1>
 										<a href="#" class="btn btn-facebook btn-user btn-block">
 											<i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-										</a> -->
+										</a>
 									</form>
-									<!-- <hr>
+									<hr>
 									<div class="text-center">
 										<a class="small" href="forgot-password.html">Forgot Password?</a>
 									</div>
 									<div class="text-center">
 										<a class="small" href="register.html">Create an Account!</a>
-									</div> -->
+									</div>
 								</div>
 							</div>
 						</div>
@@ -126,8 +202,18 @@
 		</div>
 	</div>
 
-
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
+startApp();
+
+$(document).keydown(function(key) {
+    //키의 코드가 13번일 경우 (13번은 엔터키)
+    if (key.keyCode == 13) {
+    	fn_login();
+    }
+});
+
+
 function nullCheck(frm,size){
 	
 	var result=true;
@@ -147,7 +233,11 @@ function nullCheck(frm,size){
 }
 
 $('#login').click(function(e){
+	fn_login();
 	
+});
+
+function fn_login(){
 	var result = nullCheck($('#loginFrm'),$('#loginFrm').find('input').length-1);
 	if(result){
 		$.ajax({
@@ -167,17 +257,13 @@ $('#login').click(function(e){
 			}
 		});
 	}
-});
+}
 
 $('#signUp').click(function(){
 	location.href="${pageContext.request.contextPath}/member/signUpPage.do";
 });
 
 	$(document).ready(function(){
-		
-		
-		
-		
 		
 		//회원가입 결과 모달창 보여주기
 		var result = '${result}';
@@ -194,12 +280,9 @@ $('#signUp').click(function(){
 			}
 		}
 		
-		
-		
 	});
 	
-	
+	startApp();
 </script>
-
 </body>
 </html>

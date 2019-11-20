@@ -243,13 +243,6 @@
 <!-- Custom scripts for all pages-->
 <script src="/resources/js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script src="/resources/vendor/chart.js/Chart.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="/resources/js/demo/chart-area-demo.js"></script>
-<script src="/resources/js/demo/chart-pie-demo.js"></script>
-
 <!-- Kakao API -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ed639b8f650bd5b8dc3dceb7c3c64e67&libraries=services"></script>
 <script>
@@ -301,15 +294,12 @@ $(document).ready(function(){
 			var latitude = data.coords.latitude;
 			var longitude = data.coords.longitude;
 			
-			console.log(data);
-			console.log(dfs_xy_conv("toXY",latitude,longitude));
-			
 			var geocoder = new kakao.maps.services.Geocoder();	// 주소-좌표 변환 객체를 생성
 			// 좌표로 행정동 주소 정보를 요청합니다
 		    geocoder.coord2RegionCode(longitude, latitude, displayCenterInfo);    
 			
 		}, function(error) {
-			alert(error);
+			console.log("geolocation 실패");
 		}, {
 			enableHighAccuracy: true,
 			timeout: Infinity,
@@ -337,7 +327,7 @@ function displayCenterInfo(result, status) {
                
                $('#city').val(cityCode).prop("selected",true);
                $('#gu').val(guCode).prop("selected",true);
-               console.log();
+               
                var dongData = $('#dong')[0];
                for(var i=0;i<dongData.length;i++){
             	   if(dongData[i].text == addr[2]){
@@ -366,6 +356,7 @@ function fn_setSelectBox(){
 function fn_setWeather(){
 	fn_getWeather("str");	//초단기 예보
 	fn_getWeather("tw");	//동네 예보
+	console.log(weather);
 	fn_drawChart();			//날씨 차트 그리기
 	fn_setTbl1();			//오늘 / 내일 / 모레 날씨 테이블 세팅
 }

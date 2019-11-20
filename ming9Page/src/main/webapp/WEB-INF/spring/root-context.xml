@@ -17,7 +17,7 @@
 	<!-- MariaDB JDBC DataSource -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />
-		<property name="url" value="jdbc:mariadb://127.0.0.1:3306/ming9Page" />
+		<property name="url" value="jdbc:mariadb://localhost:3306/ming9Page" />
 		<property name="username" value="ming9" />
 		<property name="password" value="5qK!b3DM!VWHCuf4" />
 	</bean>

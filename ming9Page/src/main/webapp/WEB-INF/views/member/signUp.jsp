@@ -14,7 +14,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Dashboard</title>
+  <title>밍구몬</title>
 
 	
   <!-- 부트스트랩 -->
@@ -168,28 +168,8 @@
                   </a>
                 </div>
                 </div>
-                <hr>
-                <div class="form-group row" align="right">
-                <div class="col-sm-6 marginAuto">
-                  <a href="index.html" class="btn btn-google btn-user btn-block">
-                    <i class="fab fa-google fa-fw"></i> Register with Google
-                  </a>
-                  <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                  </a>
-                </div>
-                </div>
-                <div class="col-sm-3 marginAuto" >
-                </div>
-                
               </form>
               <hr>
-              <div class="text-center">
-                <a class="small" href="forgot-password.html">Forgot Password?</a>
-              </div>
-              <div class="text-center">
-                <a class="small" href="login.html">Already have an account? Login!</a>
-              </div>
             </div>
           </div>
         </div>
