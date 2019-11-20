@@ -237,7 +237,6 @@ function fn_getCCTVData(){
 			minY: bounds.la,
 			maxY: bounds.ka
 		},success : function(rst){
-			infowindow.close();
 			setMarkers(null);	//마커 삭제
 			if(rst.RTNCD == 0){
 				fn_setCCTV(rst.RST);
@@ -531,6 +530,7 @@ function removeAllChildNods(el) {
 
 //지도 드래그 이벤트
 kakao.maps.event.addListener(map, 'dragend', function() {
+	infowindow.close();
 	console.log(cctvOnOff);
 	console.log("dd");
 	if(cctvOnOff == 'on')
@@ -539,16 +539,17 @@ kakao.maps.event.addListener(map, 'dragend', function() {
 
 //지도 확대, 축소 이벤트
 kakao.maps.event.addListener(map, 'zoom_changed', function() {
+	infowindow.close();
 	if(cctvOnOff == 'on')
 		fn_getCCTVData();
 });
 
 //cctv 클릭 이벤트
 $('#cctv').click(function(){
+	infowindow.close();
+	
 	if(cctvOnOff == 'off'){
-		
 		cctvOnOff = 'on';
-		
 		searchOnOff='off'
 		
 		$(this).addClass('on');
@@ -569,9 +570,10 @@ $('#cctv').click(function(){
 
 //검색 클릭 이벤트
 $('#search').click(function(){
+	infowindow.close();
+	
 	if(searchOnOff == 'off'){
 		searchOnOff = 'on';
-		
 		cctvOnOff='off'
 		
 		$(this).addClass('on');

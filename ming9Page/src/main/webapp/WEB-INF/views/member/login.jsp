@@ -149,19 +149,12 @@
 											</a>
 										</div>
 										<hr>
-										<a href="#" id="#" class="btn btn-google btn-user btn-block">
-											<i class="fab fa-google fa-fw"></i> Login with Google
-										</a>
-										<!-- <div class="g-signin2" data-onsuccess="onSignIn"> -->
 										<div id="gSignInWrapper">
-										    <span class="label">Sign in with:</span>
 										    <div id="customBtn" class="customGPlusSignIn">
 										      <span class="icon"></span>
 										      <span class="buttonText">Google Login</span>
 										    </div>
 										</div>
-										<!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
-	<h1>ddd</h1>
 										<a href="#" class="btn btn-facebook btn-user btn-block">
 											<i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
 										</a>
