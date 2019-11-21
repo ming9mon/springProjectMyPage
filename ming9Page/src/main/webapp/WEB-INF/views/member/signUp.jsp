@@ -66,7 +66,7 @@
                 <div class="text-right"><a href="/">메인</a></div>
                 <hr>
               </div>
-              <form id="signUpFrm" action="${pageContext.request.contextPath }/member/signUp.do" method="post" class="user" style="margin-left: auto">
+              <form id="signUpFrm" enctype="multipart/form-data" action="${pageContext.request.contextPath }/member/signUp.do" method="post" class="user" style="margin-left: auto">
                 <div class="form-group row">
                   <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px;">
                     <b>아이디 * </b>
@@ -160,6 +160,16 @@
                   </div>
                 </div>
                 <div class="form-group msgMargin" style="display:none"  id="email_msg" >
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px">
+                    <b>이미지 </b>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="file" id="img" name="img">
+                  </div>
+                </div>
+                <div style="display:none;width:300px;heigth:300px"  id="imgView">
                 </div>
                 <div class="form-group row" align="right">
                 <div class="col-sm-6 marginAuto" >
@@ -363,5 +373,59 @@
     	
     	
     });
+    
+    $('#img').change(function(e){
+    	$('#imgView').css('display','none');
+    	
+    	var files = e.target.files;
+        var arr =Array.prototype.slice.call(files);
+        
+        //업로드 가능 파일인지 체크
+        for(var i=0;i<files.length;i++){
+          if(!checkExtension(files[i].name,files[i].size)){
+            return false;
+          }
+        }
+        
+        preview(arr);
+    });
+    
+    function checkExtension(fileName,fileSize){
+
+        var regex = new RegExp("(.*?)\.(png|jpg|jpeg)$");
+        var maxSize = 20971520;  //20MB
+        
+        if(fileSize >= maxSize){
+          alert('파일 사이즈 초과');
+          $("input[type='file']").val("");  //파일 초기화
+          return false;
+        }
+        
+        if(!regex.test(fileName)){
+          alert('png, jpg, jpeg 파일만 업로드 가능합니다.');
+          $("input[type='file']").val("");  //파일 초기화
+          return false;
+        }
+        return true;
+      }
+      
+      function preview(arr){
+        arr.forEach(function(f){
+          //이미지 파일 미리보기
+          if(f.type.match('image.*')){
+            var reader = new FileReader(); //파일을 읽기 위한 FileReader객체 생성
+            reader.onload = function (e) { //파일 읽어들이기를 성공했을때 호출되는 이벤트 핸들러
+              //str += '<button type="button" class="delBtn" value="'+f.name+'" style="background: red">x</button><br>';
+              var html = '<img src="'+e.target.result+'" title="'+f.name+'" width=200 height=200 />';
+              $('#imgView').html(html);
+			  $('#imgView').css('display','');
+            } 
+            reader.readAsDataURL(f);
+          }else{
+           	alert('업로드 불가능한 이미지');
+          }
+        });//arr.forEach
+      }
+    
   </script>
 </body>

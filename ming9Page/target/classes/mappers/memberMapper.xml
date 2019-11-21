@@ -6,7 +6,7 @@
 	<select id="login" resultType="boolean">
 		<![CDATA[
 		SELECT count(*)
-		FROM tbl_member
+		FROM T_MEMBER
 		where user_id=#{userId} and passwd=#{passwd}
 		]]> 
 	</select>
@@ -14,16 +14,21 @@
 	<select id="idCheck" resultType="int">
 		<![CDATA[
 		SELECT count(*)
-		FROM tbl_member
+		FROM T_MEMBER
 		WHERE user_id = #{userId}
 		]]>
 	</select>
 	
 	<insert id="signUp">
 		<![CDATA[
-		INSERT INTO tbl_member(user_id,passwd,name,nick_name,sex,birthday,phon_number,email)
-		VALUES (#{userId},#{passwd},#{name},#{nickName},#{sex},#{birthday},#{phonNumber},#{email});
+		INSERT INTO T_MEMBER(user_id,passwd)
+		VALUES (#{userId},#{passwd});
 		]]>
+	</insert>
+	
+	<insert id="signUp2">
+		INSERT INTO T_MEMBER(usr_idx,name,nick_name,phon_number,email,last_login)
+		VALUES (select usr_idx from T_member where(user_id=#{user_id}),#{name},#{nickName},#{phonNumber},#{email},now());
 	</insert>
 
 </mapper>

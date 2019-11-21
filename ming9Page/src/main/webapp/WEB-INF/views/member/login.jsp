@@ -61,12 +61,13 @@
 	          document.getElementById('name').innerText = "Signed in: " +
 	              googleUser.getBasicProfile().getName();
 	        }, function(error) {
-	          alert(JSON.stringify(error, undefined, 2));
+	          console.log(JSON.stringify(error, undefined, 2));
 	        });
 	  }
   </script>
   <style type="text/css">
     #customBtn {
+      text-align: center;
       display: inline-block;
       background: white;
       color: #444;
@@ -85,7 +86,7 @@
       font-weight: normal;
     }
     span.icon {
-      background: url('/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
+      background: url('${pageContext.request.contextPath}/resources/img/googleImg.png') transparent 5px 50% no-repeat;
       display: inline-block;
       vertical-align: middle;
       width: 42px;
