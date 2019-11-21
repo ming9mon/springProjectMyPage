@@ -31,5 +31,9 @@ public class MemberDAO {
 		System.out.println("====> 다오 회원가입");
 		return session.insert("memberMapper.signUp",dto);
 	}
+
+	public int signUp2(MemberDTO dto) {
+		return session.insert("memberMapper.signUp2",dto);
+	}
 	
 }

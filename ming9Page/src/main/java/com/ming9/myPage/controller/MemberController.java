@@ -51,25 +51,7 @@ public class MemberController {
 	@RequestMapping(value="/member/signUp.do", method=RequestMethod.POST)
 	public String signUp(MemberDTO dto,RedirectAttributes rttr){
 
-		int result = 0;
-		
-		try {
-			MultipartFile uploadFile = dto.getImg(); 
-			if (!uploadFile.isEmpty()) {
-				String originalFileName = uploadFile.getOriginalFilename();
-				String ext = FilenameUtils.getExtension(originalFileName);	//확장자 구하기
-				UUID uuid = UUID.randomUUID();	//UUID 구하기
-				String fileName=uuid+"."+ext;
-				uploadFile.transferTo(new File("D:\\upload\\" + fileName));
-	
-				dto.setImgName(fileName);
-			}
-			
-			result = service.signUp(dto);
-		}catch(Exception e) {
-			System.out.println(e.getStackTrace());
-			rttr.addFlashAttribute("result","실패");
-		}
+		int result = service.signUp(dto);
 		
 		if(result > 0) {
 			rttr.addFlashAttribute("result","성공");

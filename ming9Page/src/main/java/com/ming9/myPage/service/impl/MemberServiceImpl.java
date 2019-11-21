@@ -1,9 +1,15 @@
 package com.ming9.myPage.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ming9.myPage.dao.MemberDAO;
 import com.ming9.myPage.domain.MemberDTO;
@@ -41,7 +47,24 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int signUp(MemberDTO dto) {
-		return dao.signUp(dto);
+
+		try {
+			MultipartFile uploadFile = dto.getImg(); 
+			if (!uploadFile.isEmpty()) {
+				String originalFileName = uploadFile.getOriginalFilename();
+				String ext = FilenameUtils.getExtension(originalFileName);	//확장자 구하기
+				UUID uuid = UUID.randomUUID();	//UUID 구하기
+				String fileName=uuid+"."+ext;
+					uploadFile.transferTo(new File("D:\\upload\\" + fileName));
+				
+	
+				dto.setImgName(fileName);
+			}
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		dao.signUp(dto);
+		return dao.signUp2(dto);
 	}
 
 }

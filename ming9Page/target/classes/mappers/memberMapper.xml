@@ -27,8 +27,8 @@
 	</insert>
 	
 	<insert id="signUp2">
-		INSERT INTO T_MEMBER(usr_idx,name,nick_name,phon_number,email,last_login)
-		VALUES (select usr_idx from T_member where(user_id=#{user_id}),#{name},#{nickName},#{phonNumber},#{email},now());
+		INSERT INTO T_MEMBER_DETAIL(usr_idx,name,nick_name,phon_number,email,img_name,last_login,JOIN_INFO)
+		VALUES ((select usr_idx from T_member where(user_id=#{userId})),#{name},#{nickName},#{phonNumber},#{email},#{imgName},now(),'l');
 	</insert>
 
 </mapper>
