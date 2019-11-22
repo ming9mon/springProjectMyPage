@@ -51,6 +51,7 @@ public class MemberController {
 	@RequestMapping(value="/member/signUp.do", method=RequestMethod.POST)
 	public String signUp(MemberDTO dto,RedirectAttributes rttr){
 
+		dto.setJoinInfo("l");
 		int result = service.signUp(dto);
 		
 		if(result > 0) {
@@ -66,6 +67,13 @@ public class MemberController {
 	@RequestMapping(value="/member/loginCheck.do", method=RequestMethod.POST)
 	@ResponseBody
 	public boolean loginCheck(MemberDTO dto,HttpSession session) {
+
+		if(dto.getJoinInfo().equals("g")) {
+			System.out.println(dto.getUserId());
+
+			return false;	
+		}
+		
 		
 		boolean result = service.login(dto,session);
 		

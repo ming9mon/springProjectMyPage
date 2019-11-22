@@ -11,7 +11,7 @@
 	<meta name = "google-signin-client_id"content = "161980541304-kii6sqj3rsk46pei121ag4b20i2ro46p.apps.googleusercontent.com">
 	
 
-	<title>SB Admin 2 - Login</title>
+	<title>ming9</title>
 
 	<!-- Custom fonts for this template-->
 	<link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -55,11 +55,27 @@
 	  };
 	
 	  function attachSignin(element) {
-	    console.log(element.id);
 	    auth2.attachClickHandler(element, {},
 	        function(googleUser) {
-	          document.getElementById('name').innerText = "Signed in: " +
-	              googleUser.getBasicProfile().getName();
+	    		var id_token = googleUser.getAuthResponse().id_token;
+	    		
+	    		$.ajax({
+	    			url: "${pageContext.request.contextPath}/member/loginCheck.do",
+	    			data: {
+	    					joinInfo:"g",
+	    					userId:id_token
+	    				},
+	    			type: "POST",
+	    			success: function(rst){
+	    				if(rst){
+	    					location.href="${pageconText.request.ContextPath}/";
+	    				}else{
+	    					alert("구글 로그인 실패");
+	    				}
+	    			},error: function(){
+	    				alert("구글 로그인 실패");
+	    			}
+	    		});
 	        }, function(error) {
 	          console.log(JSON.stringify(error, undefined, 2));
 	        });
@@ -123,6 +139,7 @@
 										<h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
 									</div>
 									<form class="user" id="loginFrm" action="/member/loginCheck" method="post">
+										<input type="hidden" id="joinInfo" name="joinInfo" value="l"/>
 										<div class="form-group">
 											<input type="text" class="form-control form-control-user" id="userId" name="userId" aria-describedby="emailHelp" placeholder="아이디 ">
 										</div>
@@ -156,9 +173,9 @@
 										      <span class="buttonText">Google Login</span>
 										    </div>
 										</div>
-										<a href="#" class="btn btn-facebook btn-user btn-block">
+										<!-- <a href="#" class="btn btn-facebook btn-user btn-block">
 											<i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-										</a>
+										</a> -->
 									</form>
 									<hr>
 									<div class="text-center">
@@ -228,7 +245,6 @@ function nullCheck(frm,size){
 
 $('#login').click(function(e){
 	fn_login();
-	
 });
 
 function fn_login(){

@@ -33,9 +33,6 @@
     <!-- selectBox CSS -->
     <link href="/resources/css/selectbox.css" rel="stylesheet">
 	
-	<!-- 구글 차트 -->
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	
 	<!-- jQuery -->
 	<script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
 
@@ -138,13 +135,6 @@
 
 	<!-- Custom scripts for all pages-->
 	<script src="/resources/js/sb-admin-2.min.js"></script>
-
-	<!-- Page level plugins -->
-	<script src="/resources/vendor/chart.js/Chart.min.js"></script>
-
-	<!-- Page level custom scripts -->
-	<script src="/resources/js/demo/chart-area-demo.js"></script>
-	<script src="/resources/js/demo/chart-pie-demo.js"></script>
 
 	<script>
 		$(document).ready(function(){

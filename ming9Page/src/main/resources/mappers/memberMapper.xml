@@ -7,8 +7,13 @@
 		<![CDATA[
 		SELECT count(*)
 		FROM T_MEMBER
-		where user_id=#{userId} and passwd=#{passwd}
-		]]> 
+		where user_id=#{userId}
+		and join_info=#{joinInfo}
+		]]>
+		<if test="joinInfo eq 'l'.toString()">
+			and passwd=#{passwd}
+		</if>
+		
 	</select>
 	
 	<select id="idCheck" resultType="int">
@@ -21,14 +26,30 @@
 	
 	<insert id="signUp">
 		<![CDATA[
-		INSERT INTO T_MEMBER(user_id,passwd)
-		VALUES (#{userId},#{passwd});
+		INSERT INTO T_MEMBER(user_id,passwd,join_info)
+		VALUES (#{userId},#{passwd},#{joinInfo});
 		]]>
 	</insert>
 	
 	<insert id="signUp2">
-		INSERT INTO T_MEMBER_DETAIL(usr_idx,name,nick_name,phon_number,email,img_name,last_login,JOIN_INFO)
-		VALUES ((select usr_idx from T_member where(user_id=#{userId})),#{name},#{nickName},#{phonNumber},#{email},#{imgName},now(),'l');
+		INSERT INTO T_MEMBER_DETAIL(
+										usr_idx,
+										name,
+										nick_name,
+										phon_number,
+										email,
+										img_name,
+										last_login
+									)
+		VALUES (
+					(select usr_idx from T_MEMBER where(user_id=#{userId})),
+					#{name},
+					#{nickName},
+					#{phonNumber},
+					#{email},
+					#{imgName},
+					now()
+				);
 	</insert>
 
 </mapper>

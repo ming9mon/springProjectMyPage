@@ -48,6 +48,8 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int signUp(MemberDTO dto) {
 
+		int rst=1;
+		
 		try {
 			MultipartFile uploadFile = dto.getImg(); 
 			if (!uploadFile.isEmpty()) {
@@ -63,8 +65,10 @@ public class MemberServiceImpl implements MemberService {
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
-		dao.signUp(dto);
-		return dao.signUp2(dto);
+		rst *= dao.signUp(dto);
+		rst *= dao.signUp2(dto);
+				
+		return rst;
 	}
 
 }

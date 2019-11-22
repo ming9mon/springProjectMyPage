@@ -14,7 +14,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>밍구몬</title>
+  <title>ming9</title>
 
 	
   <!-- 부트스트랩 -->
@@ -119,30 +119,6 @@
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px">
-                    <b>성별 * </b>
-                  </div>
-                  <div class="col-sm-6">
-                    <select class="selectpicker" id="sex" name="sex">
-                      <option value="" selected>-- 선택 --</option> 
-                        <option value="m">남성</option>
-                        <option value="f">여성</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group msgMargin" style="display:none"  id="sex_msg">
-                </div>
-                <div class="form-group row ">
-                  <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px">
-                    <b>생년월일 * </b>
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="birthday" name="birthday" placeholder="생년월일 ex)19990215">
-                  </div>
-                </div>
-                <div class="form-group msgMargin" style="display:none"  id="birthday_msg">
-                </div>
-                <div class="form-group row">
-                  <div class="col-sm-2 mb-3 mb-sm-0" align="center" style="margin-top: 12px">
                     <b>휴대폰 번호 * </b>
                   </div>
                   <div class="col-sm-6">
@@ -219,7 +195,6 @@
     var nameCheck = RegExp(/^[가-힣]{2,6}$/);
     var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9]{2,10}$/);
   	var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-  	var birthdayCheck = RegExp(/^(19|20)[0-9]{2}(0[1-9]|1[1-2])(0[1-9]|[1-2][0-9]|3[0-1])$/);
   	var phonNumberCheck = RegExp(/^01[0179][0-9]{7,8}$/);
 
   
@@ -272,7 +247,7 @@
         	}
         	
         	//다시 유효성 검사
-        	var dataArr = ["userId","passwd","name","nickName","birthday","phonNumber","email"];
+        	var dataArr = ["userId","passwd","name","nickName","phonNumber","email"];
         	for(var i=0;i<dataArr.length;i++){
         		validityCheck(dataArr[i],"올바르게 입력해 주세요.");
         		if(check==false){
