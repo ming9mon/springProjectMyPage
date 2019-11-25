@@ -23,7 +23,7 @@
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
           <c:choose>
-			<c:when test="${empty sessionScope.userId }">
+			<c:when test="${empty sessionScope.userInfo }">
 				<li>
 				<button class="btn btn-default" id="login">로그인</button>
 				</li>
@@ -161,7 +161,7 @@
             <!-- 사용자 정보 -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.userId}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.userInfo.userId}</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - 우저정보 드랍 다운 -->

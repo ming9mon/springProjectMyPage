@@ -511,8 +511,10 @@ public class WeatherServiceImpl implements WeatherService {
 					
 					int apiHour = apiTime[i]/100;
 					
-					if(i==0)
+					if(i==0) {
+						date.setDate(date.getDate()-1);
 						date.setHours(23);
+					}
 					else
 						date.setHours(apiHour-3);
 					

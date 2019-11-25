@@ -18,4 +18,7 @@ public interface MemberService {
 	//회원가입
 	public int signUp(MemberDTO dto);
 	
+	//구글 로그인
+	public String googleLogin(String param,HttpSession session);
+	
 }

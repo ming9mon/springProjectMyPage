@@ -20,6 +20,11 @@ public class MemberDAO {
 		return result;
 	}
 	
+	//유저 정보
+	public MemberDTO getUserInfo(MemberDTO dto) {
+		return session.selectOne("memberMapper.getUserInfo", dto);
+	}
+	
 	//아이디 중복 체크
 	public int idCheck(String userId) {
 		System.out.println("====> 다오 아이디 체크");

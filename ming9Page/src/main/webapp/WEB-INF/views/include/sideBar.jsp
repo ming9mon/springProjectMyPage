@@ -20,7 +20,7 @@
         <div class="sidebar-brand-text mx-3">밍구 페이지 <!-- <sup>2</sup> --></div>
       </a>
 		
-		<c:if test="${ sessionScope.userId eq 'koo50215' }">
+		<c:if test="${ sessionScope.userInfo.userId eq 'koo50215' }">
 	      <!-- Divider -->
 	      <hr class="sidebar-divider my-0">
 	      

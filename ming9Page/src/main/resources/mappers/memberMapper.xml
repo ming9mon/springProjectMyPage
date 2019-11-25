@@ -16,6 +16,21 @@
 		
 	</select>
 	
+	<select id="getUserInfo" resultType="MemberDTO">
+		<![CDATA[
+		SELECT 	A.USER_ID
+				,A.JOIN_INFO
+				,B.NAME
+				,B.NICK_NAME
+				,B.EMAIL
+				,B.IMG_NAME
+				,B.RATING
+		FROM T_MEMBER A JOIN T_MEMBER_DETAIL B
+		ON A.USR_IDX = B.USR_IDX
+		WHERE A.USER_ID = #{userId}
+		]]>
+	</select>
+	
 	<select id="idCheck" resultType="int">
 		<![CDATA[
 		SELECT count(*)

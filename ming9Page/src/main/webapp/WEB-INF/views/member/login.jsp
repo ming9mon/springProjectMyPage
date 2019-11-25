@@ -45,7 +45,8 @@
 	    gapi.load('auth2', function(){
 	      // Retrieve the singleton for the GoogleAuth library and set up the client.
 	      auth2 = gapi.auth2.init({
-	        client_id: '161980541304-kii6sqj3rsk46pei121ag4b20i2ro46p.apps.googleusercontent.com',
+	    	//client_id: '20162406799-n360shn0au1cqalnrppr4cdkm3lt8lkf.apps.googleusercontent.com',	//로컬용
+	    	client_id: '131755993986-98lb6vl38c23oj9ofrej584o17amfqe6.apps.googleusercontent.com',	//운영서버용
 	        cookiepolicy: 'single_host_origin',
 	        // Request scopes in addition to 'profile' and 'email'
 	        //scope: 'additional_scope'
@@ -59,23 +60,17 @@
 	        function(googleUser) {
 	    		var id_token = googleUser.getAuthResponse().id_token;
 	    		
-	    		$.ajax({
-	    			url: "${pageContext.request.contextPath}/member/loginCheck.do",
-	    			data: {
-	    					joinInfo:"g",
-	    					userId:id_token
-	    				},
-	    			type: "POST",
-	    			success: function(rst){
-	    				if(rst){
-	    					location.href="${pageconText.request.ContextPath}/";
-	    				}else{
-	    					alert("구글 로그인 실패");
-	    				}
-	    			},error: function(){
-	    				alert("구글 로그인 실패");
-	    			}
-	    		});
+	    		var xhr = new XMLHttpRequest();
+	    		xhr.open('POST', '${pageContext.request.contextPath}/member/googleLogin.do');
+	    		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	    		xhr.onload = function() {
+	    		  if(xhr.responseText == "success")
+	    			  location.href="/";
+	    		  else
+	    			  alert("로그인 실패");
+	    		};
+	    		xhr.send('idtoken=' + id_token);
+	    		
 	        }, function(error) {
 	          console.log(JSON.stringify(error, undefined, 2));
 	        });
@@ -281,7 +276,6 @@ $('#signUp').click(function(){
 		modalCheck(result);
 		
 		function modalCheck(result){
-			console.log(result);
 			if(result == ""){
 				return;
 			}else{

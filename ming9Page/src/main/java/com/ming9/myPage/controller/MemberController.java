@@ -1,6 +1,7 @@
 package com.ming9.myPage.controller;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +11,14 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import com.ming9.myPage.domain.MemberDTO;
 import com.ming9.myPage.service.MemberService;
@@ -67,15 +71,18 @@ public class MemberController {
 	@RequestMapping(value="/member/loginCheck.do", method=RequestMethod.POST)
 	@ResponseBody
 	public boolean loginCheck(MemberDTO dto,HttpSession session) {
-
-		if(dto.getJoinInfo().equals("g")) {
-			System.out.println(dto.getUserId());
-
-			return false;	
-		}
-		
 		
 		boolean result = service.login(dto,session);
+		
+		return result;
+	}
+	
+	//구글 로그인 기능
+	@PostMapping(value="/member/googleLogin.do", produces="application/x-www-form-urlencoded")
+	@ResponseBody
+	public String googleLogin(@RequestBody String param,HttpSession session) {
+		
+		String result = service.googleLogin(param,session);
 		
 		return result;
 	}
@@ -85,6 +92,13 @@ public class MemberController {
 	public String logout(HttpSession session) {
 		service.logout(session);
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/googleaf8320255736c909.html")
+	@ResponseBody
+	public String test() {
+		
+		return "google-site-verification: googleaf8320255736c909.html";
 	}
 	
 	

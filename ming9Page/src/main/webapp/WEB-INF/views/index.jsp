@@ -36,7 +36,8 @@
 	<!-- jQuery -->
 	<script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
 
-
+	<!-- 구글 웹 마스터 인증-->
+	<meta name="google-site-verification" content="16ivVcSesmoxpczP-yZp4F9goKHqERabnOb-5xfHTDs" />
 </head>
 <body id="page-top">
 
