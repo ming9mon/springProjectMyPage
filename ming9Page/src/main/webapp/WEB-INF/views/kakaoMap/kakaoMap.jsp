@@ -548,6 +548,9 @@ kakao.maps.event.addListener(map, 'zoom_changed', function() {
 $('#cctv').click(function(){
 	infowindow.close();
 	
+	$('#cctv').removeClass('on');
+	$('#search').removeClass('on');
+	
 	if(cctvOnOff == 'off'){
 		cctvOnOff = 'on';
 		searchOnOff='off'
@@ -560,9 +563,6 @@ $('#cctv').click(function(){
 	}else{
 		cctvOnOff='off'
 		
-		$('#cctv').removeClass('on');
-		$('#search').removeClass('on');
-		
 		infowindow.close();
 		setMarkers(null);	//마커 삭제
 	}
@@ -572,6 +572,9 @@ $('#cctv').click(function(){
 $('#search').click(function(){
 	infowindow.close();
 	
+	$('#cctv').removeClass('on');
+	$('#search').removeClass('on');
+	
 	if(searchOnOff == 'off'){
 		searchOnOff = 'on';
 		cctvOnOff='off'
@@ -580,9 +583,11 @@ $('#search').click(function(){
 		
 		$('#menu_wrap').css('display','');
 	}else{
-		searchOnOff='off'
 		$('#cctv').removeClass('on');
 		$('#search').removeClass('on');
+		
+		searchOnOff='off'
+		
 		infowindow.close();
 		setMarkers(null);	//마커 삭제
 		

@@ -18,11 +18,10 @@
 	
 	<select id="getUserInfo" resultType="MemberDTO">
 		<![CDATA[
-		SELECT 	A.USER_ID
+		SELECT 	A.USR_IDX
+				,A.USER_ID
 				,A.JOIN_INFO
-				,B.NAME
 				,B.NICK_NAME
-				,B.EMAIL
 				,B.IMG_NAME
 				,B.RATING
 		FROM T_MEMBER A JOIN T_MEMBER_DETAIL B
@@ -54,7 +53,7 @@
 										phon_number,
 										email,
 										img_name,
-										last_login
+										INST_DATE
 									)
 		VALUES (
 					(select usr_idx from T_MEMBER where(user_id=#{userId})),
@@ -65,6 +64,10 @@
 					#{imgName},
 					now()
 				);
+	</insert>
+	
+	<insert id="insertLoginHis" parameterType="int">
+		INSERT INTO T_LOGIN_HIS VALUES(#{usrIdx},now())
 	</insert>
 
 </mapper>

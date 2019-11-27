@@ -1,45 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <head>
-    	<link rel="stylesheet" href="/resources/css/sideBar.css">
-    </head>
+	pageEncoding="UTF-8"%>
+<head>
+<link rel="stylesheet" href="/resources/css/sideBar.css">
+</head>
 <%
 	response.setHeader("Cache-Control", "no-store");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
 	
-%>    
-    
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+%>
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">밍구 페이지 <!-- <sup>2</sup> --></div>
-      </a>
-		
-		<c:if test="${ sessionScope.userInfo.userId eq 'koo50215' }">
-	      <!-- Divider -->
-	      <hr class="sidebar-divider my-0">
-	      
-	      <!-- Nav Item - Dashboard -->
-	      <li class="nav-item active">
-	        <a class="nav-link" href="${pageContext.request.contextPath }/management.do">
-	          <i class="fas fa-fw fa-tachometer-alt"></i>
-	          <span>관리</span></a>
-	      </li>
-		</c:if>
+<ul
+	class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled"
+	id="accordionSidebar">
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+	<!-- Sidebar - Brand -->
+	<a
+		class="sidebar-brand d-flex align-items-center justify-content-center"
+		href="/">
+		<div class="sidebar-brand-icon rotate-n-15">
+			<i class="fas fa-laugh-wink"></i>
+		</div>
+		<div class="sidebar-brand-text mx-3">
+			밍구 페이지
+			<!-- <sup>2</sup> -->
+		</div>
+	</a>
 
-      <!-- Heading -->
-      <div class="sidebar-heading">개발</div>
+	<c:if test="${ sessionScope.userId eq 'koo50215' }">
+		<!-- Divider -->
+		<hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <!-- <li class="nav-item">
+		<!-- Nav Item - Dashboard -->
+		<li class="nav-item active"><a class="nav-link"
+			href="${pageContext.request.contextPath }/management.do"> <i
+				class="fas fa-fw fa-tachometer-alt"></i> <span>관리</span></a></li>
+	</c:if>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">개발</div>
+
+	<!-- Nav Item - Pages Collapse Menu -->
+	<!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
           <span>Components</span>
@@ -53,32 +58,29 @@
         </div>
       </li> -->
 
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>카카오</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">카카오 API</h6>
-            <a class="collapse-item" href="/kakao/kakaoMap.do">카카오맵</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
-          </div>
-        </div>
-      </li>
-      
-      <li class="nav-item">
-        <a class="nav-link" href="/weather.do">
-          <i class="fas fa-fw fa-table"></i>
-          <span>날씨</span></a>
-      </li>
+	<!-- Nav Item - Utilities Collapse Menu -->
+	<li class="nav-item"><a class="nav-link collapsed" href="#"
+		data-toggle="collapse" data-target="#collapseUtilities"
+		aria-expanded="true" aria-controls="collapseUtilities"> <i
+			class="fas fa-fw fa-wrench"></i> <span>카카오</span>
+	</a>
+		<div id="collapseUtilities" class="collapse"
+			aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<h6 class="collapse-header">카카오 API</h6>
+				<a class="collapse-item" href="/kakao/kakaoMap.do">카카오맵</a> <a
+					class="collapse-item" href="utilities-border.html">Borders</a> <a
+					class="collapse-item" href="utilities-animation.html">Animations</a>
+				<a class="collapse-item" href="utilities-other.html">Other</a>
+			</div>
+		</div></li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-<!-- 
+	<li class="nav-item"><a class="nav-link" href="/weather.do"> <i class="fas fa-fw fa-table"></i> <span>날씨</span></a></li>
+
+	<li class="nav-item"><a class="nav-link" href="/boardList.do"> <i class="fas fa-fw fa-folder"></i> <span>게시판</span></a></li>
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+	<!-- 
       Heading
       <div class="sidebar-heading">
         	인화
@@ -121,9 +123,9 @@
       Divider
       <hr class="sidebar-divider d-none d-md-block">
  -->
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
+	<!-- Sidebar Toggler (Sidebar) -->
+	<div class="text-center d-none d-md-inline">
+		<button class="rounded-circle border-0" id="sidebarToggle"></button>
+	</div>
 
-    </ul>
+</ul>

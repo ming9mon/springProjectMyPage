@@ -33,15 +33,13 @@
 
 <!-- Custom styles for this template-->
 <link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
-<!-- selectBox CSS -->
-<link href="/resources/css/selectbox.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
 
-<!-- 구글 웹 마스터 인증-->
-<meta name="google-site-verification"
-	content="16ivVcSesmoxpczP-yZp4F9goKHqERabnOb-5xfHTDs" />
+<!-- Common JS -->
+<script src="/resources/js/common.js"></script>
+
 </head>
 <body id="page-top">
 
@@ -65,61 +63,36 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-					<!-- 날씨 -->
-					<div class="row">
-						<div class="col-lg-4 mb-4">
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div
-									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">
-										<a href="#" id="weather">날씨</a>
-									</h6>
-								</div>
-								<!-- Card Body -->
-								<div class="card-body">
-									<div class="chart-pie pt-4 pb-2">
-										<img
-											src="${pageContext.request.contextPath}/resources/img/mainImg/weatherM.png"
-											width="100%" height="100%">
-									</div>
-								</div>
+
+					<!-- DataTales Example -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">게시판</h6>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dataTable" width="100%"
+									cellspacing="0">
+									<colgroup>
+										<col style="width: 25%;">
+										<col style="width: 50%;">
+										<col style="width: 25%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th style="min-width: 240px;">닉네임</th>
+											<th style="min-width: 300px;">제목</th>
+											<th style="min-width: 240px;">작성일</th>
+										</tr>
+									</thead>
+
+									<tbody>
+									</tbody>
+								</table>
 							</div>
 						</div>
-						<div class="col-lg-4 mb-4">
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div
-									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">
-										<a href="#" id="kakaoMap">카카오맵</a>
-									</h6>
-								</div>
-								<!-- Card Body -->
-								<div class="card-body">
-									<div class="chart-pie pt-4 pb-2">
-										<img
-											src="${pageContext.request.contextPath}/resources/img/mainImg/kakaoMapM.png"
-											width="100%" height="100%">
-									</div>
-								</div>
-							</div>
-						</div>
-						<%-- <div class="col-lg-4 mb-4">
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-								</div>
-								<!-- Card Body -->
-								<div class="card-body">
-									<div class="chart-pie pt-4 pb-2">
-										<img src="${pageContext.request.contextPath}/resources/img/mainImg/weatherM.png" width="100%" height="100%">
-									</div>
-								</div>
-							</div>
-						</div> --%>
 					</div>
+
 				</div>
 				<!-- /.container-fluid -->
 
@@ -152,16 +125,50 @@
 	<script src="/resources/js/sb-admin-2.min.js"></script>
 
 	<script>
+		var pageNo = 1;
+
+		getBoardList();
+
+		function getBoardList() {
+			$.get({
+				url : '${pageContext.request.contextPath}/getBoardList.do',
+				success : function(rst) {
+					$('#dataTable tbody').html('<tr><td colspan="3">등록된 글이 없습니다.</td></tr>');
+
+					if(rst.RTNCD == 0){
+						var data = rst.RST;
+						setTbl(data);
+					}
+				},
+				error : function(e) {
+					alert("getBoardList ERROR");
+				}
+			});
+		}
+		
+		//테이블 세팅
+		function setTbl(data){
+			if(data.length > 0){
+				$('#dataTable tbody').empty();
+				
+				for(var i=0;i<data.length;i++){
+					var nickName = data[i].nickName;
+					var title = data[i].title;
+					var date = new Date(data[i].writeDte);
+					
+					var html = "<tr>";
+					html += "<td>"+nickName+"</td>";
+					html += "<td>"+title+"</td>";
+					html += "<td>"+date.format("yyyy년 MM월 dd일 HH시 mm분")+"</td>";
+					html += "</tr>";
+					
+					$('#dataTable tbody').append(html);
+				}
+			}
+		}
+
 		$(document).ready(function() {
 
-		});
-
-		//페이지 이동 이벤트
-		$('#weather').click(function() {
-			location.href = "${pageContext.request.contextPath}/weather.do"
-		});
-		$('#kakaoMap').click(function() {
-			location.href = "${pageContext.request.contextPath}/kakao/kakaoMap.do"
 		});
 	</script>
 </body>

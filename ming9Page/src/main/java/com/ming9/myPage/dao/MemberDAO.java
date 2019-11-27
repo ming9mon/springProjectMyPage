@@ -1,8 +1,11 @@
 package com.ming9.myPage.dao;
 
+import java.sql.SQLDataException;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ming9.myPage.domain.MemberDTO;
 
@@ -32,13 +35,16 @@ public class MemberDAO {
 	}
 	
 	//회원가입
+	@Transactional
 	public int signUp(MemberDTO dto) {
 		System.out.println("====> 다오 회원가입");
-		return session.insert("memberMapper.signUp",dto);
+		int rst = session.insert("memberMapper.signUp",dto);
+		rst *= session.insert("memberMapper.signUp2",dto);
+		return rst;
 	}
 
-	public int signUp2(MemberDTO dto) {
-		return session.insert("memberMapper.signUp2",dto);
+	public void insertLoginInfo(int usrIdx) {
+		session.insert("memberMapper.insertLoginHis",usrIdx);
 	}
-	
+
 }

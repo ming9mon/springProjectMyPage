@@ -45,8 +45,8 @@
 	    gapi.load('auth2', function(){
 	      // Retrieve the singleton for the GoogleAuth library and set up the client.
 	      auth2 = gapi.auth2.init({
-	    	//client_id: '20162406799-n360shn0au1cqalnrppr4cdkm3lt8lkf.apps.googleusercontent.com',	//로컬용
-	    	client_id: '131755993986-98lb6vl38c23oj9ofrej584o17amfqe6.apps.googleusercontent.com',	//운영서버용
+	    	client_id: '131755993986-uuhe4blnhc3a46adeh4rq1ic5gl2g3l4.apps.googleusercontent.com',	//로컬용
+	    	//client_id: '131755993986-98lb6vl38c23oj9ofrej584o17amfqe6.apps.googleusercontent.com',	//운영서버용
 	        cookiepolicy: 'single_host_origin',
 	        // Request scopes in addition to 'profile' and 'email'
 	        //scope: 'additional_scope'

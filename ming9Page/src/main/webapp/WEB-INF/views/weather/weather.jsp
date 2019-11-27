@@ -356,7 +356,6 @@ function fn_setSelectBox(){
 function fn_setWeather(){
 	fn_getWeather("str");	//초단기 예보
 	fn_getWeather("tw");	//동네 예보
-	console.log(weather);
 	fn_drawChart();			//날씨 차트 그리기
 	fn_setTbl1();			//오늘 / 내일 / 모레 날씨 테이블 세팅
 }

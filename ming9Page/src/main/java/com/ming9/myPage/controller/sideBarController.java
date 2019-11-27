@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class sideBarController {
 
-	@RequestMapping(value="/weather.do")
+	@GetMapping(value="/weather.do")
 	public String weather() {
 		return "/weather/weather";
 	}
@@ -15,5 +15,10 @@ public class sideBarController {
 	@GetMapping(value="/kakao/kakaoMap.do")
 	public String kakaoMapView() {
 		return "/kakaoMap/kakaoMap";
+	}
+	
+	@GetMapping(value="/boardList.do")
+	public String boardList() {
+		return "/board/boardList";
 	}
 }

@@ -94,12 +94,5 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/googleaf8320255736c909.html")
-	@ResponseBody
-	public String test() {
-		
-		return "google-site-verification: googleaf8320255736c909.html";
-	}
-	
-	
+
 }

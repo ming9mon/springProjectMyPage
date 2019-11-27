@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ming9.myPage.dao.MemberDAO;
@@ -31,15 +32,22 @@ public class MemberServiceImpl implements MemberService {
 	MemberDAO dao;
 	
 	//로그인 기능
+	@Transactional
 	public boolean login(MemberDTO dto,HttpSession session) {
 		
 		boolean result=dao.login(dto);
 		
 		if(result) {
-			//true일경우 세션 변수 등록
-			//session.setAttribute("userId",dto.getUserId());
+			//true일경우 세션 변수 등록 및 로그인 정보 update 
 			dto = dao.getUserInfo(dto);
-			session.setAttribute("userInfo",dto);
+			session.setAttribute("userId",dto.getUserId());
+			session.setAttribute("usrIdx",dto.getUsrIdx());
+			session.setAttribute("nickName",dto.getNickName());
+			session.setAttribute("imgName",dto.getImgName());
+			session.setAttribute("rating",dto.getRating());
+			
+			int usrIdx = dto.getUsrIdx();
+			dao.insertLoginInfo(usrIdx);
 		}
 		
 		return result;
@@ -56,7 +64,8 @@ public class MemberServiceImpl implements MemberService {
 		return dao.idCheck(userId);
 	}
 
-	@Override
+	/* 회원가입  */
+	@Transactional
 	public int signUp(MemberDTO dto) {
 
 		int rst=1;
@@ -76,13 +85,13 @@ public class MemberServiceImpl implements MemberService {
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
-		rst *= dao.signUp(dto);
-		rst *= dao.signUp2(dto);
+		rst = dao.signUp(dto);
 				
 		return rst;
 	}
 
 	//구글 로그인
+	@Transactional
 	public String googleLogin(String param,HttpSession session) {
 		MemberDTO dto = new MemberDTO();
 		int rst = 1;
@@ -126,15 +135,21 @@ public class MemberServiceImpl implements MemberService {
 			
 			//회원인지 검사 회원이 아니면 회원가입
 			if(dao.idCheck(dto.getUserId()) == 0) {
-				rst *= dao.signUp(dto);
-				rst *= dao.signUp2(dto);
+				rst = dao.signUp(dto);
 			}
 			
-			dto = dao.getUserInfo(dto);
-			session.setAttribute("userInfo",dto);
-			
-			if (rst==1)
+			if (rst==1) {
+				dto = dao.getUserInfo(dto);
+				session.setAttribute("userId",dto.getUserId());
+				session.setAttribute("usrIdx",dto.getUsrIdx());
+				session.setAttribute("nickName",dto.getNickName());
+				session.setAttribute("imgName",dto.getImgName());
+				session.setAttribute("rating",dto.getRating());
+				
+				int usrIdx = dto.getUsrIdx();
+				dao.insertLoginInfo(usrIdx);
 				return "success";
+			}
 		}catch(Exception e) {
 			System.out.println(e);
 		}

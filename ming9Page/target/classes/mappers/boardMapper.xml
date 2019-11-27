@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardMapper">
+	<select id="selectBoardList" parameterType="String" resultType="BoardDTO">
+		SELECT B.NICK_NAME
+			,(CASE 
+					WHEN A.USR_IDX = #{usrIdx} THEN A.TITLE
+					WHEN A.USR_IDX = 1 THEN A.TITLE
+					WHEN SECRET = 'Y' THEN '비밀글 입니다'
+					ELSE A.TITLE
+					END
+			) AS TITLE
+			,A.WRITE_DTE
+		FROM T_BOARD A LEFT OUTER JOIN T_MEMBER_DETAIL B
+			ON A.USR_IDX = B.USR_IDX
+		ORDER BY A.B_IDX DESC
+	</select>
+</mapper>
