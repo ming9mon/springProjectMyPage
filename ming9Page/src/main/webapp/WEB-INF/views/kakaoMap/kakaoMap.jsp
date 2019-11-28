@@ -547,6 +547,8 @@ kakao.maps.event.addListener(map, 'zoom_changed', function() {
 //cctv 클릭 이벤트
 $('#cctv').click(function(){
 	infowindow.close();
+	setMarkers(null);	//마커 삭제
+	infowindow.close();
 	
 	$('#cctv').removeClass('on');
 	$('#search').removeClass('on');
@@ -562,14 +564,13 @@ $('#cctv').click(function(){
 		$('#menu_wrap').css('display','none');
 	}else{
 		cctvOnOff='off'
-		
-		infowindow.close();
-		setMarkers(null);	//마커 삭제
 	}
 });
 
 //검색 클릭 이벤트
 $('#search').click(function(){
+	infowindow.close();
+	setMarkers(null);	//마커 삭제
 	infowindow.close();
 	
 	$('#cctv').removeClass('on');
@@ -587,10 +588,6 @@ $('#search').click(function(){
 		$('#search').removeClass('on');
 		
 		searchOnOff='off'
-		
-		infowindow.close();
-		setMarkers(null);	//마커 삭제
-		
 		$('#menu_wrap').css('display','none');
 	}
 });

@@ -70,9 +70,32 @@
 							<h6 class="m-0 font-weight-bold text-primary">게시판</h6>
 						</div>
 						<div class="card-body">
-							<div class="table-responsive">
-								<table class="table table-bordered" id="dataTable" width="100%"
-									cellspacing="0">
+
+							<div class="container">
+								<div class="row">
+									<form style="width: 80%;"
+										class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+										<div class="input-group">
+											<input type="text"
+												class="form-control bg-light border-0 small"
+												placeholder="Search for..." aria-label="Search"
+												aria-describedby="basic-addon2">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button">
+													<i class="fas fa-search fa-sm"></i>
+												</button>
+											</div>
+										</div>
+									</form>
+									<a style="height: 40px;"
+										class="btn btn-secondary btn-icon-split" id="write" href="#"> <span
+										class="text">글 쓰기</span>
+									</a>
+								</div>
+							</div>
+
+							<div class="table-responsive" style="margin-top: 20px;">
+								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 									<colgroup>
 										<col style="width: 25%;">
 										<col style="width: 50%;">
@@ -89,6 +112,15 @@
 									<tbody>
 									</tbody>
 								</table>
+								<div class="row">
+									<div class="col-sm-12 col-md-7">
+										<div class="dataTables_paginate paging_simple_numbers"
+											id="dataTable_paginate">
+											<ul class="pagination" id="pagination">
+											</ul>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -126,6 +158,7 @@
 
 	<script>
 		var pageNo = 1;
+		var data;
 
 		getBoardList();
 
@@ -133,11 +166,9 @@
 			$.get({
 				url : '${pageContext.request.contextPath}/getBoardList.do',
 				success : function(rst) {
-					$('#dataTable tbody').html('<tr><td colspan="3">등록된 글이 없습니다.</td></tr>');
-
-					if(rst.RTNCD == 0){
-						var data = rst.RST;
-						setTbl(data);
+					if (rst.RTNCD == 0) {
+						data = rst.RST;
+						setTbl();
 					}
 				},
 				error : function(e) {
@@ -145,30 +176,107 @@
 				}
 			});
 		}
-		
+
 		//테이블 세팅
-		function setTbl(data){
-			if(data.length > 0){
-				$('#dataTable tbody').empty();
+		function setTbl() {
+			
+			
+			//이전 다음 버튼 생성
+			$("#pagination").empty();
+
+			var btnId = ['dataTable_previous','dataTable_next'];
+			var btnText = ['이전','다음'];
+			
+			for(var i=0;i<2;i++){
+				var html = '<li class="paginate_button page-item previous disabled" id="'+btnId[i]+'">';
+				html += '<a tabindex="0"class="page-link" aria-controls="dataTable" href="#">'+btnText[i]+'</a></li>';
 				
-				for(var i=0;i<data.length;i++){
+				$(html).appendTo("#pagination");
+			}
+				
+			if (data.length > 0) {
+				
+				if(pageNo < 1) pageNo=1;
+				else if(pageNo > Math.ceil(data.length/10)) {
+					pageNo = Math.ceil(data.length/10);
+				}
+				
+				$('#dataTable tbody').empty();
+
+				var start = pageNo - 1;
+				var end = start + 10;
+
+				if (end > data.length)
+					end = data.length;
+
+				for (var i = start; i < end; i++) {
 					var nickName = data[i].nickName;
 					var title = data[i].title;
 					var date = new Date(data[i].writeDte);
-					
+
 					var html = "<tr>";
-					html += "<td>"+nickName+"</td>";
-					html += "<td>"+title+"</td>";
-					html += "<td>"+date.format("yyyy년 MM월 dd일 HH시 mm분")+"</td>";
+					html += "<td>" + nickName + "</td>";
+					html += "<td>" + title + "</td>";
+					html += "<td>" + date.format("yyyy년 MM월 dd일 HH시 mm분")
+							+ "</td>";
 					html += "</tr>";
-					
+
 					$('#dataTable tbody').append(html);
 				}
+				
+				//하단 버튼 생성 및 설정
+				var btnStart = pageNo;
+				if(pageNo == 2) btnStart-=1;
+				else if(pageNo > 2) btnStart-=2;
+				
+				var btnEnd = pageNo+5;
+				
+				if(btnEnd > Math.ceil(data.length/10)) {
+					btnEnd = Math.ceil(data.length/10)+1; 
+				}
+
+				for(var i=btnStart;i<btnEnd;i++){
+					var html='<li class="paginate_button page-item" id="btn'+i+'">';
+					html += '<a tabindex="0" class="page-link" aria-controls="dataTable" href="#" data-dt-idx="'+i+'">';
+					html += i;
+					html += "</a></li>";
+					
+					$(html).insertBefore('#dataTable_next');
+				}
+				//바튼 active 설정
+				$('#btn'+pageNo).addClass('active');
+				
+				//이전 글이 없으면 disabled
+				if(pageNo == 1)	$('#dataTable_previous').addClass("disabled");
+				else $('#dataTable_previous').removeClass("disabled");
+				
+				//다음 글이 없으면 disabled
+				if(Math.ceil(data.length/10) <= pageNo) $('#dataTable_next').addClass("disabled");
+				else $('#dataTable_next').removeClass("disabled");
+				
+			} else {
+				$('#dataTable tbody').html(
+						'<tr><td colspan="3">등록된 글이 없습니다.</td></tr>');
 			}
 		}
+		
+		//page버튼 클릭 이벤트
+		$(document).on('click','.page-link',function(){
+			var text = $(this).text();
 
-		$(document).ready(function() {
-
+			if(text == '다음') pageNo+=5;
+			else if(text == '이전') pageNo-=5;
+			else pageNo=text;
+			
+			setTbl();
+		});
+		
+		$('#write').click(function(){
+			if('${sessionScope.usrIdx}' == '')	{
+				alert('로그인 후 이용 가능합니다.');
+				return;
+			}
+			location.href="/board/writeFrm.do";
 		});
 	</script>
 </body>

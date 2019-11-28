@@ -282,10 +282,7 @@ $(document).ready(function(){
 
 	fn_getDate();			//서버시간 받아오기
 	
-	
 	fn_setSelectBox();	//동네예보와 중기에보 selectBox 세팅
-	fn_setWeather();	//날씨 세팅
-	fn_setMidWeather();	//중기 날씨 세팅
 	
 	
 	if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
@@ -306,6 +303,9 @@ $(document).ready(function(){
 			maximumAge: 0
 		});
 	}
+	
+	fn_setWeather();	//날씨 세팅
+	fn_setMidWeather();	//중기 날씨 세팅
 	
 });
 
@@ -334,10 +334,10 @@ function displayCenterInfo(result, status) {
             		   $('#dong option:eq('+i+')').prop("selected",true);
 						break;
 					}
-				}
+				}/* 
                	wIdx++;
 				fn_setWeather();
-				fn_setMidWeather();	//중기 날씨 세팅
+				fn_setMidWeather();	//중기 날씨 세팅 */
                 break;
             }
         }

@@ -2,6 +2,8 @@ package com.ming9.myPage.board.service.impl;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,17 @@ public class BoardServiceImpl implements BoardService{
 		
 		rstObj.put("RTNCD", rtnCd);
 		return rstObj;
+	}
+
+	//글 쓰기
+	public boolean insertBoard(BoardDTO dto,HttpSession session) throws Exception {
+		//글쓴놈이 보낸 usrIdx랑 세션 usrIdx랑 같지 않으면 false 리턴
+		if(Integer.parseInt(session.getAttribute("usrIdx").toString()) != dto.getUsrIdx()) return false;
+		//널 값 체크
+		if(dto.getTitle() == null || dto.getContent() == null)
+			return false;
+		
+		return dao.insertBoard(dto);
 	}
 
 }

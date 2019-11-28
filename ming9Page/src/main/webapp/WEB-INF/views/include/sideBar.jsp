@@ -76,8 +76,8 @@
 		</div></li>
 
 	<li class="nav-item"><a class="nav-link" href="/weather.do"> <i class="fas fa-fw fa-table"></i> <span>날씨</span></a></li>
-
 	<li class="nav-item"><a class="nav-link" href="/boardList.do"> <i class="fas fa-fw fa-folder"></i> <span>게시판</span></a></li>
+	<li class="nav-item"><a class="nav-link" href="/blog.do"> <i class="fas fa-fw fa-tachometer-alt"></i> <span>블로그</span></a></li>
 	<!-- Divider -->
 	<hr class="sidebar-divider">
 	<!-- 

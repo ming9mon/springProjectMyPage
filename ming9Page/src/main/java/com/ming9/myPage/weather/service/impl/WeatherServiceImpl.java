@@ -44,7 +44,6 @@ public class WeatherServiceImpl implements WeatherService {
 		String result = br.readLine().toString();
 		br.close();
 		result = URLDecoder.decode(result, "UTF-8");
-		
 		return result;
 	}
 

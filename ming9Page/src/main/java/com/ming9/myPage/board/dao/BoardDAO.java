@@ -17,4 +17,9 @@ public class BoardDAO {
 	public List<BoardDTO> getBoardList(String usrIdx){
 		return sql.selectList("boardMapper.selectBoardList",usrIdx);
 	}
+	
+	public boolean insertBoard(BoardDTO dto) {
+		
+		return sql.insert("boardMapper.insertBoard",dto) == 1?true:false;
+	}
 }

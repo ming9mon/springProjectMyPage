@@ -77,8 +77,10 @@ public class MemberServiceImpl implements MemberService {
 				String ext = FilenameUtils.getExtension(originalFileName);	//확장자 구하기
 				UUID uuid = UUID.randomUUID();	//UUID 구하기
 				String fileName=uuid+"."+ext;
-					uploadFile.transferTo(new File("D:\\upload\\" + fileName));
-				
+				/* 로컬 */
+				uploadFile.transferTo(new File("D:\\upload\\" + fileName));
+				/* 운영서버 */
+				//uploadFile.transferTo(new File("/usr/local/server/tomcat9/webapps/img/" + fileName));
 	
 				dto.setImgName(fileName);
 			}

@@ -16,4 +16,9 @@
 			ON A.USR_IDX = B.USR_IDX
 		ORDER BY A.B_IDX DESC
 	</select>
+	
+	<insert id="insertBoard" parameterType="BoardDTO">
+		INSERT INTO T_BOARD(USR_IDX,WRITE_DTE,TITLE,CONTENT,SECRET)
+		VALUES(#{usrIdx},now(),#{title},#{content},#{secret});
+	</insert>
 </mapper>

@@ -21,4 +21,9 @@ public class sideBarController {
 	public String boardList() {
 		return "/board/boardList";
 	}
+	
+	@GetMapping(value="/blog.do")
+	public String blog() {
+		return "/blog";
+	}
 }
