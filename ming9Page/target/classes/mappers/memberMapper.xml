@@ -38,6 +38,15 @@
 		]]>
 	</select>
 	
+	
+	<select id="nickNmCheck" resultType="int">
+		<![CDATA[
+		SELECT count(*)
+		FROM T_MEMBER_DETAIL
+		WHERE nick_name = #{nickNm}
+		]]>
+	</select>
+	
 	<insert id="signUp">
 		<![CDATA[
 		INSERT INTO T_MEMBER(user_id,passwd,join_info)

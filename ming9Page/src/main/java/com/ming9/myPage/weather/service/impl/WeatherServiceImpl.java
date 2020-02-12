@@ -90,14 +90,14 @@ public class WeatherServiceImpl implements WeatherService {
 			
 			
 		String date = getBaseTime(0);
-		String apiUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData";
+		String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtFcst";
 		// 홈페이지에서 받은 키
 		String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
 		String nx = x;	//위도
 		String ny = y;	//경도
 		String baseDate = date.substring(0,8);	//조회하고싶은 날짜
 		String baseTime = date.substring(8);	//API 제공 시간
-		String type = "json";	//타입 xml, json 등등 ..
+		String dataType = "json";	//타입 xml, json 등등 ..
 		String numOfRows = "250";	//한 페이지 결과 수 
 
 		//동네예보 -- 전날 05시 부터 225개의 데이터를 조회하면 모레까지의 날씨를 알 수 있음
@@ -108,7 +108,7 @@ public class WeatherServiceImpl implements WeatherService {
 		urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8")); //위도
 		urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(baseDate, "UTF-8")); /* 조회하고싶은 날짜*/
 		urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8")); /* 조회하고싶은 시간 AM 02시부터 3시간 단위 */
-		urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode(type, "UTF-8"));	/* 타입 */
+		urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode(dataType, "UTF-8"));	/* 타입 */
 		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8"));	/* 한 페이지 결과 수 */
 		
 		/*
@@ -143,12 +143,8 @@ public class WeatherServiceImpl implements WeatherService {
 		JSONObject parse_body = (JSONObject) parse_response.get("body"); 
 		// body 로 부터 items 찾기 
 		JSONObject parse_items = (JSONObject) parse_body.get("items");
-
-		// items로 부터 itemlist 를 받기 
 		JSONArray parse_item = (JSONArray) parse_items.get("item");
-		
-		
-		
+
 		JSONObject jdata = new JSONObject();
 		JSONObject weather = new JSONObject();
 		Object category;
@@ -211,7 +207,7 @@ public class WeatherServiceImpl implements WeatherService {
 	public JSONArray getTownWeather(String x, String y) throws IOException, ParseException {
 		JSONArray jDataArr = new JSONArray();
 		
-		String apiUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData";
+		String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst";
 
 		String date = getBaseTime(1);
 		// 홈페이지에서 받은 키
@@ -220,7 +216,7 @@ public class WeatherServiceImpl implements WeatherService {
 		String ny = y;	//경도
 		String baseDate = date.substring(0,8);	//조회하고싶은 날짜
 		String baseTime = date.substring(8);	//API 제공 시간
-		String type = "json";	//타입 xml, json 등등 ..
+		String dataType = "json";	//타입 xml, json 등등 ..
 		String numOfRows = "250";	//한 페이지 결과 수 
 
 		//동네예보 -- 전날 05시 부터 225개의 데이터를 조회하면 모레까지의 날씨를 알 수 있음
@@ -231,7 +227,7 @@ public class WeatherServiceImpl implements WeatherService {
 		urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8")); //위도
 		urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(baseDate, "UTF-8")); /* 조회하고싶은 날짜*/
 		urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8")); /* 조회하고싶은 시간 AM 02시부터 3시간 단위 */
-		urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode(type, "UTF-8"));	/* 타입 */
+		urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode(dataType, "UTF-8"));	/* 타입 */
 		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8"));	/* 한 페이지 결과 수 */
 		
 		/*
@@ -266,11 +262,7 @@ public class WeatherServiceImpl implements WeatherService {
 		JSONObject parse_body = (JSONObject) parse_response.get("body"); 
 		// body 로 부터 items 찾기 
 		JSONObject parse_items = (JSONObject) parse_body.get("items");
-
-		// items로 부터 itemlist 를 받기 
 		JSONArray parse_item = (JSONArray) parse_items.get("item");
-		
-		
 		
 		JSONObject jdata = new JSONObject();
 		JSONObject weather = new JSONObject();
@@ -322,12 +314,12 @@ public class WeatherServiceImpl implements WeatherService {
 		String code = dao.getMidForecastCode(area);
 
 		String date = getBaseTime(2);
-		String apiUrl = "http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleLandWeather";
+		String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst";
 		String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
 		String regId = code;	//예보 구역 코드
 		String tmFc = date;	//발표시간 입력
 		String numOfRows = "1";	//한 페이지 결과 수
-		String type = "json";	//타입 xml, json 등등 ..
+		String dataType = "json";	//타입 xml, json 등등 ..
 		HashMap<String, String> sky = new HashMap<String, String>();
 		HashMap<String, String> pop = new HashMap<String, String>();
 		
@@ -338,7 +330,7 @@ public class WeatherServiceImpl implements WeatherService {
 			urlBuilder.append("&" + URLEncoder.encode("regId","UTF-8") + "=" + URLEncoder.encode(regId, "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("tmFc","UTF-8") + "=" + URLEncoder.encode(tmFc, "UTF-8")); /* 조회하고싶은 날짜*/
 			urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8")); /* 조회하고싶은 시간 AM 02시부터 3시간 단위 */
-			urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode(type, "UTF-8"));	/* 타입 */
+			urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode(dataType, "UTF-8"));	/* 타입 */
 			
 			/*
 			 * GET방식으로 전송해서 파라미터 받아오기
@@ -376,10 +368,9 @@ public class WeatherServiceImpl implements WeatherService {
 	 		JSONObject parse_body = (JSONObject) parse_response.get("body"); 
 	 		// body 로 부터 items 찾기 
 	 		JSONObject parse_items = (JSONObject) parse_body.get("items");
-	 		// items로 부터 itemlist 를 받기 
-	 		JSONObject parse_item = (JSONObject) parse_items.get("item");
+	 		JSONArray parse_item = (JSONArray) parse_items.get("item");
 	 		
-	 		return parse_item.toString();
+	 		return parse_item.get(0).toString();
 		}catch(Exception e){
 			return null;
 		}
@@ -402,13 +393,13 @@ public class WeatherServiceImpl implements WeatherService {
 		try{
 			JSONObject data = new JSONObject();
 			
-			String apiUrl = "http://newsky2.kma.go.kr/service/MiddleFrcstInfoService/getMiddleTemperature";
+			String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa";
 			// 홈페이지에서 받은 키
-			String serviceKey = "6MUIVBgd2vThGm4fD8UdlNSBYZMaxgajGkVLdTNEL5EEmdWVWa%2FgiZzc86PYhD1dR%2B%2B17Y4HoLMVlh4G%2F2BLpg%3D%3D";
+			String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
 			String regId = code;	//예보 구역 코드
 			String tmFc = date;	//발표시간 입력
 			String numOfRows = "1";	//한 페이지 결과 수
-			String type = "json";	//타입 xml, json 등등 ..
+			String dataType = "json";	//타입 xml, json 등등 ..
 			HashMap<String, String> sky = new HashMap<String, String>();
 			HashMap<String, String> pop = new HashMap<String, String>();
 			
@@ -417,7 +408,7 @@ public class WeatherServiceImpl implements WeatherService {
 			urlBuilder.append("&" + URLEncoder.encode("regId","UTF-8") + "=" + URLEncoder.encode(regId, "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("tmFc","UTF-8") + "=" + URLEncoder.encode(tmFc, "UTF-8")); /* 조회하고싶은 날짜*/
 			urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8")); /* 조회하고싶은 시간 AM 02시부터 3시간 단위 */
-			urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode(type, "UTF-8"));	/* 타입 */
+			urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode(dataType, "UTF-8"));	/* 타입 */
 			
 			/*
 			 * GET방식으로 전송해서 파라미터 받아오기
@@ -456,17 +447,17 @@ public class WeatherServiceImpl implements WeatherService {
 	 		// body 로 부터 items 찾기 
 	 		JSONObject parse_items = (JSONObject) parse_body.get("items");
 	 		// items로 부터 itemlist 를 받기 
-	 		JSONObject parse_item = (JSONObject) parse_items.get("item");
-	 		
-			//Object[] keyObj = parse_item.keySet().toArray();
+	 		JSONArray parse_item = (JSONArray) parse_items.get("item");
+	 		JSONObject item = (JSONObject) parse_item.get(0);
+
 			for(int j=3;j<=10;j++) {
-				data.put("max"+j, parse_item.get("taMax"+j));
-				data.put("min"+j, parse_item.get("taMin"+j));
+				data.put("max"+j, item.get("taMax"+j));
+				data.put("min"+j, item.get("taMin"+j));
 			}
 			
 			jrst.put("rst",data);
 		}catch(Exception e){
-			System.out.println("error");
+			System.out.println("getMidTermTPT error");
 		}
 		
 		return jrst.toString();

@@ -26,4 +26,9 @@ public class sideBarController {
 	public String blog() {
 		return "/blog";
 	}
+	
+	@GetMapping(value="/calendar.do")
+	public String calendar() {
+		return "/calendar/calendar";
+	}
 }

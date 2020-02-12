@@ -29,7 +29,7 @@
 	<!-- Topbar Navbar -->
 	<ul class="navbar-nav ml-auto">
 		<c:choose>
-			<c:when test="${empty sessionScope.userId }">
+			<c:when test="${empty sessionScope.loginDto }">
 				<li>
 					<button class="btn btn-default" id="login">로그인</button>
 				</li>
@@ -175,7 +175,7 @@
 					class="nav-link dropdown-toggle" href="#" id="userDropdown"
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> <span
-						class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.userId}</span>
+						class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.loginDto.userId}</span>
 						<img id="proImg" class="img-profile rounded-circle" src=""
 						onerror="this.src='${pageContext.request.contextPath }/resources/img/profile.jpg'">
 				</a> <!-- Dropdown - 우저정보 드랍 다운 -->
@@ -233,6 +233,6 @@
 			location.href = "/member/signUpPage.do"
 		});
 
-		$('#proImg').attr('src', '${sessionScope.imgName}');
+		$('#proImg').attr('src', '${sessionScope.loginDto.imgName}');
 	});
 </script>

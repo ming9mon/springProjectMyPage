@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ming9.myPage.board.dao.BoardDAO;
 import com.ming9.myPage.board.domain.BoardDTO;
 import com.ming9.myPage.board.service.BoardService;
+import com.ming9.myPage.util.utill;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -36,10 +37,11 @@ public class BoardServiceImpl implements BoardService{
 
 	//글 쓰기
 	public boolean insertBoard(BoardDTO dto,HttpSession session) throws Exception {
+		
 		//글쓴놈이 보낸 usrIdx랑 세션 usrIdx랑 같지 않으면 false 리턴
 		if(Integer.parseInt(session.getAttribute("usrIdx").toString()) != dto.getUsrIdx()) return false;
 		//널 값 체크
-		if(dto.getTitle() == null || dto.getContent() == null)
+		if(utill.stringNullCk(dto.getTitle()) || utill.stringNullCk(dto.getContent()))
 			return false;
 		
 		return dao.insertBoard(dto);

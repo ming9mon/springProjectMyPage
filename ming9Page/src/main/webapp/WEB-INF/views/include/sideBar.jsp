@@ -27,7 +27,7 @@
 		</div>
 	</a>
 
-	<c:if test="${ sessionScope.userId eq 'koo50215' }">
+	<c:if test="${ sessionScope.loginDto.userId eq 'koo50215' }">
 		<!-- Divider -->
 		<hr class="sidebar-divider my-0">
 
@@ -59,6 +59,8 @@
       </li> -->
 
 	<!-- Nav Item - Utilities Collapse Menu -->
+	<li class="nav-item"><a class="nav-link" href="/blog.do"> <i class="fas fa-fw fa-tachometer-alt"></i> <span>블로그</span></a></li>
+	
 	<li class="nav-item"><a class="nav-link collapsed" href="#"
 		data-toggle="collapse" data-target="#collapseUtilities"
 		aria-expanded="true" aria-controls="collapseUtilities"> <i
@@ -73,11 +75,12 @@
 					class="collapse-item" href="utilities-animation.html">Animations</a>
 				<a class="collapse-item" href="utilities-other.html">Other</a>
 			</div>
-		</div></li>
+		</div>
+	</li>
 
 	<li class="nav-item"><a class="nav-link" href="/weather.do"> <i class="fas fa-fw fa-table"></i> <span>날씨</span></a></li>
 	<li class="nav-item"><a class="nav-link" href="/boardList.do"> <i class="fas fa-fw fa-folder"></i> <span>게시판</span></a></li>
-	<li class="nav-item"><a class="nav-link" href="/blog.do"> <i class="fas fa-fw fa-tachometer-alt"></i> <span>블로그</span></a></li>
+	<li class="nav-item"><a class="nav-link" href="/calendar.do"> <i class="fas fa-fw fa-table"></i> <span>달력</span></a></li>
 	<!-- Divider -->
 	<hr class="sidebar-divider">
 	<!-- 

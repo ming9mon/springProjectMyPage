@@ -1,4 +1,4 @@
-package com.ming9.myPage.controller;
+package com.ming9.myPage.util;
 
 import java.util.Date;
 

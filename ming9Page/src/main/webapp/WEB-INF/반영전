@@ -1,0 +1,6 @@
+//기상청 날씨,미세먼지 api 2019/09/05 1년마다 기간 연장 해줘야함
+https://www.data.go.kr
+
+/* 서버에 반영할 때  */
+login.jsp 에 google Client Id 변경				//  client_id
+MemberServiceImpl.java 에 파일 업로드 운영서버로 변경	//  /* 운영서버 */

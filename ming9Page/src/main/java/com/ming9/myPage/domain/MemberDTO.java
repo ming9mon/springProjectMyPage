@@ -20,5 +20,6 @@ public class MemberDTO {
 	private String joinInfo;	//g 구글,	l 일반 회원가입
 	private String lastLogin;
 	private String instDate;
+	private String id_token;
 	
 }

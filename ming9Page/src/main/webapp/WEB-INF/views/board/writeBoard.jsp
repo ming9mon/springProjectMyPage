@@ -70,7 +70,7 @@
 						<h2>글 쓰기</h2>
 						<form name="frm" id="frm" role="form" method="post"
 							action="${pageContext.request.contextPath}/board/saveBoard">
-							<input type="hidden" name="usrIdx" value="${sessionScope.usrIdx }">
+							<input type="hidden" name="usrIdx" value="${sessionScope.loginDto.usrIdx }">
 							<div class="mb-3">
 								<label for="title">제목</label> <input type="text"
 									class="form-control" name="title" id="title"
@@ -79,7 +79,7 @@
 							<div class="mb-3">
 								<label for="reg_id">작성자</label> <input type="text"
 									class="form-control" name="nickName" id="nickName"
-									value="${sessionScope.nickName}" readonly >
+									value="${sessionScope.loginDto.nickName}" readonly >
 							</div>
 							<div class="mb-3">
 								<label for="reg_id">비밀글 <input type="checkBox"
@@ -88,8 +88,7 @@
 							</div>
 							<div class="mb-3">
 								<label for="content">내용</label>
-								<textarea class="form-control" rows="5" name="content"
-									id="content" placeholder="내용을 입력해 주세요"></textarea>
+								<textarea class="form-control" rows="5" name="content" id="contents" placeholder="내용을 입력해 주세요"></textarea>
 							</div>
 						</form>
 						<div>
@@ -135,14 +134,17 @@
 		$('#btnSave').click(function(){
 			
 			//널 체크
-			var frm = $('#frm')[0];
-			for(var i=0;i<frm.length;i++){
-				if(!frm[i].value){
-					frm[i].focus();
-					alert("데이터를 모두 입력해 주세요.");
-					return;
-				}
+			if(nullCk($('#title').val())){
+				$('#title').focus();
+				alert('제목을 입력해 주세요');
+				return;
 			}
+			if(nullCk($('#contents').val())){
+				$('#contents').focus();
+				alert('내용을 입력해 주세요');
+				return;
+			}
+			
 			console.log($('#frm').serialize());
 			
 			$.post({

@@ -38,8 +38,9 @@
 	<!-- jQuery -->
 	<script src="${pageContext.request.contextPath}/resources/jQuery/jquery-3.4.1.min.js"></script>
 	
-	<!-- Common JS -->
-	<script src="${pageContext.request.contextPath}/resources/js/common.js"></script>
+	<!-- Common -->
+	<link href="/resources/css/common.css" rel="stylesheet">
+	<script src="/resources/js/common.js"></script>
 	
 	<style>
 		.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
@@ -78,9 +79,18 @@
 		#pagination {margin:10px auto;text-align: center;}
 		#pagination a {display:inline-block;margin-right:10px;}
 		#pagination .on {font-weight: bold; cursor: default;color:#777;}
+		
+		.customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
+		.customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+		.customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+		.customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
+		.customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 	</style>
 </head>
 <body id="page-top">
+
+<div id="bg"></div>
+<div class="loading"><img src="/resources/img/common/gif_loading.gif" alt="로딩"></div>
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
@@ -114,6 +124,7 @@
 								</a>
 								<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
 									<div class="dropdown-header">기능</div>
+									<a class="dropdown-item active" href="#" id="noWork">일하기싫다</a>
 									<a class="dropdown-item" href="#" id="cctv">CCTV</a>
 									<a class="dropdown-item" href="#" id="search">검색</a>
 									<div class="dropdown-divider"></div>
@@ -148,12 +159,6 @@
 				</div>
 				<!-- /.container-fluid 지도-->
 				
-				
-				
-				
-				
-				
-
 			</div>
 			<!-- End of Main Content -->
 
@@ -186,6 +191,7 @@
 <!-- Kakao API -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ed639b8f650bd5b8dc3dceb7c3c64e67&libraries=services"></script>
 <script>
+var noWorkOnOff='on';
 var cctvOnOff='off';
 var searchOnOff='off';
 var markers=[];
@@ -198,6 +204,8 @@ var options = { //지도를 생성할 때 필요한 기본 옵션
 };
 
 var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+noWork();
 
 if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
 	navigator.geolocation.getCurrentPosition(function(data) {
@@ -224,18 +232,28 @@ if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
 	});
 }
 
+/* ajax 시작 종료 */
+$(document).ajaxStart(function(){
+	$('#bg').show();
+	$('.loading').show();
+}).ajaxStop(function() {
+	$('#bg').hide();
+	$('.loading').hide();
+})
+
 /* CCTV 시작 */
 //CCTV DATA GET
 function fn_getCCTVData(){
 	var bounds = map.getBounds();			// 지도 영역정보를 얻어옵니다 
+
 	$.ajax({
 		url: '${pageContext.request.contextPath}/kakao/getCCTVData.do',
 		type: 'GET',
 		data: {
-			minX: bounds.ea,
-			maxX: bounds.ja,
-			minY: bounds.la,
-			maxY: bounds.ka
+			minX: bounds.da,
+			maxX: bounds.ia,
+			minY: bounds.ka,
+			maxY: bounds.ja
 		},success : function(rst){
 			setMarkers(null);	//마커 삭제
 			if(rst.RTNCD == 0){
@@ -527,7 +545,43 @@ function removeAllChildNods(el) {
     }
 }
 /* 검색기능 끝 */
+ 
+/* 일 하기 싫다 시작 ! */
+var custumMater;
+var customOverlay;
+function noWork(){
 
+	var imageSrc = '${pageContext.request.contextPath}/resources/img/marker.png', // 마커이미지의 주소입니다    
+    imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+    imageOption = {offset: new kakao.maps.Point(27, 69)};
+	
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+    markerPosition = map.getCenter();
+	
+	var custumMater = new kakao.maps.Marker({
+		  position: map.getCenter(),
+		  image: markerImage
+	});
+	custumMater.setMap(map); 
+	
+	var content = '<div class="customoverlay">' +
+    '  <a href="#" onClick="console.log(\'a\');">' +
+    '    <span class="title">이 위치에 정보 등록</span>' +
+    '  </a>' +
+    '</div>';
+    
+	// 커스텀 오버레이가 표시될 위치입니다 
+	var position = map.getCenter(); 
+
+	// 커스텀 오버레이를 생성합니다
+	customOverlay = new kakao.maps.CustomOverlay({
+	    map: map,
+	    position: position,
+	    content: content,
+	    yAnchor: 1
+	});
+}
+/* 일 하기 싫다 끝 ! */
 //지도 드래그 이벤트
 kakao.maps.event.addListener(map, 'dragend', function() {
 	infowindow.close();
@@ -549,15 +603,17 @@ $('#cctv').click(function(){
 	infowindow.close();
 	setMarkers(null);	//마커 삭제
 	infowindow.close();
-	
-	$('#cctv').removeClass('on');
-	$('#search').removeClass('on');
+
+	$('#noWork').removeClass('active');
+	$('#cctv').removeClass('active');
+	$('#search').removeClass('active');
 	
 	if(cctvOnOff == 'off'){
+		noWorkOnOff='off'
 		cctvOnOff = 'on';
 		searchOnOff='off'
 		
-		$(this).addClass('on');
+		$(this).addClass('active');
 		
 		fn_getCCTVData();
 		
@@ -572,25 +628,44 @@ $('#search').click(function(){
 	infowindow.close();
 	setMarkers(null);	//마커 삭제
 	infowindow.close();
-	
-	$('#cctv').removeClass('on');
-	$('#search').removeClass('on');
+
+	$('#noWork').removeClass('active');
+	$('#cctv').removeClass('active');
+	$('#search').removeClass('active');
 	
 	if(searchOnOff == 'off'){
+		noWorkOnOff='off'
 		searchOnOff = 'on';
 		cctvOnOff='off'
 		
-		$(this).addClass('on');
+		$(this).addClass('active');
 		
 		$('#menu_wrap').css('display','');
 	}else{
-		$('#cctv').removeClass('on');
-		$('#search').removeClass('on');
-		
 		searchOnOff='off'
 		$('#menu_wrap').css('display','none');
 	}
 });
+
+//일 하기 싫다 클릭
+$('#noWork').click(function(){
+	infowindow.close();
+	setMarkers(null);	//마커 삭제
+	infowindow.close();
+
+	$('#noWork').removeClass('active');
+	$('#cctv').removeClass('active');
+	$('#search').removeClass('active');
+	
+	if(noWorkOnOff == 'off'){
+		noWorkOnOff = 'on';
+		searchOnOff = 'off';
+		cctvOnOff='off'
+		$(this).addClass('active');
+	}else{
+		noWorkOnOff='off'
+	}
+})
 
 //마커 삭제
 function setMarkers(map) {

@@ -40,9 +40,9 @@
 	<script src="/resources/chart.js2.8.0/Chart.min.js"></script>
 	<script src="/resources/chart.js2.8.0/Chart.bundle.min.js"></script>
 
-	<!-- Common JS -->
+	<!-- Common -->
+	<link href="/resources/css/common.css" rel="stylesheet">
 	<script src="/resources/js/common.js"></script>
-	<script src="/resources/js/transLocation.js"></script>
 	
 	<style>
 		.blue{color:#0900ff;}
@@ -51,6 +51,9 @@
 
 </head>
 <body id="page-top">
+
+<div id="bg"></div>
+<div class="loading"><img src="/resources/img/common/gif_loading.gif" alt="로딩"></div>
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
@@ -279,11 +282,8 @@ $('#MTWSearch').click(function(){
 });
 
 $(document).ready(function(){
-
 	fn_getDate();			//서버시간 받아오기
-	
 	fn_setSelectBox();	//동네예보와 중기에보 selectBox 세팅
-	
 	
 	if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
 		navigator.geolocation.getCurrentPosition(function(data) {
@@ -306,7 +306,6 @@ $(document).ready(function(){
 	
 	fn_setWeather();	//날씨 세팅
 	fn_setMidWeather();	//중기 날씨 세팅
-	
 });
 
 //지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
@@ -553,12 +552,13 @@ function fn_getMidTermTPT(){
 function fn_drawChart(){
 	var str = weather.str;	//초단기 예보
 	var tw = weather.tw;	//동네 예보
+	var wData;
 	
 	//초단기와 동네에보 합치기
 	if (str[str.length-1].time == tw[0].time)
-		var wData = str.concat(tw);
+		wData = str.concat(tw);
 	else
-		var wData = str.concat(tw);
+		wData = str.concat(tw);
 
 	var min=wData[0].TPT;
 	var max=wData[0].TPT;
@@ -577,30 +577,32 @@ function fn_drawChart(){
 		if(wData[i].TPT > max)
 			max = wData[i].TPT;
 	}
+	max = Math.ceil(max) + 7;
+	min = Math.floor(min) - 7;
 	
 	Chart.pluginService.register({
-			afterUpdate: function(chart) {
-				
-				for(var i=0;i<7;i++){
-					var time = wData[i].time;
-					var sky = wData[i].SKY;
-					var pty = wData[i].PTY;
-					var skyState = fn_getSkyState(sky,pty);
-					var img = fn_getWeatherImg(skyState,time);
-					img.width=30;
-					img.height=30;
-					var label = function(){
-						return img.alt;
-					};
-					try{
-						chart.config.data.datasets[0]._meta[wIdx].data[i]._model.pointStyle = img;
-					}catch(e){
-						wIdx=0;
-						chart.config.data.datasets[0]._meta[wIdx].data[i]._model.pointStyle = img;
-					}
-					chart.config.options.tooltips.callbacks.label = label;
+		afterUpdate: function(chart) {
+			
+			for(var i=0;i<7;i++){
+				var time = wData[i].time;
+				var sky = wData[i].SKY;
+				var pty = wData[i].PTY;
+				var skyState = fn_getSkyState(sky,pty);
+				var img = fn_getWeatherImg(skyState,time);
+				img.width=30;
+				img.height=30;
+				var label = function(){
+					return img.alt;
+				};
+				try{
+					chart.config.data.datasets[0]._meta[wIdx].data[i]._model.pointStyle = img;
+				}catch(e){
+					wIdx=0;
+					chart.config.data.datasets[0]._meta[wIdx].data[i]._model.pointStyle = img;
 				}
+				chart.config.options.tooltips.callbacks.label = label;
 			}
+		}
 	});
 	
 	//차트 그리기
@@ -652,8 +654,8 @@ function fn_drawChart(){
 			scales: {
 				yAxes: [{
 					ticks:{
-						min: min-2,
-						max: max+3,
+						min: min,
+						max: max,
 						stepSize : 3,
 						},
 						display: false
@@ -835,7 +837,7 @@ function fn_setMidWeatherTbl(){
 			
 		}else{
 			var pop = eval("midforecast.rnSt"+(i+3));
-			var sky = eval("midforecast.wf"+(i+3)); 
+			var sky = eval("midforecast.wf"+(i+3));
 			
 			var img = fn_getWeatherImg(sky);
 			img.width = 40;
@@ -878,6 +880,10 @@ function fn_setMidWeatherTbl(){
 function fn_getSkyState(sky,pty){
 	
 	var str="";
+	
+	/* 숫자를 문자로 인식해서 숫자로 변환 */
+	sky *= 1;
+	pty *= 1;
 	
 	switch (pty){
 	case 0:

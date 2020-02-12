@@ -34,6 +34,12 @@ public class MemberDAO {
 		return session.selectOne("memberMapper.idCheck",userId);
 	}
 	
+	//아이디 중복 체크
+	public int nickNmCheck(String nickNm) {
+		System.out.println("====> 다오 닉네임 체크");
+		return session.selectOne("memberMapper.nickNmCheck",nickNm);
+	}
+	
 	//회원가입
 	@Transactional
 	public int signUp(MemberDTO dto) {

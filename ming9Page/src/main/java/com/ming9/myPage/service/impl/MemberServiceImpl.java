@@ -40,11 +40,8 @@ public class MemberServiceImpl implements MemberService {
 		if(result) {
 			//true일경우 세션 변수 등록 및 로그인 정보 update 
 			dto = dao.getUserInfo(dto);
-			session.setAttribute("userId",dto.getUserId());
-			session.setAttribute("usrIdx",dto.getUsrIdx());
-			session.setAttribute("nickName",dto.getNickName());
-			session.setAttribute("imgName",dto.getImgName());
-			session.setAttribute("rating",dto.getRating());
+			session.setAttribute("loginDto", dto);
+			session.setAttribute("usrIdx", dto.getUsrIdx());
 			
 			int usrIdx = dto.getUsrIdx();
 			dao.insertLoginInfo(usrIdx);
@@ -59,9 +56,14 @@ public class MemberServiceImpl implements MemberService {
 		session.invalidate();
 	}
 
-	@Override
+	//아이디 체크
 	public int idCheck(String userId) {
 		return dao.idCheck(userId);
+	}
+	
+	//닉네임 체크
+	public int nickNmCheck(String nickNm) {
+		return dao.nickNmCheck(nickNm);
 	}
 
 	/* 회원가입  */
@@ -78,9 +80,9 @@ public class MemberServiceImpl implements MemberService {
 				UUID uuid = UUID.randomUUID();	//UUID 구하기
 				String fileName=uuid+"."+ext;
 				/* 로컬 */
-				uploadFile.transferTo(new File("D:\\upload\\" + fileName));
+				//uploadFile.transferTo(new File("D:\\upload\\" + fileName));
 				/* 운영서버 */
-				//uploadFile.transferTo(new File("/usr/local/server/tomcat9/webapps/img/" + fileName));
+				uploadFile.transferTo(new File("/usr/local/server/tomcat9/webapps/img/" + fileName));
 	
 				dto.setImgName(fileName);
 			}
@@ -96,7 +98,7 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public String googleLogin(String param,HttpSession session) {
 		MemberDTO dto = new MemberDTO();
-		int rst = 1;
+		int rst;
 		
 		BufferedReader in  = null;
 		InputStream is = null;
@@ -120,6 +122,57 @@ public class MemberServiceImpl implements MemberService {
 			JSONObject jsonObj = (JSONObject)jsonParser.parse(in);
 
 			String userId = jsonObj.get("sub").toString();
+			
+			dto.setUserId(userId);
+			
+			//회원인지 검사 회원이 아니면 회원가입
+			if(dao.idCheck(dto.getUserId()) == 0) {
+				return "new";
+			}else {
+				dto = dao.getUserInfo(dto);
+				session.setAttribute("loginDto", dto);
+				session.setAttribute("usrIdx", dto.getUsrIdx());
+				
+				int usrIdx = dto.getUsrIdx();
+				dao.insertLoginInfo(usrIdx);
+			}
+			
+			return "success";
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		
+		return "fail";
+	}
+	
+	//구글 회원가입
+	@Transactional
+	public String googleSignUp(MemberDTO dto, HttpSession session) {
+		int rst;
+		
+		BufferedReader in  = null;
+		InputStream is = null;
+		InputStreamReader isr = null;
+		JSONParser jsonParser = new JSONParser();
+		
+		try {
+			String idToken = dto.getId_token();
+			
+			String url = "https://oauth2.googleapis.com/tokeninfo";
+			url += "?id_token="+idToken;
+			
+			URL gUrl = new URL(url);
+			HttpURLConnection conn = (HttpURLConnection) gUrl.openConnection();
+
+			is = conn.getInputStream();
+			isr = new InputStreamReader(is, "UTF-8");
+			in = new BufferedReader(isr);
+			
+
+			JSONObject jsonObj = (JSONObject)jsonParser.parse(in);
+
+			String userId = jsonObj.get("sub").toString();
+			
 			String name = jsonObj.get("name").toString();
 			String email = jsonObj.get("email").toString();
 			String imgName = jsonObj.get("picture").toString();
@@ -133,25 +186,21 @@ public class MemberServiceImpl implements MemberService {
 			dto.setJoinInfo("g");
 			dto.setEmail(email);
 			dto.setImgName(imgName);
-			dto.setNickName(userId.substring(0,2)+date);
 			
-			//회원인지 검사 회원이 아니면 회원가입
-			if(dao.idCheck(dto.getUserId()) == 0) {
-				rst = dao.signUp(dto);
+			//회원이라면 return;
+			if(dao.idCheck(dto.getUserId()) != 0) {
+				return "old";
 			}
 			
-			if (rst==1) {
-				dto = dao.getUserInfo(dto);
-				session.setAttribute("userId",dto.getUserId());
-				session.setAttribute("usrIdx",dto.getUsrIdx());
-				session.setAttribute("nickName",dto.getNickName());
-				session.setAttribute("imgName",dto.getImgName());
-				session.setAttribute("rating",dto.getRating());
-				
-				int usrIdx = dto.getUsrIdx();
-				dao.insertLoginInfo(usrIdx);
-				return "success";
-			}
+			rst = dao.signUp(dto);
+			dto = dao.getUserInfo(dto);
+			session.setAttribute("loginDto", dto);
+			session.setAttribute("usrIdx", dto.getUsrIdx());
+			
+			int usrIdx = dto.getUsrIdx();
+			dao.insertLoginInfo(usrIdx);
+			
+			return "success";
 		}catch(Exception e) {
 			System.out.println(e);
 		}

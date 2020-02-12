@@ -41,6 +41,7 @@
 	<script src="https://apis.google.com/js/api:client.js"></script>
 	<script>
 	  var googleUser = {};
+	  var id_token;
 	  var startApp = function() {
 	    gapi.load('auth2', function(){
 	      // Retrieve the singleton for the GoogleAuth library and set up the client.
@@ -54,20 +55,20 @@
 	      attachSignin(document.getElementById('customBtn'));
 	    });
 	  };
-	
+	  
 	  function attachSignin(element) {
 	    auth2.attachClickHandler(element, {},
 	        function(googleUser) {
-	    		var id_token = googleUser.getAuthResponse().id_token;
+	    		id_token = googleUser.getAuthResponse().id_token;
 	    		
 	    		var xhr = new XMLHttpRequest();
 	    		xhr.open('POST', '${pageContext.request.contextPath}/member/googleLogin.do');
 	    		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	    		xhr.onload = function() {
-	    		  if(xhr.responseText == "success")
-	    			  location.href="/";
-	    		  else
-	    			  alert("로그인 실패");
+	    			console.log(xhr.responseText);
+	    		  if(xhr.responseText == "success") location.href="/";
+	    		  else if(xhr.responseText == "new") $('#gSignUpModal').modal("show");
+	    		  else	alert("로그인 실패");
 	    		};
 	    		xhr.send('idtoken=' + id_token);
 	    		
@@ -75,6 +76,38 @@
 	          console.log(JSON.stringify(error, undefined, 2));
 	        });
 	  }
+	  
+	  function googleSignUp(){
+		  /* $.post({
+			  url:"${pageContext.request.contextPath}/member/googleSignUp.do",
+			  data:{
+				  id_token : id_token,
+				  nickName : nickName
+			  },success:function(rst){
+				  if(rst == "success") location.href="/";
+				  else if(rst == "old") alert('뭐다용');
+				  else if(rst == "fail") alert('회원가입 실패');
+				  else alert('뭐야');
+					  
+			  },error:function(e){
+				  alert('회원가입 실패');
+			  }
+		  }); */
+		  
+		/* $.post({
+			url:"${pageContext.request.contextPath}/member/googleSignUp.do",
+			data:{
+				  id_token : id_token,
+				  nickName : nickName
+			},
+			success:function(rst){
+				console.log();
+			},
+			error:function(e){
+				alert("글 작성 실패");
+			}
+		}); */
+	}
   </script>
   <style type="text/css">
     #customBtn {
@@ -117,6 +150,27 @@
 </head>
 <!-- <body background="${pageContext.request.contextPath}/resources/img/security.png" style="background-size: 100% 100%;"> -->
 <body>
+<!-- 구글 닉네임 입력 Modal 창 -->
+<div class="modal fade" id="gSignUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">회원가입</h5>
+				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">X</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<span>닉네임을 입력하여 주세요 : </span>
+				<input id="nickName" type="text">
+				<div id="nickCk"></div>
+			</div>
+			<div class="modal-footer">
+				<a class="btn" id="gSignUp" href="#">가입</a>
+			</div>
+		</div>
+	</div>
+</div>
 	<div class="container">
 		<!-- Outer Row -->
 		<div class="row justify-content-center">
@@ -287,6 +341,58 @@ $('#signUp').click(function(){
 	});
 	
 	startApp();
+	
+
+	
+	//닉네임 중복 검사
+	var ck = false;
+	$('#nickName').keydown(function(){
+		var nickRegExp = RegExp(/^[A-Za-z0-9_\-가-힣]{1,10}$/);
+		$.post({
+			url:"${pageContext.request.contextPath}/member/nickNmCheck.do",
+			data:{
+				nickNm : $('#nickName').val().trim()
+			},success:function(rst){
+				if(rst == 0){
+					if(nickRegExp.test($('#nickName').val())){
+						ck = true;
+						$('#nickCk').text('사용 가능한 닉네임 입니다.');
+						$('#nickCk').css('color','green');
+					}else rst=1;
+				}
+				if(rst > 0){
+					ck = false;
+					$('#nickCk').text('사용 불가가능한 닉네임 입니다.');
+					$('#nickCk').css('color','red');
+				}
+			},error:function(e){
+				alert('회원가입 실패');
+			}
+		});
+	});
+	
+	//구글 가입 눌렀을 때
+	$('#gSignUp').click(function(){
+		if(ck){
+			var nickName = $('#nickName').val().trim();
+			$.post({
+				url:"${pageContext.request.contextPath}/member/googleSignUp.do",
+				data:{
+					id_token : id_token,
+					nickName : nickName
+				},success:function(rst){
+					if(rst == "success") location.href="/";
+					else if(rst == "old") alert('뭐다용');
+					else if(rst == "fail") alert('회원가입 실패');
+					else alert('뭐야');
+				},error:function(e){
+					alert('회원가입 실패');
+				}
+			});
+		}else{
+			alert('사용 불가능한 닉네임 입니다.');
+		}
+	});
 </script>
 </body>
 </html>

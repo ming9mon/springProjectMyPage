@@ -1,3 +1,31 @@
+/* 로딩 */
+var loading = {
+	start : function(){
+		$('#bg').show();
+		$('.loading').show();
+	},
+	end : function(){
+		$('#bg').hide();
+		$('.loading').hide();
+	}
+}
+
+$(document).ready(function(){
+	$('#bg').hide();
+	$('.loading').hide();
+});
+
+/* Null 체크 */
+function nullCk(value){
+	value.trim();
+	if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){ 
+		return true;
+	}else{ 
+		return false;
+	}
+}
+
+
 /* 날짜 formatter */
 Date.prototype.format = function (f) {
 	if (!this.valueOf()) return " ";

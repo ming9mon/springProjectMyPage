@@ -40,13 +40,24 @@ public class MemberController {
 	public String signUpPage(){
 		return "/member/signUp";
 	}
-	
+
 	//아이디 중복 체크
 	@RequestMapping(value="/member/idCheck.do")
 	@ResponseBody
 	public int idCheck(HttpServletRequest request) {
 		String userId=request.getParameter("userId");
 		int result = service.idCheck(userId);
+		
+		return result;
+	}
+	
+
+	//닉네임 중복 체크
+	@RequestMapping(value="/member/nickNmCheck.do")
+	@ResponseBody
+	public int nickNmCheck(HttpServletRequest request) {
+		String nickNm = request.getParameter("nickNm");
+		int result = service.nickNmCheck(nickNm);
 		
 		return result;
 	}
@@ -83,6 +94,16 @@ public class MemberController {
 	public String googleLogin(@RequestBody String param,HttpSession session) {
 		
 		String result = service.googleLogin(param,session);
+		
+		return result;
+	}
+	
+	//구글 회원가입
+	@PostMapping(value="/member/googleSignUp.do", produces="application/x-www-form-urlencoded")
+	@ResponseBody
+	public String googleSignUp(MemberDTO dto,HttpSession session) {
+		
+		String result = service.googleSignUp(dto,session);
 		
 		return result;
 	}

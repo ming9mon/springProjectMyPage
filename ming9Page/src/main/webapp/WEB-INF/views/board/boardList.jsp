@@ -193,7 +193,7 @@
 				
 				$(html).appendTo("#pagination");
 			}
-				
+			
 			if (data.length > 0) {
 				
 				if(pageNo < 1) pageNo=1;
@@ -203,7 +203,7 @@
 				
 				$('#dataTable tbody').empty();
 
-				var start = pageNo - 1;
+				var start = (pageNo - 1) * 10;
 				var end = start + 10;
 
 				if (end > data.length)
@@ -217,19 +217,17 @@
 					var html = "<tr>";
 					html += "<td>" + nickName + "</td>";
 					html += "<td>" + title + "</td>";
-					html += "<td>" + date.format("yyyy년 MM월 dd일 HH시 mm분")
-							+ "</td>";
+					html += "<td>" + date.format("yyyy년 MM월 dd일 HH시 mm분") + "</td>";
 					html += "</tr>";
 
 					$('#dataTable tbody').append(html);
 				}
 				
-				//하단 버튼 생성 및 설정
-				var btnStart = pageNo;
-				if(pageNo == 2) btnStart-=1;
-				else if(pageNo > 2) btnStart-=2;
 				
-				var btnEnd = pageNo+5;
+				//하단 버튼 생성 및 설정
+				var btnStart = Math.floor(pageNo/5)+5;
+				if (btnStart == 5) btnStart = 1;
+				var btnEnd = btnStart+5;
 				
 				if(btnEnd > Math.ceil(data.length/10)) {
 					btnEnd = Math.ceil(data.length/10)+1; 
@@ -264,7 +262,7 @@
 		$(document).on('click','.page-link',function(){
 			var text = $(this).text();
 
-			if(text == '다음') pageNo+=5;
+			if(text == '다음') Math.floor(pageNo/5)+5;
 			else if(text == '이전') pageNo-=5;
 			else pageNo=text;
 			
@@ -272,7 +270,7 @@
 		});
 		
 		$('#write').click(function(){
-			if('${sessionScope.usrIdx}' == '')	{
+			if('${sessionScope.loginDto.usrIdx}' == '')	{
 				alert('로그인 후 이용 가능합니다.');
 				return;
 			}
