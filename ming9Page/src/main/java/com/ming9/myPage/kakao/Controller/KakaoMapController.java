@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ming9.myPage.kakao.DTO.KakaoDTO;
 import com.ming9.myPage.kakao.Service.KakaoMapService;
 
 @RestController
@@ -25,6 +26,13 @@ public class KakaoMapController {
 		
 		return service.getCCTVData(minX, maxX, minY, maxY);
 		
+	}
+	
+	@GetMapping(value="/kakao/locInfoSave.do")
+	public JSONObject locInfoWrite(KakaoDTO dto) {
+		JSONObject obj = new JSONObject();
+		obj.put("aa", "bb");
+		return obj;
 	}
 	
 }

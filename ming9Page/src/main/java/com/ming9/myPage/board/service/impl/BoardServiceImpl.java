@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ming9.myPage.board.dao.BoardDAO;
 import com.ming9.myPage.board.domain.BoardDTO;
 import com.ming9.myPage.board.service.BoardService;
-import com.ming9.myPage.util.utill;
+import com.ming9.myPage.cmm.utill;
 
 @Service
 public class BoardServiceImpl implements BoardService{
