@@ -2,22 +2,25 @@ package com.ming9.myPage.kakao.Service.Impl;
 
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.ming9.myPage.kakao.Service.KakaoMapService;
-
-
 @Service
 public class KakaoMapServiceImpl implements KakaoMapService{
+
+	@Autowired
+	Properties properties;
 
 	public JSONObject getCCTVData(String minX, String maxX, String minY, String maxY) {
 		JSONObject rst = new JSONObject();
@@ -26,7 +29,8 @@ public class KakaoMapServiceImpl implements KakaoMapService{
 		String rtnRsn;
 		
 		String apiUrl = "http://openapi.its.go.kr:8081/api/NCCTVInfo";
-		String key = "1572567661466";
+		//String key = "1572567661466";
+		String key = properties.getProperty("cctvKey");
 		String ReqType = "2";
 		
 		String MinX=minX;

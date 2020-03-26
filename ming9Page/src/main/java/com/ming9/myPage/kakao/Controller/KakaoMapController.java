@@ -31,7 +31,6 @@ public class KakaoMapController {
 	@GetMapping(value="/kakao/locInfoSave.do")
 	public JSONObject locInfoWrite(KakaoDTO dto) {
 		JSONObject obj = new JSONObject();
-		obj.put("aa", "bb");
 		return obj;
 	}
 	

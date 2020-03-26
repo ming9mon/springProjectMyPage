@@ -247,7 +247,7 @@
 <script src="/resources/js/sb-admin-2.min.js"></script>
 
 <!-- Kakao API -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ed639b8f650bd5b8dc3dceb7c3c64e67&libraries=services"></script>
+<script type="text/javascript" src="<spring:eval expression="@config.getProperty('kakaoApi')"></spring:eval>"></script>
 <script>
 var weather = {};
 var date;

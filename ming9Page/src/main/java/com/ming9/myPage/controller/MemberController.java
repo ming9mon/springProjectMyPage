@@ -2,6 +2,7 @@ package com.ming9.myPage.controller;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Properties;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -29,10 +31,15 @@ public class MemberController {
 	@Autowired
 	MemberService service;
 	
+	@Autowired
+	Properties properties;
+	
 	//로그인 페이지 이동
 	@RequestMapping(value = "/member/login.do")
-	public String login(Model model){
-		return "/member/login";
+	public ModelAndView login(Model model){
+		ModelAndView mav = new ModelAndView("/member/login");
+		mav.addObject("gClientId",properties.get("google.login.clientId"));
+		return mav;
 	}
 	
 	//회원가입 페이지 이동

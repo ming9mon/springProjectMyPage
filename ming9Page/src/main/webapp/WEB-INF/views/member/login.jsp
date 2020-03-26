@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,12 +43,12 @@
 	<script>
 	  var googleUser = {};
 	  var id_token;
+
 	  var startApp = function() {
 	    gapi.load('auth2', function(){
 	      // Retrieve the singleton for the GoogleAuth library and set up the client.
 	      auth2 = gapi.auth2.init({
-	    	client_id: '131755993986-uuhe4blnhc3a46adeh4rq1ic5gl2g3l4.apps.googleusercontent.com',	//로컬용
-	    	//client_id: '131755993986-98lb6vl38c23oj9ofrej584o17amfqe6.apps.googleusercontent.com',	//운영서버용
+	    	client_id: "<spring:eval expression="@config.getProperty('google.clientId')"></spring:eval>",
 	        cookiepolicy: 'single_host_origin',
 	        // Request scopes in addition to 'profile' and 'email'
 	        //scope: 'additional_scope'
@@ -60,7 +61,6 @@
 	    auth2.attachClickHandler(element, {},
 	        function(googleUser) {
 	    		id_token = googleUser.getAuthResponse().id_token;
-	    		
 	    		var xhr = new XMLHttpRequest();
 	    		xhr.open('POST', '${pageContext.request.contextPath}/member/googleLogin.do');
 	    		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -77,37 +77,6 @@
 	        });
 	  }
 	  
-	  function googleSignUp(){
-		  /* $.post({
-			  url:"${pageContext.request.contextPath}/member/googleSignUp.do",
-			  data:{
-				  id_token : id_token,
-				  nickName : nickName
-			  },success:function(rst){
-				  if(rst == "success") location.href="/";
-				  else if(rst == "old") alert('뭐다용');
-				  else if(rst == "fail") alert('회원가입 실패');
-				  else alert('뭐야');
-					  
-			  },error:function(e){
-				  alert('회원가입 실패');
-			  }
-		  }); */
-		  
-		/* $.post({
-			url:"${pageContext.request.contextPath}/member/googleSignUp.do",
-			data:{
-				  id_token : id_token,
-				  nickName : nickName
-			},
-			success:function(rst){
-				console.log();
-			},
-			error:function(e){
-				alert("글 작성 실패");
-			}
-		}); */
-	}
   </script>
   <style type="text/css">
     #customBtn {

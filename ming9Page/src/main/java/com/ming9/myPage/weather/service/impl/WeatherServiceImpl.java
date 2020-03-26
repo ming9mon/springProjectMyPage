@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,6 +35,9 @@ public class WeatherServiceImpl implements WeatherService {
 
 	@Autowired
 	WeaderDAO dao;
+
+	@Autowired
+	Properties properties;
 	
 	//시 좌표
 	public String getCity() throws IOException {
@@ -92,7 +96,7 @@ public class WeatherServiceImpl implements WeatherService {
 		String date = getBaseTime(0);
 		String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtFcst";
 		// 홈페이지에서 받은 키
-		String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
+		String serviceKey = properties.getProperty("weatherKey");
 		String nx = x;	//위도
 		String ny = y;	//경도
 		String baseDate = date.substring(0,8);	//조회하고싶은 날짜
@@ -211,7 +215,7 @@ public class WeatherServiceImpl implements WeatherService {
 
 		String date = getBaseTime(1);
 		// 홈페이지에서 받은 키
-		String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
+		String serviceKey = properties.getProperty("weatherKey");
 		String nx = x;	//위도
 		String ny = y;	//경도
 		String baseDate = date.substring(0,8);	//조회하고싶은 날짜
@@ -315,7 +319,7 @@ public class WeatherServiceImpl implements WeatherService {
 
 		String date = getBaseTime(2);
 		String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst";
-		String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
+		String serviceKey = properties.getProperty("weatherKey");
 		String regId = code;	//예보 구역 코드
 		String tmFc = date;	//발표시간 입력
 		String numOfRows = "1";	//한 페이지 결과 수
@@ -395,7 +399,7 @@ public class WeatherServiceImpl implements WeatherService {
 			
 			String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa";
 			// 홈페이지에서 받은 키
-			String serviceKey = "HeczJdNPgPuFSyaZHxwLvi8aTJpiw8N0MuZYw2WP0MzAtnquzAcgjzuwy8PUZGd1Mc01lmWEycSzA6WElvzX9A%3D%3D";
+			String serviceKey = properties.getProperty("weatherKey");
 			String regId = code;	//예보 구역 코드
 			String tmFc = date;	//발표시간 입력
 			String numOfRows = "1";	//한 페이지 결과 수
