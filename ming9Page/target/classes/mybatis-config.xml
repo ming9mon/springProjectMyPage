@@ -11,6 +11,7 @@
 		<package name="com.ming9.myPage.domain"/>
 		<package name="com.ming9.myPage.weather.domain"/>
 		<package name="com.ming9.myPage.board.domain"/>
+		<package name="com.ming9.myPage.member.domain"/>
 	</typeAliases>
 	
 </configuration>

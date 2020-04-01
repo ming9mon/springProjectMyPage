@@ -193,7 +193,7 @@
   	var userIdCheck = RegExp(/^[A-Za-z0-9_\-]{5,20}$/);
   	var passwdCheck = RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,16}$/);
     var nameCheck = RegExp(/^[가-힣]{2,6}$/);
-    var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9]{2,10}$/);
+    var nickNameCheck = RegExp(/^[가-힣a-zA-Z0-9_\-]{1,10}$/);
   	var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
   	var phonNumberCheck = RegExp(/^01[0179][0-9]{7,8}$/);
 
@@ -256,6 +256,9 @@
         		}
         	}
         	
+        	idCheck();		//아이디 체크
+        	nickNameCk();	//닉네임 체크
+        	
         	//check 결과값이 true면 modal창 띄우기
         	if(check){
         		$('#signUpModal').modal("show");
@@ -279,32 +282,7 @@
     	//포커스 아웃
     	$('#userId').blur(function(){
     		//id 중복 체크
-    		$.ajax({
-    			url: "${pageContext.request.contextPath}/member/idCheck.do",
-    			method: "GET",
-    			dataType: "json",
-    			data:{
-    				"userId": $('#userId').val()
-    			},
-    			success:function(result){
-    				// 0보다 크면 중복된 아이디가 있는 것
-    				if(result){
-    					check=false;
-    					$('#userId_msg').attr('style','display: block');
-    					$('#userId_msg').html('<span style="color: red">이미 사용중인 아이디 입니다.</span>');
-    					$('#userId').addClass('borderRed');
-    					$('#userId').removeClass('borderGreen');
-    					return;
-    				}
-    			},
-    			error:function(){
-    				alert('serverError');
-    			}
-    		});	
-    		
-    		//아이디 유효성 검사
-    		var msg="5~20글자의 숫자 또는 영문, 특수문자는( _ , - )만 사용 가능합니다.";
-    		validityCheck("userId",msg);
+    		idCheck();
     	});
     	
     	$('#passwd').blur(function(){
@@ -329,8 +307,9 @@
     		validityCheck("name",msg);
     	});
     	$('#nickName').blur(function(){
-    		var msg="2~6자 한글, 영어, 숫자만 입력 가능합니다.";
+    		var msg="1~10자 한글, 영어, 숫자, -, _만 입력 가능합니다.";
     		validityCheck("nickName",msg);
+    		nickNameCk();
     	});
     	$('#birthday').blur(function(){
     		var msg="생년 월 일을 입력해 주세요. ex)19990102";
@@ -345,9 +324,64 @@
     		validityCheck("email",msg);
     	});
     	
-    	
-    	
     });
+    
+    //아이디 중복 체크
+    function idCheck(){
+    	$.ajax({
+			url: "${pageContext.request.contextPath}/member/idCheck.do",
+			method: "GET",
+			async: false,
+			dataType: "json",
+			data:{
+				"userId": $('#userId').val()
+			},
+			success:function(result){
+				// 0보다 크면 중복된 아이디가 있는 것
+				if(result){
+					check=false;
+					$('#userId_msg').attr('style','display: block');
+					$('#userId_msg').html('<span style="color: red">이미 사용중인 아이디 입니다.</span>');
+					$('#userId').addClass('borderRed');
+					$('#userId').removeClass('borderGreen');
+					return;
+				}
+			},
+			error:function(){
+				alert('serverError');
+			}
+		});	
+		
+		//아이디 유효성 검사
+		var msg="5~20글자의 숫자 또는 영문, 특수문자는( _ , - )만 사용 가능합니다.";
+		validityCheck("userId",msg);
+    }
+    
+    //닉네임 중복 체크
+    function nickNameCk(){
+		$.post({
+			url:"${pageContext.request.contextPath}/member/nickNmCheck.do",
+			async: false,
+			data:{
+				nickNm : $('#nickName').val().trim()
+			},success:function(rst){
+				if(rst == 0){
+			   			$('#nickName_msg').attr('style','display: none');
+			   			$('#nickName').removeClass('borerRed');
+			   			$('#nickName').addClass('borderGreen');
+			   			return;
+				}
+				var msg="이미 사용중인 닉네임 입니다.";
+				$('#nickName_msg').html('<span style="color: red">'+msg+'</span>');
+	   			$('#nickName_msg').attr('style','display: block');
+	   			$('#nickName').removeClass('borderGreen');
+	   			$('#nickName').addClass('borderRed');
+				check = false;
+			},error:function(e){
+				alert('회원가입 실패');
+			}
+		});
+    }
     
     $('#img').change(function(e){
     	$('#imgView').css('display','none');

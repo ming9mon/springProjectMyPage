@@ -82,6 +82,24 @@
 	<li class="nav-item"><a class="nav-link" href="/boardList.do"> <i class="fas fa-fw fa-folder"></i> <span>게시판</span></a></li>
 	<li class="nav-item"><a class="nav-link" href="/calendar.do"> <i class="fas fa-fw fa-table"></i> <span>달력</span></a></li>
 	<!-- Divider -->
+	
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#"
+		data-toggle="collapse" data-target="#collapseUtilities2"
+		aria-expanded="true" aria-controls="collapseUtilities"> 
+		<i class="fas fa-fw fa-wrench"></i> <span>기타</span>
+	</a>
+		<div id="collapseUtilities2" class="collapse"
+			aria-labelledby="headingUtilities2" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<h6 class="collapse-header">기타</h6>
+				<a class="collapse-item" href="/etc/upAndLow.do">대소문자 변환</a> <!-- 
+				<a class="collapse-item" href="utilities-border.html">Borders</a> 
+				<a class="collapse-item" href="utilities-animation.html">Animations</a> -->
+			</div>
+		</div>
+	</li>
+	
 	<hr class="sidebar-divider">
 	<!-- 
       Heading

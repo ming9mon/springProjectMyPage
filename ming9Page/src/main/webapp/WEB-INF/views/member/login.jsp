@@ -315,7 +315,7 @@ $('#signUp').click(function(){
 	
 	//닉네임 중복 검사
 	var ck = false;
-	$('#nickName').keydown(function(){
+	$('#nickName').blur(function(){
 		var nickRegExp = RegExp(/^[A-Za-z0-9_\-가-힣]{1,10}$/);
 		$.post({
 			url:"${pageContext.request.contextPath}/member/nickNmCheck.do",
