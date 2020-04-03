@@ -48,7 +48,8 @@
 	    gapi.load('auth2', function(){
 	      // Retrieve the singleton for the GoogleAuth library and set up the client.
 	      auth2 = gapi.auth2.init({
-	    	client_id: "<spring:eval expression="@config.getProperty('google.clientId')"></spring:eval>",
+		    //client_id: "<spring:eval expression="@config.getProperty('google.clientId')"></spring:eval>",
+		    client_id: "131755993986-98lb6vl38c23oj9ofrej584o17amfqe6.apps.googleusercontent.com",
 	        cookiepolicy: 'single_host_origin',
 	        // Request scopes in addition to 'profile' and 'email'
 	        //scope: 'additional_scope'
@@ -308,10 +309,6 @@ $('#signUp').click(function(){
 		}
 		
 	});
-	
-	startApp();
-	
-
 	
 	//닉네임 중복 검사
 	var ck = false;

@@ -35,6 +35,13 @@
 		</property>
 	</bean>
 	
+	
+	<!-- AOP 설정 -->
+	<context:component-scan base-package="com.ming9.myPage"></context:component-scan>
+	
+	<!-- @Aspect 어노테이션을 통해 어드바이스가 동작 하도록 -->
+	<aop:aspectj-autoproxy />
+	
 	<!-- MariaDB JDBC DataSource -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${jdbc.className}" />
