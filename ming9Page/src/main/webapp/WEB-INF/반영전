@@ -2,5 +2,14 @@
 https://www.data.go.kr
 
 /* 서버에 반영할 때  */
-login.jsp 에 google Client Id 변경				//  client_id
+ming.properties 에 google Client Id 변경				//  client_id
 MemberServiceImpl.java 에 파일 업로드 운영서버로 변경	//  /* 운영서버 */
+
+
+CREATE TABLE T_GAME_SCORE(
+	USR_IDX VARCHAR(30) NOT NULL,
+	GAME_TYPE VARCHAR(30) NOT NULL,
+	SCORE INT NOT NULL,
+	DTE DATE NOT NULL,
+	PRIMARY KEY(USR_IDX,GAME_TYPE)
+)COLLATE='utf8_general_ci';

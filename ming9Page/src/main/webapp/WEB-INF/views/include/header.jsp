@@ -224,6 +224,8 @@
 	</div>
 </div>
 
+<!-- jQuery -->
+<script src="${pageContext.request.contextPath }/resources/jQuery/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#login').click(function(e) {

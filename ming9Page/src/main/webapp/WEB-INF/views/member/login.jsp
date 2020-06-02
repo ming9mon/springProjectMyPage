@@ -11,31 +11,7 @@
 	<meta name="author" content="">
 	<meta name = "google-signin-client_id"content = "161980541304-kii6sqj3rsk46pei121ag4b20i2ro46p.apps.googleusercontent.com">
 	
-
-	<title>ming9</title>
-
-	<!-- Custom fonts for this template-->
-	<link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-	<!-- Custom styles for this template-->
-	<link href="${pageContext.request.contextPath}/resources/css/sb-admin-2.min.css" rel="stylesheet">
-	
-	<!-- common CSS -->
-	<link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
-	
-	<!-- jQuery -->
-	<script src="${pageContext.request.contextPath}/resources/jQuery/jquery-3.4.1.min.js"></script>
-	
-	<!-- Bootstrap core JavaScript-->
-	<script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-	<!-- Core plugin JavaScript-->
-	<script src="${pageContext.request.contextPath}/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for all pages-->
-	<script src="${pageContext.request.contextPath}/resources/js/sb-admin-2.min.js"></script>
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 	
 	<!-- 구글 로그인 버튼 커스텀 -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -48,8 +24,8 @@
 	    gapi.load('auth2', function(){
 	      // Retrieve the singleton for the GoogleAuth library and set up the client.
 	      auth2 = gapi.auth2.init({
-		    //client_id: "<spring:eval expression="@config.getProperty('google.clientId')"></spring:eval>",
-		    client_id: "131755993986-98lb6vl38c23oj9ofrej584o17amfqe6.apps.googleusercontent.com",
+		    client_id: "<spring:eval expression='@config.getProperty(\'google.clientId\')'></spring:eval>",
+		    //client_id: "131755993986-98lb6vl38c23oj9ofrej584o17amfqe6.apps.googleusercontent.com",
 	        cookiepolicy: 'single_host_origin',
 	        // Request scopes in addition to 'profile' and 'email'
 	        //scope: 'additional_scope'
@@ -133,7 +109,6 @@
 			<div class="modal-body">
 				<span>닉네임을 입력하여 주세요 : </span>
 				<input id="nickName" type="text">
-				<div id="nickCk"></div>
 			</div>
 			<div class="modal-footer">
 				<a class="btn" id="gSignUp" href="#">가입</a>
@@ -232,6 +207,7 @@
 		</div>
 	</div>
 
+<%@ include file="/WEB-INF/views/include/script.jsp" %>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
 startApp();
@@ -310,10 +286,10 @@ $('#signUp').click(function(){
 		
 	});
 	
-	//닉네임 중복 검사
-	var ck = false;
-	$('#nickName').blur(function(){
+	//구글 가입 눌렀을 때
+	$('#gSignUp').click(function(){
 		var nickRegExp = RegExp(/^[A-Za-z0-9_\-가-힣]{1,10}$/);
+		//닉네임 중복 검사
 		$.post({
 			url:"${pageContext.request.contextPath}/member/nickNmCheck.do",
 			data:{
@@ -321,43 +297,32 @@ $('#signUp').click(function(){
 			},success:function(rst){
 				if(rst == 0){
 					if(nickRegExp.test($('#nickName').val())){
-						ck = true;
-						$('#nickCk').text('사용 가능한 닉네임 입니다.');
-						$('#nickCk').css('color','green');
-					}else rst=1;
+						var nickName = $('#nickName').val().trim();
+						$.post({
+							url:"${pageContext.request.contextPath}/member/googleSignUp.do",
+							data:{
+								id_token : id_token,
+								nickName : nickName
+							},success:function(rst){
+								if(rst == "success") location.href="/";
+								else if(rst == "old") alert('이미 가입된 회원입니다.');
+								else if(rst == "fail") alert('회원가입 실패');
+								else alert('뭐야');
+							},error:function(e){
+								alert('회원가입 실패');
+							}
+						});
+					}else {
+						alert('사용 불가능한 닉네임 입니다.');
+					}
 				}
-				if(rst > 0){
-					ck = false;
-					$('#nickCk').text('사용 불가가능한 닉네임 입니다.');
-					$('#nickCk').css('color','red');
+				else if(rst > 0){
+					alert('이미 사용중인 닉네임 입니다.');
 				}
 			},error:function(e){
 				alert('회원가입 실패');
 			}
 		});
-	});
-	
-	//구글 가입 눌렀을 때
-	$('#gSignUp').click(function(){
-		if(ck){
-			var nickName = $('#nickName').val().trim();
-			$.post({
-				url:"${pageContext.request.contextPath}/member/googleSignUp.do",
-				data:{
-					id_token : id_token,
-					nickName : nickName
-				},success:function(rst){
-					if(rst == "success") location.href="/";
-					else if(rst == "old") alert('뭐다용');
-					else if(rst == "fail") alert('회원가입 실패');
-					else alert('뭐야');
-				},error:function(e){
-					alert('회원가입 실패');
-				}
-			});
-		}else{
-			alert('사용 불가능한 닉네임 입니다.');
-		}
 	});
 </script>
 </body>

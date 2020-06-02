@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -30,6 +31,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	MemberDAO dao;
+	
+	@Autowired
+	Properties properties;
 	
 	//로그인 기능
 	@Transactional
@@ -78,10 +82,7 @@ public class MemberServiceImpl implements MemberService {
 				String ext = FilenameUtils.getExtension(originalFileName);	//확장자 구하기
 				UUID uuid = UUID.randomUUID();	//UUID 구하기
 				String fileName=uuid+"."+ext;
-				/* 로컬 */
-				//uploadFile.transferTo(new File("D:\\upload\\" + fileName));
-				/* 운영서버 */
-				uploadFile.transferTo(new File("/usr/local/server/tomcat9/webapps/img/" + fileName));
+				uploadFile.transferTo(new File(properties.getProperty("file.uploadPath") + fileName));
 	
 				dto.setImgName(fileName);
 			}

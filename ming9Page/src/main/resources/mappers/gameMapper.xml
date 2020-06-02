@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gameMapper">
+	<insert id="insertScore" parameterType="GameDTO">
+		INSERT INTO T_GAME_SCORE(USR_IDX,GAME_TYPE,SCORE,DTE)
+		VALUES(#{usrIdx}, #{gameType}, #{score}, now())
+	</insert>
+	
+	<update id="updateScore" parameterType="GameDTO">
+		UPDATE T_GAME_SCORE SET SCORE = #{score}
+		WHERE USR_IDX = #{usrIdx}
+			AND GAME_TYPE = #{gameType}
+	</update>
+	
+	<select id="getScore" parameterType="GameDTO" resultType="GameDTO">
+		SELECT SCORE 
+		FROM T_GAME_SCORE
+		WHERE USR_IDX = #{usrIdx}
+			AND GAME_TYPE = #{gameType}
+	</select>
+	
+	<select id="getRank" parameterType="GameDTO" resultType="GameDTO">
+		SELECT NICK_NAME, SCORE
+		FROM T_GAME_SCORE A, T_MEMBER_DETAIL B
+		WHERE A.USR_IDX=B.USR_IDX
+			AND GAME_TYPE=#{gameType}
+		ORDER BY SCORE DESC
+		LIMIT 10
+	</select>
+</mapper>

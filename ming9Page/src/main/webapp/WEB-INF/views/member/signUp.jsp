@@ -14,38 +14,13 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>ming9</title>
 
+  <%@ include file="/WEB-INF/views/include/head.jsp" %>
 	
-  <!-- 부트스트랩 -->
-  <!-- <link href="/resources/bootstrap/css/bootstrap.css" rel="stylesheet">
-  <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
- -->
-  <!-- Custom fonts for this template-->
-  <link href="/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-  <!-- jQuery -->
-  <script src="/resources/jQuery/jquery-3.4.1.min.js"></script>
-
-  <!-- Custom styles for this template-->
-  <link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
   <!-- 회원가입 페이지 css -->
   <link href="/resources/css/signUp.css" rel="stylesheet">
   <!-- selectBox CSS -->
   <link href="/resources/css/selectbox.css" rel="stylesheet">
-  
-   <!-- Bootstrap core JavaScript-->
-  <script src="/resources/vendor/jquery/jquery.min.js"></script>
-  <script src="/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="/resources/js/sb-admin-2.min.js"></script>
-  
-  
 
 </head>
 
@@ -183,7 +158,7 @@
 		</div>
 	</div>
 
- 
+ <%@ include file="/WEB-INF/views/include/script.jsp" %>
   <script type="text/javascript">
 
 	//제대로 입력했는지 확인하기 위한 flag

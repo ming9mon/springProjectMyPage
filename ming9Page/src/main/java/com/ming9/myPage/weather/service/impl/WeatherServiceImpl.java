@@ -355,8 +355,6 @@ public class WeatherServiceImpl implements WeatherService {
 			String line;
 			while ((line = rd.readLine()) != null) {
 				sb.append(line);
-	
-				byte[] bb = line.toString().getBytes();
 			}
 			rd.close();
 			conn.disconnect();

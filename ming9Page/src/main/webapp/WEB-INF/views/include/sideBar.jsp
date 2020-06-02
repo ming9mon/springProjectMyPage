@@ -81,14 +81,33 @@
 	<li class="nav-item"><a class="nav-link" href="/weather.do"> <i class="fas fa-fw fa-table"></i> <span>날씨</span></a></li>
 	<li class="nav-item"><a class="nav-link" href="/boardList.do"> <i class="fas fa-fw fa-folder"></i> <span>게시판</span></a></li>
 	<li class="nav-item"><a class="nav-link" href="/calendar.do"> <i class="fas fa-fw fa-table"></i> <span>달력</span></a></li>
-	<!-- Divider -->
+	
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#"
+		data-toggle="collapse" data-target="#collapseUtilities3"
+		aria-expanded="true" aria-controls="collapseUtilities3"> 
+			<i class="fas fa-fw fa-tachometer-alt"></i> <span>게임</span>
+		</a>
+		<div id="collapseUtilities3" class="collapse"
+			aria-labelledby="headingUtilities3" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<h6 class="collapse-header">게임</h6>
+				<a class="collapse-item" href="/game/wormGame.do">지렁이 게임</a>
+				<a class="collapse-item" href="/game/tetris.do">테트리스</a>
+				<a class="collapse-item" href="/game/game2048.do">2048게임</a>
+				<!-- 
+				<a class="collapse-item" href="utilities-border.html">Borders</a> 
+				<a class="collapse-item" href="utilities-animation.html">Animations</a> -->
+			</div>
+		</div>
+	</li>
 	
 	<li class="nav-item">
 		<a class="nav-link collapsed" href="#"
 		data-toggle="collapse" data-target="#collapseUtilities2"
 		aria-expanded="true" aria-controls="collapseUtilities"> 
-		<i class="fas fa-fw fa-wrench"></i> <span>기타</span>
-	</a>
+			<i class="fas fa-fw fa-wrench"></i> <span>기타</span>
+		</a>
 		<div id="collapseUtilities2" class="collapse"
 			aria-labelledby="headingUtilities2" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">

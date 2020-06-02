@@ -22,26 +22,8 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>밍구 페이지</title>
-	
-
-	<!-- Custom fonts for this template-->
-	<link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-	<!-- Custom styles for this template-->
-	<link href="${pageContext.request.contextPath}/resources/css/sb-admin-2.min.css" rel="stylesheet">
-	
-	<!-- common CSS -->
-	<link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
-	
-	<!-- jQuery -->
-	<script src="${pageContext.request.contextPath}/resources/jQuery/jquery-3.4.1.min.js"></script>
-	
-	<!-- Common -->
-	<link href="/resources/css/common.css" rel="stylesheet">
-	<script src="/resources/js/common.js"></script>
-	
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
+		
 	<style>
 		.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
 		.map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
@@ -219,16 +201,8 @@
 </div>
 <!-- 위치 등록 팝업 END -->
 
-<!-- Bootstrap core JavaScript-->
-<script src="/resources/vendor/jquery/jquery.min.js"></script>
-<script src="/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="/resources/js/sb-admin-2.min.js"></script>
-
+<%@ include file="/WEB-INF/views/include/script.jsp" %>
 <!-- Kakao API -->
 <script type="text/javascript" src="<spring:eval expression="@config.getProperty('kakaoApi')"></spring:eval>"></script>
 <script>
