@@ -93,8 +93,10 @@
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">게임</h6>
 				<a class="collapse-item" href="/game/wormGame.do">지렁이 게임</a>
-				<a class="collapse-item" href="/game/tetris.do">테트리스</a>
+				<!-- <a class="collapse-item" href="/game/tetris.do">테트리스</a> -->
 				<a class="collapse-item" href="/game/game2048.do">2048게임</a>
+				<a class="collapse-item" href="/game/landMine.do">지뢰찾기 게임</a>
+				<a class="collapse-item" href="/game/typingGame.do">게르슈탈 붕괴 타자연습</a>
 				<!-- 
 				<a class="collapse-item" href="utilities-border.html">Borders</a> 
 				<a class="collapse-item" href="utilities-animation.html">Animations</a> -->

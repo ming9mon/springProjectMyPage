@@ -94,7 +94,6 @@
 								<div style="float:left">
 									<table id="gameTbl" border=1>
 									</table>
-										<div class="test"></div>
 								</div>
 								<div  style="float:right">
 									<table id="rankTbl">
@@ -108,12 +107,6 @@
 										</tbody>
 									</table>
 								</div>
-							</div>
-							<div id="gameBtn" style="margin-top:230px;position:relative;">
-								<button id="up" type="button" style="position:absolute;top:0px;left:40px;">△</button>
-								<button id="down" type="button" style="position:absolute;top:60px;left:40px;">▽</button>
-								<button id="left" type="button" style="position:absolute;top:30px;left:0px;">◁</button>
-								<button id="right" type="button" style="position:absolute;top:30px;left:80px;">▷</button>
 							</div>
 						</div><!-- Card Body -->
 					</div>
@@ -139,141 +132,271 @@
 	</a>
 
 <%@ include file="/WEB-INF/views/include/script.jsp" %>
-</body>
-<script>
-let played = false;
-let gameMap = new Array();
+<script type="text/javaScript" language="javascript">
+let gameMap;
+const mapSize = 4;
 let score = 0;
+let played = true;
 
-$('.test').click(function(){ 
-    $(this).css('-webkit-animation-name','duration');
-});
-
-//키 이벤트
-$(document).keydown(function(event){
-	if(played){
-		if(event.keyCode == 38 || event.keyCode == 87) //up
-			move('u');
-		else if(event.keyCode == 40 || event.keyCode == 83) //down
-			move('d');
-		else if(event.keyCode == 37 || event.keyCode == 65) //left
-			move('l');
-		else if(event.keyCode == 39 || event.keyCode == 68) //right
-			move('r');
-		else if(event.keyCode == 32)
-			move('un');
-	}
-});
-
-//버튼 이벤트
-$('#gameBtn button').click(function(){
-	if(played){
-		if($(this).attr('id') == 'up') move('u');
-		else if($(this).attr('id') == 'down') move('d');
-		else if($(this).attr('id') == 'left') move('l');
-		else if($(this).attr('id') == 'right') move('r');
-	}
-});
-
-function move(direction){
-	let start;
-	let end;
-	
-	if(direction == 'u' && direction == 'l'){
-		start = 0;
-		end = 3;
-	}else{
-		start = 3;
-		end = 1;
-	}
-	if(direction == 'u'){
-		for(let i=0; i<3; i++){		//위로 올리기
-			for(let j=0;j<4;j++){
-				if(gameMap[i][j] == 0){
-					for(let k=i+1;k<4;k++){	//0이 아닐 때 까지 찾아서 있으면 당기기
-						if(gameMap[k][j] != 0){
-							for(let l=k;l>=i;l++){
-								gameMap[l][j] = gameMap[l-1][j];
-								gameMap[l-1][j] = 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		for(let i=0; i<3; i++){		//합치기
-			for(let j=0;j<4;j++){
-				if(gameMap[i][j] == gameMap[i+1][j]){
-					gameMap[i][j]*=2;
-					gameMap[i+1][j]=0;
-					
-					for(let k=i;k<3;k++){
-						gameMap[k][j] = gameMap[k+1][j];
-						gameMap[k+1][j] = 0;
-					}
-				}
-			}
-		}
-	}
-
-	mkNum();
-	drawMap();
-}
-
-//게임 맵 위에 숫자 생성
-function mkNum(){
-	let r = Math.floor(Math.random()*7);
-	let n,x,y;
-	if(r < 4) n = 2;
-	else n = 4;
-	
-	while(true){
-		x = Math.floor(Math.random()*4);
-		y = Math.floor(Math.random()*4);
-		console.log(x+" "+y);
-		if(gameMap[x][y] == 0){
-			gameMap[x][y] = n;
-			break;
-		}
-	}
-}
-
-$('#startBtn').click(function(){
-	score = 0;
-	gameMapInit();
-	$(this).hide();
-	played = true;
-	mkNum();
-	drawMap();
-});
-
+//화면 그리기
 function drawMap(){
-	let html="";
-	for(let i=0;i<4;i++){
-		html+="<tr>";
-		for(let j=0;j<4;j++){
-			if (gameMap[i][j] != 0) html+="<td>"+gameMap[i][j]+"</td>";
-			else html+="<td></td>";
-		}
-		html+="</tr>";
-	}
-	$('#gameTbl').empty();
-	$('#gameTbl').append(html);
+    var html="";
+    for(var i=0;i<mapSize;i++){
+        html+="<tr>";
+        for(var j=0;j<mapSize;j++){
+            if(gameMap[i][j]!=0) html+="<td>"+gameMap[i][j]+"</td>";
+            else html+="<td></td>";
+        }
+        html+="</tr>";
+    }
+    $('#gameTbl').html(html);
 }
 
-function gameMapInit(){
-	gameMap = new Array();
-	for(let i=0; i<4; i++){
-		gameMap[i] = new Array();
-		for(let j=0; j<4; j++){
-			gameMap[i][j] = 0;
+//게임 초기화
+function initMap(){
+    gameMap = new Array(5);
+    for(var i=0;i<mapSize;i++){
+        gameMap[i] = new Array(5);
+        for(var j=0;j<mapSize;j++) gameMap[i][j]=0;
+    }
+}
+
+// 끝났는지 체크
+function endCheck(){
+    // 비어있는 칸이 있으면 return;
+    for(var i=0;i<mapSize;i++){
+        for(var j=0;j<mapSize;j++){
+            if(gameMap[i][j] == 0){
+                return;
+            }
+        }
+    }
+    
+    for(var i=0;i<mapSize;i++){
+        for(var j=0;j<mapSize-1;j++){
+            if(gameMap[i][j] == gameMap[i][j+1]){   //가로 검사
+                return;
+            }
+            if(gameMap[j][i] == gameMap[j+1][i]){   //세로 검사
+                return;
+            }
+        }
+    }
+
+	played = false;
+    saveScore(score);
+    $('#startBtn').show();
+    var txt = $('#score').text()+" Game End!";
+    alert(txt);
+}
+
+// 방향에 따라 모으기
+function pull(direction, moved){
+    for(var k=0;k<mapSize-1;k++){
+        if(direction == 'u' || direction == 'l'){
+            for(var i=1;i<mapSize;i++){
+                for(var j=0;j<mapSize;j++){
+                    if(direction == 'u'){
+                        if(gameMap[i-1][j]==0 && gameMap[i][j]!=0) {
+                            moved=true;
+                            gameMap[i-1][j] = gameMap[i][j];
+                            gameMap[i][j] = 0;
+                        }
+                    }else{
+                        if(gameMap[j][i-1]==0 && gameMap[j][i]!=0) {
+                            moved=true;
+                            gameMap[j][i-1] = gameMap[j][i];
+                            gameMap[j][i] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        else if(direction == 'd' || direction == 'r'){
+            for(var i=mapSize-2;i>=0;i--){
+                for(var j=0;j<mapSize;j++){
+                    if(direction == 'd'){
+                        if(gameMap[i+1][j]==0 && gameMap[i][j]!=0) {
+                            moved=true;
+                            gameMap[i+1][j] = gameMap[i][j];
+                            gameMap[i][j] = 0;
+                        }
+                    }else{
+                        if(gameMap[j][i+1]==0 && gameMap[j][i]!=0) {
+                            moved=true;
+                            gameMap[j][i+1] = gameMap[j][i];
+                            gameMap[j][i] = 0;
+                        }
+                    } 
+                }
+            }
+        }
+    }
+    
+    return moved;
+}
+
+//숫자가 같으면 더하기
+function sum(direction, moved){
+    if(direction == 'u' || direction == 'l'){
+        for(var i=1;i<mapSize;i++){
+            for(var j=0;j<mapSize;j++){
+                if(direction == 'u'){
+                    if(gameMap[i-1][j]==gameMap[i][j] && gameMap[i][j]!=0) {
+                        moved = true;
+                        score += gameMap[i][j]*2;
+                        gameMap[i-1][j] *= 2;
+                        gameMap[i][j] = 0;
+                        pull();
+                    }
+                }else{
+                    if(gameMap[j][i-1]==gameMap[j][i] && gameMap[j][i]!=0) {
+                        moved = true;
+                        score += gameMap[j][i]*2;
+                        gameMap[j][i-1] *= 2;
+                        gameMap[j][i] = 0;
+                        pull();
+                    }
+                }
+            }
+        }
+    }else if(direction == 'd' || direction == 'r'){
+        for(var i=mapSize-2;i>=0;i--){
+            for(var j=0;j<mapSize;j++){
+                if(direction == 'd'){
+                    if(gameMap[i+1][j]==gameMap[i][j] && gameMap[i][j]!=0) {
+                        moved = true;
+                        score += gameMap[i][j]*2;
+                        gameMap[i+1][j] *= 2;
+                        gameMap[i][j] = 0;
+                        pull();
+                    }
+                }else{
+                    if(gameMap[j][i+1]==gameMap[j][i] && gameMap[j][i]!=0) {
+                        moved = true;
+                        score += gameMap[j][i]*2;
+                        gameMap[j][i+1] *= 2;
+                        gameMap[j][i] = 0;
+                        pull();
+                    }
+                }
+            }
+        }
+    }
+    return moved;
+}
+
+// 방컁키 클릭
+function move(direction){
+	
+	if(!played) return;
+
+    var moved = false;
+    
+    moved = pull(direction,moved);
+    moved = sum(direction,moved);
+    moved = pull(direction,moved);
+    
+    if(moved) makeNum();
+    drawMap();
+    endCheck();
+}
+
+function drawScore(){
+    $('#score').text(score+"점");
+}
+
+// 키 이벤트
+$(document).keydown(function(e){
+    var keyCode = e.keyCode;
+
+    if(keyCode == 38 || keyCode == 87){          //위
+        move("u");
+    }else if(keyCode == 40 || keyCode == 83){    //아래
+        move("d");
+    }else if(keyCode == 37 || keyCode == 65){    //왼쪽
+        move("l");
+    }else if(keyCode == 39 || keyCode == 68){    //오른쪽
+       move("r");
+    }else return;
+    
+    drawScore();
+});
+
+// 랜덤 숫자 생성
+function makeNum(){
+    
+    var num = Math.random()*7 < 5 ? 2 : 4;
+    var i,j;
+    do{
+        i = Math.floor(Math.random()*mapSize);
+        j = Math.floor(Math.random()*mapSize);
+    }while(gameMap[i][j] != 0);
+    gameMap[i][j]=num;
+    drawMap();
+}
+
+// 랭킹 정보 가져오기
+function getRank(){
+	
+	$.get({
+		url : '${pageContext.request.contextPath}/game/getRank.do',
+		data : {gameType : '2048'},
+		success: function(data){
+			$('#rankTbl tbody').text('');
+			var html;
+			for(var i=0;i<data.length;i++){
+				html = '<tr>';
+				html += '<td>'+(i+1)+'</td>';
+				html += '<td style="width: 100%;">'+data[i].nickName+'</td>';
+				html += '<td style="width: 100%;">'+data[i].score+'</td>';
+				html += '</tr>';
+				$('#rankTbl tbody').append(html);
+			}
+		},
+		error: function(e){
+			console.log(e);
 		}
-	}
+	});
+}
+
+// 랭킹 정보 저장
+function saveScore(score){
+	var data = {
+		usrIdx : '${sessionScope.loginDto.usrIdx}',
+		score : score,
+		gameType : '2048'
+	};
+	$.get({
+		url:'${pageContext.request.contextPath}/game/insertScore.do',
+		data: data,
+		success: function(rst){
+			getRank();	//랭킹 정보
+		},
+		error: function(e){
+			console.log(e);
+		}
+	});
+}
+
+$('#startBtn').click(function(){ 
+	init();
+});
+
+function init(){
+	$('#startBtn').hide();
+	played = true;
+    score = 0;
+	getRank();
+    initMap();
+    drawScore();
+    makeNum();
+    drawMap();
 }
 
 $(document).ready(function(){
-	gameMapInit();
-	drawMap();
+    init();
 });
 </script>
+</body>
 </html>
