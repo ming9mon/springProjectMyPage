@@ -17,13 +17,24 @@ public class GameServiceImpl implements GameService{
 	
 	@Override
 	public int insertScore(GameDTO dto) {
-		GameDTO rst = dao.getScore(dto);
+		GameDTO rst;
+		
+		if(dto.getGameType().equals("landMine")) rst = dao.getLandMineScore(dto);
+		else rst = dao.getScore(dto);
+			
 		if(rst == null)
 			return dao.insertScore(dto);
-		else if(rst.getScore() < dto.getScore())
-			return dao.updateScore(dto);
-		else 
-			return 1;	
+		else if(!dto.getGameType().equals("landMine") && rst.getScore() < dto.getScore())
+				return dao.updateScore(dto);
+		else if(dto.getGameType().equals("landMine")) {	//지뢰찾기 update
+			if(rst.getScore() <= dto.getScore() && rst.getSize() <= dto.getSize() && rst.getPlayTime() > dto.getPlayTime())
+				return dao.updateScore(dto);
+			else if(rst.getScore() < dto.getScore())
+				return dao.updateScore(dto);
+		}
+		
+		System.out.println(rst.getScore() <= dto.getScore() && rst.getSize() <= dto.getSize() && rst.getPlayTime() >= dto.getPlayTime());
+		return 1;
 	}
 
 	@Override

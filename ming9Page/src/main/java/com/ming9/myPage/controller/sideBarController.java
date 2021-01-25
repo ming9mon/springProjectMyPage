@@ -51,6 +51,16 @@ public class sideBarController {
 		return "game/game2048";
 	}
 	
+	@GetMapping(value="/game/landMine.do")
+	public String landMine() {
+		return "game/landMine";
+	}
+	
+	@GetMapping(value="/game/typingGame.do")
+	public String typingGame() {
+		return "game/typingGame";
+	}
+	
 	@GetMapping(value="/test")
 	public String test() {
 		return "test";

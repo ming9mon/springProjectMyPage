@@ -18,6 +18,10 @@ public class GameDao {
 		return sql.selectOne("gameMapper.getScore",dto);
 	}
 	
+	public GameDTO getLandMineScore(GameDTO dto) {
+		return sql.selectOne("gameMapper.getLandMineScore",dto);
+	}
+	
 	public int insertScore(GameDTO dto) {
 		return sql.insert("gameMapper.insertScore",dto);
 	}
