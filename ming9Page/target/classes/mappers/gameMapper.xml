@@ -3,29 +3,67 @@
 
 <mapper namespace="gameMapper">
 	<insert id="insertScore" parameterType="GameDTO">
-		INSERT INTO T_GAME_SCORE(USR_IDX,GAME_TYPE,SCORE,DTE)
-		VALUES(#{usrIdx}, #{gameType}, #{score}, now())
+		INSERT INTO T_GAME_SCORE(
+				USR_IDX
+				,GAME_TYPE
+				,SCORE
+				,DTE
+				<if test="playTime != '' and playTime != null">
+					,PLAY_TIME
+				</if>
+				<if test="size != '' and size != null">
+					,SIZE
+				</if>
+		)
+		VALUES(
+				#{usrIdx}
+				,#{gameType}
+				,#{score}
+				,now()
+				<if test="playTime != '' and playTime != null">
+					,#{playTime}
+				</if>
+				<if test="size != '' and size != null">
+					,#{size}
+				</if>
+		)
 	</insert>
 	
 	<update id="updateScore" parameterType="GameDTO">
-		UPDATE T_GAME_SCORE SET SCORE = #{score}
+		UPDATE T_GAME_SCORE SET 
+			SCORE = #{score}
+			<if test="playTime != '' and playTime != null">
+				,PLAY_TIME = #{playTime}
+			</if>
+			<if test="size != '' and size != null">
+				,SIZE = #{size}
+			</if>
 		WHERE USR_IDX = #{usrIdx}
 			AND GAME_TYPE = #{gameType}
 	</update>
 	
+	<!-- 지뢰찾기를 제외한 게임 점수 비교 -->
 	<select id="getScore" parameterType="GameDTO" resultType="GameDTO">
-		SELECT SCORE 
+		SELECT SCORE
+		FROM T_GAME_SCORE
+		WHERE USR_IDX = #{usrIdx}
+			AND GAME_TYPE = #{gameType}
+	</select>
+		
+	<!-- 지뢰찾기 점수 비교 -->
+	<select id="getLandMineScore" parameterType="GameDTO" resultType="GameDTO">
+		SELECT SCORE
 		FROM T_GAME_SCORE
 		WHERE USR_IDX = #{usrIdx}
 			AND GAME_TYPE = #{gameType}
 	</select>
 	
 	<select id="getRank" parameterType="GameDTO" resultType="GameDTO">
-		SELECT NICK_NAME, SCORE
+		SELECT NICK_NAME, SCORE, SIZE, PLAY_TIME
 		FROM T_GAME_SCORE A, T_MEMBER_DETAIL B
 		WHERE A.USR_IDX=B.USR_IDX
 			AND GAME_TYPE=#{gameType}
-		ORDER BY SCORE DESC
+		ORDER BY SCORE DESC, SIZE ASC, PLAY_TIME ASC 
 		LIMIT 10
 	</select>
 </mapper>
