@@ -115,6 +115,8 @@ public class WeatherServiceImpl implements WeatherService {
 		urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode(dataType, "UTF-8"));	/* 타입 */
 		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8"));	/* 한 페이지 결과 수 */
 		
+		System.out.println(urlBuilder.toString());
+		
 		/*
 		 * GET방식으로 전송해서 파라미터 받아오기
 		 */
